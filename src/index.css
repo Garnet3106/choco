@@ -1,0 +1,14 @@
+:root {
+  --base-color: #22272b;
+  --main-color: #ae3b17;
+  --dark-gray-color: #34373a;
+  --light-gray-color: #59636d;
+  --white-color: #dddddd;
+}
+
+body {
+  background-color: var(--base-color);
+  height: 150px;
+  margin: 0;
+  width: 400px;
+}
