@@ -1,18 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   --base-color: #22272b;
   --main-color: #ae3b17;
   --dark-gray-color: #34373a;
   --light-gray-color: #565b60;
   --white-color: #cbd2d9;
+
+  --margin: 10px;
+  --border-radius: 3px;
+
+  --search-height: 200px;
+  --search-width: 350px;
 }
 
 body {
   background-color: var(--base-color);
-  height: 150px;
-  margin: 0;
-  width: 400px;
+  color: var(--white-color);
+  margin: var(--margin);
+}
+
+div[overflow-y=scroll] {
+  
 }
