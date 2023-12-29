@@ -1,9 +1,27 @@
-getAllTabs();
+import { Tab } from './common/search';
 
-async function getAllTabs() {
-  const tabs = await chrome.tabs.query({
-    currentWindow: true,
+console.log('Initializing extension...');
+
+store();
+
+async function store(): Promise<void> {
+  const tabs = await getAllTabs();
+
+  chrome.storage.local.set({
+    openTabs: tabs,
   });
+}
 
-  tabs.forEach((v) => console.log(v.title));
+async function getAllTabs(): Promise<Tab[]> {
+  const tabs = await chrome.tabs.query({ windowType: 'normal' });
+
+  return tabs
+    .filter((eachTab) => eachTab.id !== undefined && eachTab.title !== undefined && eachTab.url !== undefined)
+    .map((eachTab) => ({
+      id: eachTab.id!,
+      title: eachTab.title!,
+      url: eachTab.url!,
+      favIconUrl: eachTab.favIconUrl,
+      domain: '...',
+    }));
 }
