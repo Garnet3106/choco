@@ -1,5 +1,4 @@
 .search {
-  height: var(--search-height);
   width: var(--search-width);
 }
 
@@ -10,7 +9,7 @@
   box-sizing: border-box;
   color: var(--white-color);
   outline: none;
-  padding: var(--margin) calc(var(--margin) / 2);
+  padding: calc(var(--margin) + 2px) calc(var(--margin) / 2) var(--margin);
   width: 100%;
 }
 
