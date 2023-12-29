@@ -1,6 +1,6 @@
+import './Search.css';
 import { useEffect, useState } from 'react';
 import { SearchItem, SearchItemType } from '../../common/search';
-import './Search.css';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 
 export default function Search() {

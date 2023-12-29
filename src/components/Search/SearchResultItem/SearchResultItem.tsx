@@ -43,10 +43,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
   }
 
   return (
-    <div
-      className='search-result-item'
-      style={{ backgroundColor: props.selected ? 'var(--main-color)' : undefined }}
-    >
+    <div className={`search-result-item ${props.selected ? 'search-result-item-selected' : ''}`}>
       {elements.topIcon}
       <div className='search-result-item-content'>
         <span>{elements.text}</span>

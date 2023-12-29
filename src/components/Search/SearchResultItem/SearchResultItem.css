@@ -11,6 +11,14 @@
   background-color: var(--dark-gray-color);
 }
 
+.search-result-item-selected {
+  background-color: var(--main-color);
+}
+
+.search-result-item-selected:hover {
+  background-color: var(--main-color);
+}
+
 .search-result-item-content {
   display: flex;
   flex-direction: column;
@@ -20,4 +28,9 @@
   color: var(--light-gray-color);
   font-size: 85%;
   margin-top: -2px;
+}
+
+.search-result-item-selected
+.search-result-item-caption {
+  color: var(--light-main-color);
 }

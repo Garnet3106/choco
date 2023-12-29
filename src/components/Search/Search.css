@@ -3,7 +3,7 @@
 }
 
 .search-bar {
-  background-color: var(--light-gray-color);
+  background-color: var(--dark-gray-color);
   border: none;
   border-radius: var(--border-radius);
   box-sizing: border-box;
@@ -15,7 +15,7 @@
 }
 
 .search-bar::placeholder {
-  color: var(--white-color);
+  color: #5f6264;
 }
 
 .search-results {
