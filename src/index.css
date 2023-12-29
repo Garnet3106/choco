@@ -5,10 +5,10 @@
   --light-gray-color: #565b60;
   --white-color: #cbd2d9;
 
-  --margin: 10px;
+  --margin: 12px;
   --border-radius: 3px;
 
-  --search-width: 350px;
+  --search-width: 400px;
 }
 
 body {

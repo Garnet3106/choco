@@ -1,0 +1,23 @@
+.search-result-item {
+  border-radius: var(--border-radius);
+  display: flex;
+  cursor: pointer;
+  padding: calc(var(--margin) / 2);
+  transition: background-color 100ms;
+  user-select: none;
+}
+
+.search-result-item:hover {
+  background-color: var(--dark-gray-color);
+}
+
+.search-result-item-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-result-item-caption {
+  color: var(--light-gray-color);
+  font-size: 85%;
+  margin-top: -2px;
+}
