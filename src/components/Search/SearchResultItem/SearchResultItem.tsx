@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { SearchItem, SearchItemType } from '../../../common/search';
 import { BiSearch } from 'react-icons/bi';
 import { FaCircle } from 'react-icons/fa';
+import { MdHistory } from 'react-icons/md';
 
 export type SearchResultItemProps = {
   item: SearchItem,
@@ -18,12 +19,21 @@ type Elements = {
 };
 
 export default function SearchResultItem(props: SearchResultItemProps) {
-  const reactIconProps = {
+  const topIconProps = {
     color: 'var(--white-color)',
     size: 18,
     style: {
+      marginRight: 8,
       minWidth: 18,
-      marginRight: 5,
+    },
+  };
+
+  const typeIconProps = {
+    color: 'var(--light-gray-color)',
+    size: 20,
+    style: {
+      marginLeft: 8,
+      minWidth: 20,
     },
   };
 
@@ -31,14 +41,16 @@ export default function SearchResultItem(props: SearchResultItemProps) {
 
   switch (props.item.type) {
     case SearchItemType.SearchEngine:
-      elements.topIcon = <BiSearch {...reactIconProps} />;
+      elements.topIcon = <BiSearch {...topIconProps} />;
       elements.text = `“${props.item.engine.name}” で検索する`;
       break;
 
     case SearchItemType.SearchHistory:
-      elements.topIcon = <FaCircle {...reactIconProps} />;
+      elements.topIcon = <FaCircle {...topIconProps} />;
+      elements.typeIcon = <MdHistory {...typeIconProps} />;
       elements.text = props.item.history.title;
       elements.caption = props.item.history.domain;
+      elements.tag = '1か月前';
       break;
   }
 
@@ -46,10 +58,22 @@ export default function SearchResultItem(props: SearchResultItemProps) {
     <div className={`search-result-item ${props.selected ? 'search-result-item-selected' : ''}`}>
       {elements.topIcon}
       <div className='search-result-item-content'>
-        <span>{elements.text}</span>
-        <span className='search-result-item-caption'>
-          {elements.caption}
-        </span>
+        <div className='search-result-item-content-left'>
+          <span>{elements.text}</span>
+          <span className='search-result-item-caption'>
+            {elements.caption}
+          </span>
+        </div>
+        <div className='search-result-item-content-right'>
+          {
+            elements.tag && (
+              <div className='search-result-item-tag'>
+                {elements.tag}
+              </div>
+            )
+          }
+          {elements.typeIcon}
+        </div>
       </div>
     </div>
   );

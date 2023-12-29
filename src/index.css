@@ -1,15 +1,15 @@
 :root {
   --base-color: #22272b;
   --main-color: #ae3b17;
-  --light-main-color: #cb8671;
-  --dark-gray-color: #34373a;
-  --light-gray-color: #565b60;
+  --light-main-color: #be735c;
+  --dark-gray-color: #35393c;
+  --light-gray-color: #636970;
   --white-color: #cbd2d9;
 
   --margin: 12px;
   --border-radius: 3px;
 
-  --search-width: 400px;
+  --search-width: 500px;
 }
 
 body {
