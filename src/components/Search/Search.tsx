@@ -2,6 +2,7 @@ import './Search.css';
 import { useEffect, useState } from 'react';
 import { SearchItem, SearchItemType } from '../../common/search';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
+import { BiSearch } from 'react-icons/bi';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
@@ -38,7 +39,16 @@ export default function Search() {
   ));
 
   return (
-    <div className='search'>
+    <div className='search' style={{ position: 'relative' }}>
+      <BiSearch
+        color='var(--light-gray-color)'
+        size={18}
+        style={{
+          left: 'calc(var(--margin) / 2)',
+          position: 'absolute',
+          top: 12,
+        }}
+      />
       <input type='text' className='search-bar' placeholder='検索キーワード' />
       <div className='search-results scrollbar-none'>
         {items}
