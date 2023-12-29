@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SearchItem, SearchItemType } from '../../common/search';
 import './Search.css';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+
+  useEffect(() => {
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const itemSources: SearchItem[] = [
     {
@@ -40,4 +45,16 @@ export default function Search() {
       </div>
     </div>
   );
+
+  function onKeyDown(event: KeyboardEvent) {
+    switch (event.code) {
+      case 'ArrowUp':
+        setSelectedItemIndex((state) => state <= 0 ? 0 : state - 1);
+        break;
+
+      case 'ArrowDown':
+        setSelectedItemIndex((state) => state + 1 >= itemSources.length ? itemSources.length - 1 : state + 1);
+        break;
+    }
+  }
 }
