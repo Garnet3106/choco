@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm-run-all -p dev:*",
     "dev:vite": "vite",
-    "dev:tailwind": "tailwindcss -c ./tailwind.config.js -i ./src/input.css -o ./src/output.css --watch",
+    "dev:tailwind": "tailwindcss -c ./tailwind.config.js -i ./src/index.css -o ./src/tailwind.css --watch",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"

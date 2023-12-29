@@ -544,10 +544,21 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.bg-white {
-  background-color: var(--white-color);
-}
-
 .text-white {
   color: var(--white-color);
+}
+
+:root {
+  --base-color: #22272b;
+  --main-color: #ae3b17;
+  --dark-gray-color: #34373a;
+  --light-gray-color: #565b60;
+  --white-color: #cbd2d9;
+}
+
+body {
+  background-color: var(--base-color);
+  height: 150px;
+  margin: 0;
+  width: 400px;
 }

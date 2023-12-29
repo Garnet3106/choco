@@ -1,6 +1,6 @@
 export default function App() {
   return (
-    <div>
-    </div>
+    <main className="text-white">
+    </main>
   );
 }
