@@ -23,6 +23,12 @@ export type SearchItemQuery = {
 export namespace SearchItem {
   export async function search(query: SearchItemQuery): Promise<SearchItem[]> {
     const keywords = query.text.split(' ').filter((eachKeyword) => eachKeyword !== '');
+
+    if (!keywords.length) {
+      // fix: favorite
+      return [];
+    }
+
     const storageData = await chrome.storage.local.get();
 
     const openTabs: SearchItem[] = Tab.search(storageData.openTabs ?? [], keywords)
