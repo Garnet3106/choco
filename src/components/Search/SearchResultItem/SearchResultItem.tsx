@@ -58,7 +58,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.typeIcon = <MdHistory {...typeIconProps} />;
       elements.text = props.item.history.title;
       elements.caption = props.item.history.domain;
-      elements.tag = '1か月前';
+      elements.tag = 'n日前';
       break;
   }
 

@@ -1,16 +1,15 @@
 import './Search.css';
 import { useEffect, useState } from 'react';
-import { SearchItemType, Tab } from '../../common/search';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
+import { SearchItem } from '../../common/search';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
   const [searchText, setSearchText] = useState('');
-  const [searchItems, setSearchItems] = useState([]);
+  const [searchItems, setSearchItems] = useState<SearchItem[]>([]);
 
   useEffect(() => {
-    chrome.storage.local.get().then(importStorage);
     chrome.storage.local.onChanged.addListener(onChangeStorage);
     return () => chrome.storage.local.onChanged.removeListener(onChangeStorage);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -43,7 +42,17 @@ export default function Search() {
         type='text'
         className='search-bar'
         value={searchText}
-        onChange={(e) => setSearchText(e.currentTarget.value)}
+        onChange={async (e) => {
+          const text = e.currentTarget.value;
+          setSearchText(text);
+
+          const newItems = await SearchItem.search({
+            text,
+            historyStartTime: 0, // fix
+          });
+
+          setSearchItems(newItems);
+        }}
         placeholder='検索キーワード'
       />
       <div className='search-results scrollbar-none'>
@@ -51,17 +60,6 @@ export default function Search() {
       </div>
     </div>
   );
-
-  function importStorage(data: { [key: string]: any }) {
-    if (data.openTabs) {
-      const newItems = data.openTabs.map((eachTab: Tab) => ({
-        type: SearchItemType.OpenTab,
-        tab: eachTab,
-      }));
-
-      setSearchItems(newItems);
-    }
-  }
 
   function onChangeStorage(_data: { [key: string]: chrome.storage.StorageChange }) {
   }

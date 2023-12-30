@@ -10,6 +10,7 @@
   --border-radius: 3px;
 
   --search-width: 500px;
+  --search-result-height: 250px;
 }
 
 body {
