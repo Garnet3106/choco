@@ -1,14 +1,14 @@
 export enum SearchItemType {
   SearchEngine,
+  OpenTab,
   SearchHistory,
-  Tab,
 }
 
 export type SearchItem = {
   type: SearchItemType.SearchEngine,
   engine: SearchEngine,
 } | {
-  type: SearchItemType.Tab,
+  type: SearchItemType.OpenTab,
   tab: Tab,
 } | {
   type: SearchItemType.SearchHistory,

@@ -22,6 +22,6 @@ async function getAllTabs(): Promise<Tab[]> {
       title: eachTab.title!,
       url: eachTab.url!,
       favIconUrl: eachTab.favIconUrl,
-      domain: '...',
+      domain: 'www.example.com',
     }));
 }

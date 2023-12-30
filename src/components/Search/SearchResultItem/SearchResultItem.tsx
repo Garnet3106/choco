@@ -4,6 +4,7 @@ import { SearchItem, SearchItemType } from '../../../common/search';
 import { BiSearch } from 'react-icons/bi';
 import { FaCircle } from 'react-icons/fa';
 import { MdHistory } from 'react-icons/md';
+import { HiOutlineDuplicate } from 'react-icons/hi';
 
 export type SearchResultItemProps = {
   item: SearchItem,
@@ -43,6 +44,13 @@ export default function SearchResultItem(props: SearchResultItemProps) {
     case SearchItemType.SearchEngine:
       elements.topIcon = <BiSearch {...topIconProps} />;
       elements.text = `“${props.item.engine.name}” で検索する`;
+      break;
+
+    case SearchItemType.OpenTab:
+      elements.topIcon = <FaCircle {...topIconProps} />;
+      elements.typeIcon = <HiOutlineDuplicate {...typeIconProps} />;
+      elements.text = props.item.tab.title;
+      elements.caption = props.item.tab.domain;
       break;
 
     case SearchItemType.SearchHistory:
