@@ -49,15 +49,15 @@ export default function SearchResultItem(props: SearchResultItemProps) {
     case SearchItemType.OpenTab:
       elements.topIcon = <FaCircle {...topIconProps} />;
       elements.typeIcon = <HiOutlineDuplicate {...typeIconProps} />;
-      elements.text = props.item.tab.title;
-      elements.caption = props.item.tab.domain;
+      elements.text = props.item.tab.website.title;
+      elements.caption = props.item.tab.website.domain;
       break;
 
     case SearchItemType.SearchHistory:
       elements.topIcon = <FaCircle {...topIconProps} />;
       elements.typeIcon = <MdHistory {...typeIconProps} />;
-      elements.text = props.item.history.title;
-      elements.caption = props.item.history.domain;
+      elements.text = props.item.history.website.title;
+      elements.caption = props.item.history.website.domain;
       elements.tag = 'n日前';
       break;
   }

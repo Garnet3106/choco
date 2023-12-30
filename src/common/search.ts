@@ -54,28 +54,32 @@ export type SearchEngine = {
   url: string,
 };
 
-export type Tab = {
-  id: number,
+export type Website = {
   title: string,
   url: string,
   favIconUrl?: string,
   domain: string,
 };
 
+export type Tab = {
+  id: number,
+  website: Website,
+};
+
 export namespace Tab {
   export function search(tabs: Tab[], keywords: string[]): Tab[] {
     return tabs.filter((eachTab) => (
-      keywords.some((eachKeyword) => eachTab.title.includes(eachKeyword)) ||
-      keywords.some((eachKeyword) => eachTab.url.includes(eachKeyword)) ||
-      keywords.some((eachKeyword) => eachTab.domain.includes(eachKeyword))
+      keywords.some((eachKeyword) => eachTab.website.title.includes(eachKeyword)) ||
+      keywords.some((eachKeyword) => eachTab.website.url.includes(eachKeyword)) ||
+      keywords.some((eachKeyword) => eachTab.website.domain.includes(eachKeyword))
     ));
   }
 }
 
 export type SearchHistory = {
-  title: string,
-  url: string,
-  domain: string,
+  lastVisited: number,
+  visitCount: number,
+  website: Website,
 };
 
 export namespace SearchHistory {
@@ -86,11 +90,15 @@ export namespace SearchHistory {
     });
 
     return items
-      .filter((eachItem) => eachItem.title !== undefined && eachItem.url !== undefined)
+      .filter((eachItem) => eachItem.lastVisitTime !== undefined && eachItem.title !== undefined && eachItem.url !== undefined)
       .map((eachItem) => ({
-        title: eachItem.title!,
-        url: eachItem.url!,
-        domain: 'www.example.com',
+        lastVisited: eachItem.lastVisitTime!,
+        visitCount: eachItem.visitCount ?? 1,
+        website: {
+          title: eachItem.title!,
+          url: eachItem.url!,
+          domain: 'www.example.com',
+        },
       }));
   }
 }

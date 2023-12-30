@@ -19,9 +19,11 @@ async function getAllTabs(): Promise<Tab[]> {
     .filter((eachTab) => eachTab.id !== undefined && eachTab.title !== undefined && eachTab.url !== undefined)
     .map((eachTab) => ({
       id: eachTab.id!,
-      title: eachTab.title!,
-      url: eachTab.url!,
-      favIconUrl: eachTab.favIconUrl,
-      domain: 'www.example.com',
+      website: {
+        title: eachTab.title!,
+        url: eachTab.url!,
+        favIconUrl: eachTab.favIconUrl,
+        domain: 'www.example.com',
+      },
     }));
 }
