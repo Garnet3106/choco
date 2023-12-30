@@ -67,7 +67,9 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       {elements.topIcon}
       <div className='search-result-item-content'>
         <div className='search-result-item-content-left'>
-          <span>{elements.text}</span>
+          <span className='search-result-item-text'>
+            {elements.text}
+          </span>
           <span className='search-result-item-caption'>
             {elements.caption}
           </span>

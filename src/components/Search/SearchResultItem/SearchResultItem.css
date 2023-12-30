@@ -33,6 +33,12 @@
   flex-direction: column;
 }
 
+.search-result-item-text {
+  height: 1.5em;
+  overflow: hidden;
+  word-break: break-all;
+}
+
 .search-result-item-caption {
   color: var(--light-gray-color);
   font-size: 85%;
@@ -48,5 +54,6 @@
   background-color: var(--light-gray-color);
   border-radius: var(--border-radius);
   font-size: 80%;
+  margin-left: 8px;
   padding: 1px 3px;
 }
