@@ -99,6 +99,17 @@ export namespace SearchHistory {
           url: eachItem.url!,
           domain: 'www.example.com',
         },
-      }));
+      }))
+      .sort((a, b) => {
+        if (a.lastVisited < b.lastVisited) {
+          return 1;
+        }
+
+        if (a.lastVisited > b.lastVisited) {
+          return -1;
+        }
+
+        return 0;
+      });
   }
 }
