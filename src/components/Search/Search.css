@@ -20,6 +20,5 @@
 
 .search-results {
   margin-top: var(--margin);
-  height: var(--search-result-height);
   overflow-y: scroll;
 }

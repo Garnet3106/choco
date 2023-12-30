@@ -8,6 +8,15 @@ export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
   const [searchText, setSearchText] = useState('');
   const [searchItems, setSearchItems] = useState<SearchItem[]>([]);
+  const [searchResultHeight, setSearchResultHeight] = useState(200);
+
+  useEffect(() => {
+    chrome.windows.getCurrent().then((window) => {
+      if (window.height) {
+        setSearchResultHeight(window.height * 0.4);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     chrome.storage.local.onChanged.addListener(onChangeStorage);
@@ -55,7 +64,7 @@ export default function Search() {
         }}
         placeholder='検索キーワード'
       />
-      <div className='search-results scrollbar-none'>
+      <div className='search-results scrollbar-none' style={{ height: searchResultHeight }}>
         {items}
       </div>
     </div>
