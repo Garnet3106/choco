@@ -11,6 +11,7 @@ export default function Search() {
   const [searchItems, setSearchItems] = useState<SearchItem[]>([]);
   const [searchResultHeight, setSearchResultHeight] = useState(200);
   const searchTextQueue = useRef<string[]>([]);
+  const searchResultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     chrome.windows.getCurrent().then((window) => {
@@ -34,6 +35,7 @@ export default function Search() {
     <SearchResultItem
       item={eachItem}
       selected={index === selectedItemIndex}
+      onSelect={onSelectSearchResultItem}
       key={Math.random()}
     />
   ));
@@ -57,7 +59,7 @@ export default function Search() {
         placeholder='検索キーワード'
         autoFocus
       />
-      <div className='search-results scrollbar-none' style={{ height: searchResultHeight }}>
+      <div className='search-results scrollbar-none' style={{ height: searchResultHeight }} ref={searchResultsRef}>
         {items}
       </div>
     </div>
@@ -100,6 +102,26 @@ export default function Search() {
         setSelectedItemIndex((state) => state + 1 >= searchItems.length ? searchItems.length - 1 : state + 1);
         event.preventDefault();
         break;
+    }
+  }
+
+  function onSelectSearchResultItem(element: HTMLDivElement) {
+    if (searchResultsRef.current && element.parentElement) {
+      const currentScrollTop = searchResultsRef.current.scrollTop;
+      const currentScrollBottom = currentScrollTop + searchResultsRef.current.offsetHeight;
+      const selectedTop = element.offsetTop - (element.parentElement.offsetTop ?? 0);
+      const selectedHeight = element.offsetHeight;
+      const selectedBottom = selectedTop + selectedHeight;
+
+      if (selectedBottom > currentScrollBottom) {
+        searchResultsRef.current.scrollBy(0, selectedHeight);
+        return;
+      }
+
+      if (selectedTop < currentScrollTop) {
+        searchResultsRef.current.scrollBy(0, -selectedHeight);
+        return;
+      }
     }
   }
 }

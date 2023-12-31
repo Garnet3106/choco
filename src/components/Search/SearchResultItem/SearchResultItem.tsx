@@ -1,5 +1,5 @@
 import './SearchResultItem.css';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { SearchItem, SearchItemType } from '../../../common/search';
 import { BiSearch } from 'react-icons/bi';
 import { FaCircle } from 'react-icons/fa';
@@ -9,6 +9,7 @@ import { HiOutlineDuplicate } from 'react-icons/hi';
 export type SearchResultItemProps = {
   item: SearchItem,
   selected?: boolean,
+  onSelect?: (element: HTMLDivElement) => void,
 };
 
 type Elements = {
@@ -20,6 +21,14 @@ type Elements = {
 };
 
 export default function SearchResultItem(props: SearchResultItemProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (props.onSelect && props.selected && ref.current) {
+      props.onSelect(ref.current);
+    }
+  }, [props.selected]);  // eslint-disable-line react-hooks/exhaustive-deps
+
   const topIconProps = {
     color: 'var(--white-color)',
     size: 18,
@@ -63,7 +72,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
   }
 
   return (
-    <div className={`search-result-item ${props.selected ? 'search-result-item-selected' : ''}`}>
+    <div className={`search-result-item ${props.selected ? 'search-result-item-selected' : ''}`} ref={ref}>
       {elements.topIcon}
       <div className='search-result-item-content'>
         <div className='search-result-item-content-left'>
