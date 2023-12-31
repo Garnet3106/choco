@@ -29,7 +29,7 @@ export default function Search() {
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [searchItems.length]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedItemIndex, searchItems]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const items = searchItems.map((eachItem, index) => (
     <SearchResultItem
@@ -103,6 +103,16 @@ export default function Search() {
         setSelectedItemIndex((state) => state + 1 >= searchItems.length ? searchItems.length - 1 : state + 1);
         event.preventDefault();
         break;
+
+      case 'Enter': {
+        const target = searchItems[selectedItemIndex];
+
+        if (target) {
+          openSearchItem(target);
+        }
+
+        event.preventDefault();
+      } break;
     }
   }
 
