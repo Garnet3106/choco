@@ -1,5 +1,5 @@
 import './Search.css';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { SearchItem } from '../../common/search';
@@ -9,6 +9,7 @@ export default function Search() {
   const [searchText, setSearchText] = useState('');
   const [searchItems, setSearchItems] = useState<SearchItem[]>([]);
   const [searchResultHeight, setSearchResultHeight] = useState(200);
+  const searchTextQueue = useRef<string[]>([]);
 
   useEffect(() => {
     chrome.windows.getCurrent().then((window) => {
@@ -51,17 +52,7 @@ export default function Search() {
         type='text'
         className='search-bar'
         value={searchText}
-        onChange={async (e) => {
-          const text = e.currentTarget.value;
-          setSearchText(text);
-
-          const newItems = await SearchItem.search({
-            text,
-            historyStartTime: 0, // fix
-          });
-
-          setSearchItems(newItems);
-        }}
+        onChange={onChangeSearchText}
         placeholder='検索キーワード'
       />
       <div className='search-results scrollbar-none' style={{ height: searchResultHeight }}>
@@ -70,7 +61,30 @@ export default function Search() {
     </div>
   );
 
+  async function dequeSearchText() {
+    if (searchTextQueue.current.length >= 2) {
+      searchTextQueue.current.shift();
+      return;
+    }
+
+    const currentSearchText = searchTextQueue.current.pop() ?? '';
+
+    const newItems = await SearchItem.search({
+      text: currentSearchText,
+      historyStartTime: 0, // fix
+    });
+
+    setSearchItems(newItems);
+  }
+
   function onChangeStorage(_data: { [key: string]: chrome.storage.StorageChange }) {
+  }
+
+  async function onChangeSearchText(event: ChangeEvent<HTMLInputElement>) {
+    const text = event.currentTarget.value;
+    setSearchText(text);
+    searchTextQueue.current.push(text);
+    setTimeout(dequeSearchText, 300);
   }
 
   function onKeyDown(event: KeyboardEvent) {
