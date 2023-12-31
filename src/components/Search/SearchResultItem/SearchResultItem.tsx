@@ -7,10 +7,11 @@ import { MdHistory } from 'react-icons/md';
 import { HiOutlineDuplicate } from 'react-icons/hi';
 
 export type SearchResultItemProps = {
+  index: number,
   item: SearchItem,
   selected?: boolean,
   onSelect?: (element: HTMLDivElement) => void,
-  onOpen?: (closePopup: boolean) => void,
+  onOpen?: (index: number, closePopup: boolean) => void,
 };
 
 type Elements = {
@@ -104,7 +105,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
 
   function onClick(event: MouseEvent<HTMLDivElement>) {
     if (props.onOpen) {
-      props.onOpen(!event.ctrlKey);
+      props.onOpen(props.index, !event.ctrlKey);
     }
   }
 

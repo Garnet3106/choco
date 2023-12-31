@@ -33,10 +33,14 @@ export default function Search() {
 
   const items = searchItems.map((eachItem, index) => (
     <SearchResultItem
+      index={index}
       item={eachItem}
       selected={index === selectedItemIndex}
       onSelect={onSelectSearchResultItem}
-      onOpen={(closePopup) => openSearchItem(eachItem, closePopup)}
+      onOpen={(index, closePopup) => {
+        setSelectedItemIndex(index);
+        openSearchItem(eachItem, closePopup);
+      }}
       key={Math.random()}
     />
   ));
