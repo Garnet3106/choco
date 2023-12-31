@@ -29,16 +29,31 @@ export namespace SearchItem {
       return [];
     }
 
-    const storageData = await chrome.storage.local.get();
+    const rawOpenTabs = await chrome.tabs.query({ windowType: 'normal' });
 
-    const openTabs: SearchItem[] = Tab.search(storageData.openTabs ?? [], keywords)
+    const convertedOpenTabs = rawOpenTabs
+      .filter((eachTab) => eachTab.id !== undefined && eachTab.title !== undefined && eachTab.url !== undefined)
+      .map((eachTab) => ({
+        id: eachTab.id!,
+        website: {
+          title: eachTab.title!,
+          url: eachTab.url!,
+          favIconUrl: eachTab.favIconUrl,
+          domain: 'www.example.com',
+        },
+      }));
+
+    const openTabs: SearchItem[] = Tab.search(convertedOpenTabs ?? [], keywords)
       .splice(0, 5)
       .map((eachTab) => ({
         type: SearchItemType.OpenTab,
         tab: eachTab,
       }));
 
-    const histories: SearchItem[] = (await SearchHistory.search(query.text, query.historyStartTime))
+    // 履歴だけこれと同期せず検索する
+    const rawHistories = await SearchHistory.search(query.text, query.historyStartTime);
+
+    const histories: SearchItem[] = rawHistories
       .splice(0, 5)
       .map((eachHistory) => ({
         type: SearchItemType.SearchHistory,
