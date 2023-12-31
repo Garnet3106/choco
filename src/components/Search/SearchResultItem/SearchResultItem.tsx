@@ -58,7 +58,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.typeIcon = <MdHistory {...typeIconProps} />;
       elements.text = props.item.history.website.title;
       elements.caption = props.item.history.website.domain;
-      elements.tag = 'n日前';
+      elements.tag = getSearchHistoryDateString(props.item.history.lastVisited);
       break;
   }
 
@@ -87,4 +87,32 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       </div>
     </div>
   );
+
+  function getSearchHistoryDateString(lastVisited: number): string {
+    const nowDate = toDateTimestamp(Date.now());
+    const lastVisitedDate = toDateTimestamp(lastVisited);
+    const diff = nowDate - lastVisitedDate;
+
+    if (diff === 0) {
+      return '今日';
+    }
+
+    if (diff === 1) {
+      return '昨日';
+    }
+
+    if (diff < 30) {
+      return `${diff}日前`;
+    }
+
+    if (diff < 365) {
+      return `${Math.floor(diff / 30)}ヶ月前`;
+    }
+
+    return `1年以上前`;
+  }
+
+  function toDateTimestamp(ms: number): number {
+    return Math.floor(ms / 1000 / 3600 / 24);
+  }
 }
