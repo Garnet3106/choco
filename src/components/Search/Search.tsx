@@ -55,6 +55,7 @@ export default function Search() {
         value={searchText}
         onChange={onChangeSearchText}
         placeholder='検索キーワード'
+        autoFocus
       />
       <div className='search-results scrollbar-none' style={{ height: searchResultHeight }}>
         {items}
