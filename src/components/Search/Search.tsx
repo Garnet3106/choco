@@ -109,6 +109,10 @@ export default function Search() {
         break;
 
       case 'Enter': {
+        if (event.isComposing) {
+          break;
+        }
+
         const target = searchItems[selectedItemIndex];
 
         if (target) {
