@@ -1,5 +1,5 @@
 import './SearchResultItem.css';
-import { ReactNode, useEffect, useRef } from 'react';
+import { MouseEvent, ReactNode, useEffect, useRef } from 'react';
 import { SearchItem, SearchItemType } from '../../../common/search';
 import { BiSearch } from 'react-icons/bi';
 import { FaCircle } from 'react-icons/fa';
@@ -10,7 +10,7 @@ export type SearchResultItemProps = {
   item: SearchItem,
   selected?: boolean,
   onSelect?: (element: HTMLDivElement) => void,
-  onOpen?: () => void,
+  onOpen?: (closePopup: boolean) => void,
 };
 
 type Elements = {
@@ -75,7 +75,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
   return (
     <div
       className={`search-result-item ${props.selected ? 'search-result-item-selected' : ''}`}
-      onClick={props.onOpen}
+      onClick={onClick}
       ref={ref}
     >
       {elements.topIcon}
@@ -101,6 +101,12 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       </div>
     </div>
   );
+
+  function onClick(event: MouseEvent<HTMLDivElement>) {
+    if (props.onOpen) {
+      props.onOpen(!event.ctrlKey);
+    }
+  }
 
   function getSearchHistoryDateString(lastVisited: number): string {
     const nowDate = toDateTimestamp(Date.now());

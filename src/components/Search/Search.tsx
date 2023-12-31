@@ -36,7 +36,7 @@ export default function Search() {
       item={eachItem}
       selected={index === selectedItemIndex}
       onSelect={onSelectSearchResultItem}
-      onOpen={() => openSearchItem(eachItem)}
+      onOpen={(closePopup) => openSearchItem(eachItem, closePopup)}
       key={Math.random()}
     />
   ));
@@ -108,7 +108,7 @@ export default function Search() {
         const target = searchItems[selectedItemIndex];
 
         if (target) {
-          openSearchItem(target);
+          openSearchItem(target, !event.ctrlKey);
         }
 
         event.preventDefault();
@@ -136,7 +136,7 @@ export default function Search() {
     }
   }
 
-  async function openSearchItem(searchItem: SearchItem): Promise<void> {
+  async function openSearchItem(searchItem: SearchItem, closePopup: boolean): Promise<void> {
     switch (searchItem.type) {
       case SearchItemType.SearchEngine:
         break;
@@ -147,10 +147,15 @@ export default function Search() {
 
       case SearchItemType.SearchHistory:
         // fix: 新規／既存タブの切り替え設定に対応する
-        chrome.tabs.create({ url: searchItem.history.website.url });
+        chrome.tabs.create({
+          url: searchItem.history.website.url,
+          active: closePopup,
+        });
         break;
     }
 
-    window.close();
+    if (closePopup) {
+      window.close();
+    }
   }
 }
