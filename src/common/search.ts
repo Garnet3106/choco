@@ -1,3 +1,5 @@
+import moji from 'moji';
+
 export enum SearchItemType {
   SearchEngine,
   OpenTab,
@@ -22,7 +24,8 @@ export type SearchItemQuery = {
 
 export namespace SearchItem {
   export async function search(query: SearchItemQuery): Promise<SearchItem[]> {
-    const keywords = query.text.split(' ').filter((eachKeyword) => eachKeyword !== '');
+    const searchText = levelString(query.text);
+    const keywords = searchText.split(' ').filter((eachKeyword) => eachKeyword !== '');
 
     if (!keywords.length) {
       // fix: favorite
@@ -51,7 +54,7 @@ export namespace SearchItem {
       }));
 
     // 履歴だけこれと同期せず検索する
-    const rawHistories = await SearchHistory.search(query.text, query.historyStartTime);
+    const rawHistories = await SearchHistory.search(searchText, query.historyStartTime);
 
     const histories: SearchItem[] = rawHistories
       .splice(0, 5)
@@ -84,9 +87,9 @@ export type Tab = {
 export namespace Tab {
   export function search(tabs: Tab[], keywords: string[]): Tab[] {
     return tabs.filter((eachTab) => (
-      keywords.some((eachKeyword) => eachTab.website.title.includes(eachKeyword)) ||
-      keywords.some((eachKeyword) => eachTab.website.url.includes(eachKeyword)) ||
-      keywords.some((eachKeyword) => eachTab.website.domain.includes(eachKeyword))
+      keywords.some((eachKeyword) => levelString(eachTab.website.title).includes(eachKeyword)) ||
+      keywords.some((eachKeyword) => levelString(eachTab.website.url).includes(eachKeyword)) ||
+      keywords.some((eachKeyword) => levelString(eachTab.website.domain).includes(eachKeyword))
     ));
   }
 }
@@ -99,10 +102,7 @@ export type SearchHistory = {
 
 export namespace SearchHistory {
   export async function search(text: string, startTime: number): Promise<SearchHistory[]> {
-    const items = await chrome.history.search({
-      text,
-      startTime,
-    });
+    const items = await chrome.history.search({ text, startTime });
 
     return items
       .filter((eachItem) => eachItem.lastVisitTime !== undefined && eachItem.title !== undefined && eachItem.url !== undefined)
@@ -127,4 +127,13 @@ export namespace SearchHistory {
         return 0;
       });
   }
+}
+
+function levelString(source: string): string {
+  return moji(source.toLowerCase())
+    .convert('ZE', 'HE')
+    .convert('ZS', 'HS')
+    .convert('HK', 'ZK')
+    .convert('KK', 'HG')
+    .toString();
 }
