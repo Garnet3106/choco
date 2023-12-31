@@ -2,7 +2,7 @@ import './Search.css';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
-import { SearchItem } from '../../common/search';
+import { SearchItem, SearchItemType } from '../../common/search';
 import { searchTimeout } from '../../../env.json';
 
 export default function Search() {
@@ -36,6 +36,7 @@ export default function Search() {
       item={eachItem}
       selected={index === selectedItemIndex}
       onSelect={onSelectSearchResultItem}
+      onOpen={() => openSearchItem(eachItem)}
       key={Math.random()}
     />
   ));
@@ -123,5 +124,23 @@ export default function Search() {
         return;
       }
     }
+  }
+
+  async function openSearchItem(searchItem: SearchItem): Promise<void> {
+    switch (searchItem.type) {
+      case SearchItemType.SearchEngine:
+        break;
+
+      case SearchItemType.OpenTab:
+        chrome.tabs.update(searchItem.tab.id, { active: true });
+        break;
+
+      case SearchItemType.SearchHistory:
+        // fix: 新規／既存タブの切り替え設定に対応する
+        chrome.tabs.create({ url: searchItem.history.website.url });
+        break;
+    }
+
+    window.close();
   }
 }

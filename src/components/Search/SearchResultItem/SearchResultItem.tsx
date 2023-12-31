@@ -10,6 +10,7 @@ export type SearchResultItemProps = {
   item: SearchItem,
   selected?: boolean,
   onSelect?: (element: HTMLDivElement) => void,
+  onOpen?: () => void,
 };
 
 type Elements = {
@@ -72,7 +73,11 @@ export default function SearchResultItem(props: SearchResultItemProps) {
   }
 
   return (
-    <div className={`search-result-item ${props.selected ? 'search-result-item-selected' : ''}`} ref={ref}>
+    <div
+      className={`search-result-item ${props.selected ? 'search-result-item-selected' : ''}`}
+      onClick={props.onOpen}
+      ref={ref}
+    >
       {elements.topIcon}
       <div className='search-result-item-content'>
         <div className='search-result-item-content-left'>
