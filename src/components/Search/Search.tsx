@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { SearchItem } from '../../common/search';
+import { searchTimeout } from '../../../env.json';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
@@ -84,7 +85,7 @@ export default function Search() {
     const text = event.currentTarget.value;
     setSearchText(text);
     searchTextQueue.current.push(text);
-    setTimeout(dequeSearchText, 300);
+    setTimeout(dequeSearchText, searchTimeout);
   }
 
   function onKeyDown(event: KeyboardEvent) {
