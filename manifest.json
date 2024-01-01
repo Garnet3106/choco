@@ -9,7 +9,7 @@
     },
     "action": {
         "default_popup": "index.html",
-        "default_title": "choco"
+        "default_title": "chocoっと検索"
     },
     "permissions": [
         "background",
