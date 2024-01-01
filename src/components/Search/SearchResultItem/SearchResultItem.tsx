@@ -57,6 +57,12 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.text = `“${props.item.engine.name}” で検索する`;
       break;
 
+    case SearchItemType.ChromePage:
+      elements.topIcon = <FaCircle {...topIconProps} />;
+      elements.text = props.item.page.title;
+      elements.caption = 'ブラウザー機能';
+      break;
+
     case SearchItemType.OpenTab:
       elements.topIcon = <FaCircle {...topIconProps} />;
       elements.typeIcon = <HiOutlineDuplicate {...typeIconProps} />;

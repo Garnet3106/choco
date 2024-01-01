@@ -145,8 +145,20 @@ export default function Search() {
   }
 
   async function openSearchItem(searchItem: SearchItem, closePopup: boolean): Promise<void> {
+    // fix: 新規／既存タブの切り替え設定に対応する
+    const createTab = (url: string) => (
+      chrome.tabs.create({
+        url,
+        active: closePopup,
+      })
+    );
+
     switch (searchItem.type) {
       case SearchItemType.SearchEngine:
+        break;
+
+      case SearchItemType.ChromePage:
+        createTab(searchItem.page.url);
         break;
 
       case SearchItemType.OpenTab:
@@ -154,11 +166,7 @@ export default function Search() {
         break;
 
       case SearchItemType.SearchHistory:
-        // fix: 新規／既存タブの切り替え設定に対応する
-        chrome.tabs.create({
-          url: searchItem.history.website.url,
-          active: closePopup,
-        });
+        createTab(searchItem.history.website.url);
         break;
     }
 

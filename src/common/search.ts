@@ -1,7 +1,9 @@
 import moji from 'moji';
+import { chromePages } from '../../default.json';
 
 export enum SearchItemType {
   SearchEngine,
+  ChromePage,
   OpenTab,
   SearchHistory,
 }
@@ -9,6 +11,9 @@ export enum SearchItemType {
 export type SearchItem = {
   type: SearchItemType.SearchEngine,
   engine: SearchEngine,
+} | {
+  type: SearchItemType.ChromePage,
+  page: ChromePage,
 } | {
   type: SearchItemType.OpenTab,
   tab: Tab,
@@ -31,6 +36,13 @@ export namespace SearchItem {
       // fix: favorite
       return [];
     }
+
+    const convertedChromePages: SearchItem[] = ChromePage.search(chromePages, keywords)
+      .splice(0, 5)
+      .map((eachPage) => ({
+        type: SearchItemType.ChromePage,
+        page: eachPage,
+      }));
 
     const rawOpenTabs = await chrome.tabs.query({ windowType: 'normal' });
 
@@ -63,7 +75,7 @@ export namespace SearchItem {
         history: eachHistory,
       }));
 
-    return [...openTabs, ...histories];
+    return [...convertedChromePages, ...openTabs, ...histories];
   }
 }
 
@@ -71,6 +83,20 @@ export type SearchEngine = {
   name: string,
   url: string,
 };
+
+export type ChromePage = {
+  title: string,
+  url: string,
+};
+
+export namespace ChromePage {
+  export function search(chromePages: ChromePage[], keywords: string[]): ChromePage[] {
+    return chromePages.filter((eachPage) => (
+      keywords.some((eachKeyword) => levelString(eachPage.title).includes(eachKeyword)) ||
+      keywords.some((eachKeyword) => levelString(eachPage.url).includes(eachKeyword))
+    ));
+  }
+}
 
 export type Website = {
   title: string,
@@ -87,9 +113,11 @@ export type Tab = {
 export namespace Tab {
   export function search(tabs: Tab[], keywords: string[]): Tab[] {
     return tabs.filter((eachTab) => (
-      keywords.some((eachKeyword) => levelString(eachTab.website.title).includes(eachKeyword)) ||
-      keywords.some((eachKeyword) => levelString(eachTab.website.url).includes(eachKeyword)) ||
-      keywords.some((eachKeyword) => levelString(eachTab.website.domain).includes(eachKeyword))
+      !eachTab.website.url.startsWith('chrome://') && (
+        keywords.some((eachKeyword) => levelString(eachTab.website.title).includes(eachKeyword)) ||
+        keywords.some((eachKeyword) => levelString(eachTab.website.url).includes(eachKeyword)) ||
+        keywords.some((eachKeyword) => levelString(eachTab.website.domain).includes(eachKeyword))
+      )
     ));
   }
 }

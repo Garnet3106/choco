@@ -1,3 +1,37 @@
 {
-    "searchTimeout": 300
+    "searchTimeout": 300,
+    "chromePages": [
+        {
+            "title": "ブックマーク",
+            "url": "chrome://bookmarks"
+        },
+        {
+            "title": "ダウンロード",
+            "url": "chrome://downloads"
+        },
+        {
+            "title": "拡張機能",
+            "url": "chrome://extensions"
+        },
+        {
+            "title": "Flags（開発者向け）",
+            "url": "chrome://flags"
+        },
+        {
+            "title": "検索履歴",
+            "url": "chrome://history"
+        },
+        {
+            "title": "パスワードマネージャー",
+            "url": "chrome://password-manager"
+        },
+        {
+            "title": "設定",
+            "url": "chrome://settings"
+        },
+        {
+            "title": "バージョン",
+            "url": "chrome://version"
+        }
+    ]
 }
