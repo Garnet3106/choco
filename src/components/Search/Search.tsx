@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { SearchItem, SearchItemType } from '../../common/search';
-import { searchTimeout } from '../../../env.json';
+import { searchTimeout } from '../../../default.json';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
