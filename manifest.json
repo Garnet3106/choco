@@ -11,6 +11,14 @@
         "default_popup": "index.html",
         "default_title": "chocoっと検索"
     },
+    "commands": {
+        "_execute_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+K",
+                "mac": "Command+Shift+K"
+            }
+        }
+    },
     "permissions": [
         "background",
         "history",
