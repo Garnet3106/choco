@@ -10,6 +10,8 @@
   --border-radius: 3px;
 
   --search-width: 500px;
+  --settings-width: 300px;
+  --setting-item-height: 25px;
 }
 
 body {

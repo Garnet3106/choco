@@ -1,0 +1,11 @@
+.settings {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: var(--settings-width);
+}
+
+.settings-title {
+  color: var(--light-gray-color);
+  font-weight: bold;
+}

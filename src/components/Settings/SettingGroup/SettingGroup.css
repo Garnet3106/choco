@@ -1,0 +1,10 @@
+.setting-group {
+  margin-top: var(--margin);
+  width: 100%;
+}
+
+.setting-group-name {
+  color: var(--light-gray-color);
+  font-size: 85%;
+  font-weight: bold;
+}

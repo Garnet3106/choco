@@ -1,0 +1,11 @@
+.setting-item {
+  align-items: center;
+  display: flex;
+  height: var(--setting-item-height);
+  margin-top: 3px;
+  justify-content: space-between;
+}
+
+.setting-item-name {
+  font-size: 105%;
+}
