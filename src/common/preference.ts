@@ -31,6 +31,7 @@ export namespace Preferences {
       },
       searchEngines: [{
         name: 'Google 検索',
+        command: 'google',
         url: 'https://google.com/search?q={keyword}',
       }],
     };

@@ -1,5 +1,6 @@
 import moji from 'moji';
 import { chromePages } from '../../default.json';
+import { Preferences } from './preference';
 
 export enum SearchItemType {
   SearchEngine,
@@ -36,6 +37,14 @@ export namespace SearchItem {
       // fix: favorite
       return [];
     }
+
+    const preferences = await Preferences.get();
+
+    const convertedSearchEngines: SearchItem[] = SearchEngine.search(preferences.searchEngines, searchText)
+      .map((eachEngine) => ({
+        type: SearchItemType.SearchEngine,
+        engine: eachEngine,
+      }));
 
     const convertedChromePages: SearchItem[] = ChromePage.search(chromePages, keywords)
       .splice(0, 3)
@@ -75,14 +84,26 @@ export namespace SearchItem {
         history: eachHistory,
       }));
 
-    return [...convertedChromePages, ...openTabs, ...histories];
+    return [
+      ...convertedSearchEngines,
+      ...convertedChromePages,
+      ...openTabs,
+      ...histories,
+    ];
   }
 }
 
 export type SearchEngine = {
   name: string,
+  command: string,
   url: string,
 };
+
+export namespace SearchEngine {
+  export function search(searchEngines: SearchEngine[], searchText: string): SearchEngine[] {
+    return searchEngines.filter((eachEngine) => levelString(eachEngine.command) === searchText);
+  }
+}
 
 export type ChromePage = {
   title: string,
@@ -158,7 +179,7 @@ export namespace SearchHistory {
 }
 
 function levelString(source: string): string {
-  return moji(source.toLowerCase())
+  return moji(source.trim().toLowerCase())
     .convert('ZE', 'HE')
     .convert('ZS', 'HS')
     .convert('HK', 'ZK')
