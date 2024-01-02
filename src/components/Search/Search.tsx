@@ -2,8 +2,10 @@ import './Search.css';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
+import { MdSettings } from 'react-icons/md';
 import { SearchItem, SearchItemType } from '../../common/search';
 import { searchTimeout } from '../../../default.json';
+import { Link } from 'react-router-dom';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
@@ -56,6 +58,18 @@ export default function Search() {
           top: 12,
         }}
       />
+      <Link to='/settings'>
+        <MdSettings
+          color='var(--light-gray-color)'
+          size={18}
+          style={{
+            cursor: 'pointer',
+            right: 'calc(var(--margin) / 2)',
+            position: 'absolute',
+            top: 12,
+          }}
+        />
+      </Link>
       <input
         type='text'
         className='search-bar'
