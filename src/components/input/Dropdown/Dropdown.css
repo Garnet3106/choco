@@ -1,0 +1,12 @@
+.dropdown {
+  align-items: center;
+  background-color: var(--dark-gray-color);
+  border: none;
+  border-radius: 2px;
+  color: var(--light-gray-color);
+  cursor: pointer;
+  font-size: 90%;
+  height: var(--setting-item-height);
+  outline: none;
+  padding: 0 5px;
+}

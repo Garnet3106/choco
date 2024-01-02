@@ -4,6 +4,7 @@ import SettingItem from './SettingItem/SettingItem';
 import './Settings.css';
 import ToggleButton from '../input/ToggleButton/ToggleButton';
 import { Preferences } from '../../common/preference';
+import Dropdown from '../input/Dropdown/Dropdown';
 
 type SettingGroupSource = {
   [name: string]: {
@@ -22,7 +23,13 @@ export default function Settings() {
           onClick={() => updatePreferences((state) => { state.searchExclusion.enable = !state.searchExclusion.enable; })}
         />
       ),
-      '検索履歴の反映期間': '...',
+      '検索履歴の反映期間': (
+        <Dropdown
+          selected={String(preferences.searchExclusion.targetPeriodOfSearchHistory)}
+          items={[7, 30, 60, 120].map((v) => ({ id: v.toString(), text: `${v}日前` }))}
+          onChange={(id) => updatePreferences((state) => { state.searchExclusion.targetPeriodOfSearchHistory = Number(id); })}
+        />
+      ),
       'ドメインを除外する': '...',
     },
   };
