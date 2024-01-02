@@ -1,4 +1,4 @@
-import { SearchEngine } from "./search";
+import { SearchEngine } from './search';
 
 export type Preferences = {
   searchExclusion: {
@@ -31,13 +31,13 @@ export namespace Preferences {
       },
       searchEngines: [{
         name: 'Google 検索',
-        url: 'https://google.com/search?q={keyword}'
+        url: 'https://google.com/search?q={keyword}',
       }],
     };
   }
 
   export async function get(): Promise<Preferences> {
     const preferences = (await chrome.storage.local.get('preferences')).preferences;
-    return preferences ?? Preferences.getDefault();
+    return Object.assign(Preferences.getDefault(), preferences);
   }
 }
