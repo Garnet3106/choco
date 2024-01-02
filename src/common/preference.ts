@@ -29,7 +29,8 @@ export namespace Preferences {
     };
   }
 
-  export async function get(): Promise<Preferences | undefined> {
-    return (await chrome.storage.local.get('preferences')).preferences;
+  export async function get(): Promise<Preferences> {
+    const preferences = (await chrome.storage.local.get('preferences')).preferences;
+    return preferences ?? Preferences.getDefault();
   }
 }

@@ -16,11 +16,7 @@ export default function Settings() {
   const [preferences, setPreferences] = useState(Preferences.getDefault());
 
   useEffect(() => {
-    Preferences.get().then((newPreferences) => {
-      if (newPreferences) {
-        setPreferences(newPreferences);
-      }
-    });
+    Preferences.get().then(setPreferences);
   }, []);
 
   const settingGroups: SettingGroupSource = {
