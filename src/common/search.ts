@@ -38,7 +38,7 @@ export namespace SearchItem {
     }
 
     const convertedChromePages: SearchItem[] = ChromePage.search(chromePages, keywords)
-      .splice(0, 5)
+      .splice(0, 3)
       .map((eachPage) => ({
         type: SearchItemType.ChromePage,
         page: eachPage,

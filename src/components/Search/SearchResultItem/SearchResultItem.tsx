@@ -1,7 +1,7 @@
 import './SearchResultItem.css';
 import { MouseEvent, ReactNode, useEffect, useRef } from 'react';
 import { SearchItem, SearchItemType } from '../../../common/search';
-import { BiSearch } from 'react-icons/bi';
+import { BiSearch, BiSolidWrench } from 'react-icons/bi';
 import { FaCircle } from 'react-icons/fa';
 import { MdHistory } from 'react-icons/md';
 import { HiOutlineDuplicate } from 'react-icons/hi';
@@ -35,6 +35,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
     color: 'var(--white-color)',
     size: 18,
     style: {
+      marginTop: 2,
       marginRight: 8,
       minWidth: 18,
     },
@@ -58,7 +59,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       break;
 
     case SearchItemType.ChromePage:
-      elements.topIcon = <FaCircle {...topIconProps} />;
+      elements.topIcon = <BiSolidWrench {...topIconProps} />;
       elements.text = props.item.page.title;
       elements.caption = 'ブラウザー機能';
       break;
