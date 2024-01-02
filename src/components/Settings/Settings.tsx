@@ -5,6 +5,8 @@ import './Settings.css';
 import ToggleButton from '../input/ToggleButton/ToggleButton';
 import { Preferences } from '../../common/preference';
 import Dropdown from '../input/Dropdown/Dropdown';
+import Button from '../input/Button/Button';
+import { Link } from 'react-router-dom';
 
 type SettingGroupSource = {
   [name: string]: {
@@ -69,6 +71,17 @@ export default function Settings() {
       </div>
       <div className='settings-content scrollbar-none'>
         {settingGroupNodes}
+      </div>
+      <div className='settings-buttons'>
+        <Link to='/' style={{ textDecoration: 'none' }}>
+          <Button
+            text='検索に戻る'
+            style={{
+              backgroundColor: 'var(--light-gray-color)',
+              marginRight: 'var(--margin)',
+            }}
+          />
+        </Link>
       </div>
     </div>
   );

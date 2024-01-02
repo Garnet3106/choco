@@ -17,3 +17,10 @@
   overflow-y: scroll;
   width: 100%;
 }
+
+.settings-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--margin);
+  width: 100%;
+}
