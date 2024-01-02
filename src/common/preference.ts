@@ -1,4 +1,5 @@
 import { SearchEngine } from './search';
+import { searchEngines as defaultSearchEngines } from '../../default.json';
 
 export type Preferences = {
   searchExclusion: {
@@ -29,11 +30,7 @@ export namespace Preferences {
         groupSearchResult: false,
         openInNewTab: true,
       },
-      searchEngines: [{
-        name: 'Google 検索',
-        command: 'google',
-        url: 'https://google.com/search?q={keyword}',
-      }],
+      searchEngines: defaultSearchEngines,
     };
   }
 

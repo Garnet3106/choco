@@ -1,5 +1,77 @@
 {
     "searchTimeout": 300,
+    "searchEngines": [
+        {
+            "name": "Amazon.co.jp",
+            "command": "amazon",
+            "url": "https://www.amazon.co.jp/s?k={keyword}"
+        },
+        {
+            "name": "Can I use...",
+            "command": "caniuse",
+            "url": "https://caniuse.com/?search=?q={keyword}"
+        },
+        {
+            "name": "Google 検索",
+            "command": "google",
+            "url": "https://google.com/search?q={keyword}"
+        },
+        {
+            "name": "ローカルホスト (ポート指定)",
+            "command": "local",
+            "url": "http://localhost:{keyword}"
+        },
+        {
+            "name": "Google マップ",
+            "command": "maps",
+            "url": "https://www.google.com/maps/search/{keyword}"
+        },
+        {
+            "name": "ニコニコ動画",
+            "command": "nico",
+            "url": "https://www.nicovideo.jp/search/{keyword}"
+        },
+        {
+            "name": "npm",
+            "command": "npm",
+            "url": "https://www.npmjs.com/package/{keyword}"
+        },
+        {
+            "name": "pixiv",
+            "command": "pixiv",
+            "url": "https://www.pixiv.net/tags/{keyword}"
+        },
+        {
+            "name": "Twitter",
+            "command": "twitter",
+            "url": "https://twitter.com/search?q={keyword}"
+        },
+        {
+            "name": "Weblio 英和辞書",
+            "command": "en",
+            "url": "https://ejje.weblio.jp/content/{keyword}"
+        },
+        {
+            "name": "Whois",
+            "command": "whois",
+            "url": "https://who.is/whois/{keyword}"
+        },
+        {
+            "name": "Wikipedia",
+            "command": "wiki",
+            "url": "https://ja.wikipedia.org/w/index.php?search={keyword}"
+        },
+        {
+            "name": "Yahoo!検索",
+            "command": "yahoo",
+            "url": "https://search.yahoo.co.jp/search?p={keyword}"
+        },
+        {
+            "name": "YouTube",
+            "command": "youtube",
+            "url": "https://www.youtube.com/results?search_query={keyword}"
+        }
+    ],
     "chromePages": [
         {
             "title": "ブックマーク",
