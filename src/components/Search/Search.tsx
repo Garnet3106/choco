@@ -6,6 +6,7 @@ import { MdSettings } from 'react-icons/md';
 import { SearchItem, SearchItemType } from '../../common/search';
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
+import { Preferences } from '../../common/preference';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
@@ -159,13 +160,25 @@ export default function Search() {
   }
 
   async function openSearchItem(searchItem: SearchItem, closePopup: boolean): Promise<void> {
-    // fix: 新規／既存タブの切り替え設定に対応する
-    const createTab = (url: string) => (
-      chrome.tabs.create({
-        url,
-        active: closePopup,
-      })
-    );
+    const openInNewTab = (await Preferences.get()).displayAndBehavior.openInNewTab;
+
+    const createTab = async (url: string) => {
+      if (openInNewTab) {
+        chrome.tabs.create({
+          url,
+          active: closePopup,
+        });
+      } else {
+        const activeTabs = await chrome.tabs.query({
+          active: true,
+          currentWindow: true,
+        });
+
+        if (activeTabs[0] && activeTabs[0].id) {
+          chrome.tabs.update(activeTabs[0].id, { url });
+        }
+      }
+    };
 
     switch (searchItem.type) {
       case SearchItemType.SearchEngine:
