@@ -1,0 +1,13 @@
+.button {
+  background-color: var(--main-color);
+  border-radius: var(--border-radius);
+  color: var(--white-color);
+  cursor: pointer;
+  padding: 3px 8px;
+  transition: opacity 100ms;
+  user-select: none;
+}
+
+.button:active {
+  opacity: 0.8;
+}
