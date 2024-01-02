@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import SettingGroup from './SettingGroup/SettingGroup';
 import SettingItem from './SettingItem/SettingItem';
 import './Settings.css';
@@ -14,6 +14,14 @@ type SettingGroupSource = {
 
 export default function Settings() {
   const [preferences, setPreferences] = useState(Preferences.getDefault());
+
+  useEffect(() => {
+    Preferences.get().then((newPreferences) => {
+      if (newPreferences) {
+        setPreferences(newPreferences);
+      }
+    });
+  }, []);
 
   const settingGroups: SettingGroupSource = {
     '検索結果の除外': {
@@ -68,10 +76,9 @@ export default function Settings() {
   );
 
   async function updatePreferences(callback: (state: Preferences) => void): Promise<void> {
-    setPreferences((state) => {
-      const newState = structuredClone(state);
-      callback(newState);
-      return newState;
-    });
+    const newState = structuredClone(preferences);
+    callback(newState);
+    setPreferences(newState);
+    chrome.storage.local.set({ preferences: newState });
   }
 }
