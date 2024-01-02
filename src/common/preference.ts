@@ -1,3 +1,5 @@
+import { SearchEngine } from "./search";
+
 export type Preferences = {
   searchExclusion: {
     enable: boolean,
@@ -10,6 +12,7 @@ export type Preferences = {
     groupSearchResult: boolean,
     openInNewTab: boolean,
   },
+  searchEngines: SearchEngine[],
 };
 
 export namespace Preferences {
@@ -26,6 +29,10 @@ export namespace Preferences {
         groupSearchResult: false,
         openInNewTab: true,
       },
+      searchEngines: [{
+        name: 'Google 検索',
+        url: 'https://google.com/search?q={keyword}'
+      }],
     };
   }
 
