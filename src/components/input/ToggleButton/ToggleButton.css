@@ -1,0 +1,33 @@
+.toggle-button {
+  --toggle-button-height: 18px;
+
+  transition: background-color 1000ms;
+  background-color: var(--white-color);
+  border-radius: 100px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: var(--toggle-button-height);
+  width: calc(var(--toggle-button-height) * 1.7);
+}
+
+.toggle-button-circle {
+  --toggle-button-circle-size: calc(var(--toggle-button-height) - 3px);
+
+  align-self: flex-end;
+  background-color: var(--main-color);
+  border-radius: 100px;
+  height: var(--toggle-button-circle-size);
+  margin: 1.5px;
+  width: var(--toggle-button-circle-size);
+}
+
+.toggle-button-disabled {
+  background-color: var(--dark-gray-color);
+}
+
+.toggle-button-disabled
+.toggle-button-circle {
+  align-self: flex-start;
+  background-color: var(--light-gray-color);
+}
