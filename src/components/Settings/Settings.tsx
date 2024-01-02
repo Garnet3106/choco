@@ -1,7 +1,9 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import SettingGroup from './SettingGroup/SettingGroup';
 import SettingItem from './SettingItem/SettingItem';
 import './Settings.css';
+import ToggleButton from '../input/ToggleButton/ToggleButton';
+import { Preferences } from '../../common/preference';
 
 type SettingGroupSource = {
   [name: string]: {
@@ -10,9 +12,16 @@ type SettingGroupSource = {
 };
 
 export default function Settings() {
+  const [preferences, setPreferences] = useState(Preferences.getDefault());
+
   const settingGroups: SettingGroupSource = {
     '検索結果の除外': {
-      '除外設定を有効にする': '...',
+      '除外設定を有効にする': (
+        <ToggleButton
+          enabled={preferences.searchExclusion.enable}
+          onClick={() => updatePreferences((state) => { state.searchExclusion.enable = !state.searchExclusion.enable; })}
+        />
+      ),
       '検索履歴の反映期間': '...',
       'ドメインを除外する': '...',
     },
@@ -34,4 +43,12 @@ export default function Settings() {
       {settingGroupNodes}
     </div>
   );
+
+  async function updatePreferences(callback: (state: Preferences) => void): Promise<void> {
+    setPreferences((state) => {
+      const newState = structuredClone(state);
+      callback(newState);
+      return newState;
+    });
+  }
 }
