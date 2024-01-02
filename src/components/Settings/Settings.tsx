@@ -67,7 +67,9 @@ export default function Settings() {
       <div className='settings-title'>
         ― choco 設定 ―
       </div>
-      {settingGroupNodes}
+      <div className='settings-content scrollbar-none'>
+        {settingGroupNodes}
+      </div>
     </div>
   );
 

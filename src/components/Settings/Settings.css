@@ -9,3 +9,11 @@
   color: var(--light-gray-color);
   font-weight: bold;
 }
+
+.settings-content {
+  height: var(--settings-content-height);
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  width: 100%;
+}
