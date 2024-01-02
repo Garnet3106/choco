@@ -2,7 +2,7 @@
   align-items: center;
   background-color: var(--dark-gray-color);
   border: none;
-  border-radius: 2px;
+  border-radius: var(--border-radius);
   color: var(--light-gray-color);
   cursor: pointer;
   font-size: 90%;
