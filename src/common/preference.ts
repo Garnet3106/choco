@@ -2,7 +2,13 @@ export type Preferences = {
   searchExclusion: {
     enable: boolean,
     targetPeriodOfSearchHistory: number,
-    byDomain: string[],
+    byDomains: string[],
+    byKeywords: string[],
+    byBookmarkFolders: string[],
+  },
+  displayAndBehavior: {
+    groupSearchResult: boolean,
+    openInNewTab: boolean,
   },
 };
 
@@ -12,7 +18,13 @@ export namespace Preferences {
       searchExclusion: {
         enable: true,
         targetPeriodOfSearchHistory: 30,
-        byDomain: [],
+        byDomains: [],
+        byKeywords: [],
+        byBookmarkFolders: [],
+      },
+      displayAndBehavior: {
+        groupSearchResult: false,
+        openInNewTab: true,
       },
     };
   }

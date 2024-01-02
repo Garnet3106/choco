@@ -30,7 +30,23 @@ export default function Settings() {
           onChange={(id) => updatePreferences((state) => { state.searchExclusion.targetPeriodOfSearchHistory = Number(id); })}
         />
       ),
-      'ドメインを除外する': '...',
+      'ドメインで除外する': '...',
+      'キーワードで除外する': '...',
+      'ブクマフォルダで除外する': '...',
+    },
+    '表示と動作': {
+      '検索結果をグループ化する': (
+        <ToggleButton
+          enabled={preferences.displayAndBehavior.groupSearchResult}
+          onClick={() => updatePreferences((state) => { state.displayAndBehavior.groupSearchResult = !state.displayAndBehavior.groupSearchResult; })}
+        />
+      ),
+      '新しいタブで開く': (
+        <ToggleButton
+          enabled={preferences.displayAndBehavior.openInNewTab}
+          onClick={() => updatePreferences((state) => { state.displayAndBehavior.openInNewTab = !state.displayAndBehavior.openInNewTab; })}
+        />
+      ),
     },
   };
 
