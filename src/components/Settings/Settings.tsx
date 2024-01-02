@@ -20,10 +20,10 @@ export default function Settings() {
 
   const settingGroupNodes = Object.entries(settingGroups).map(([groupName, items]) => {
     const itemNodes = Object.entries(items).map(([itemName, itemValue]) => (
-      <SettingItem name={itemName} value={itemValue} />
+      <SettingItem name={itemName} value={itemValue} key={Math.random()} />
     ));
 
-    return <SettingGroup name={groupName} items={itemNodes} />;
+    return <SettingGroup name={groupName} items={itemNodes} key={Math.random()} />;
   });
 
   return (
