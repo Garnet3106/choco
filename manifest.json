@@ -7,6 +7,9 @@
         "type": "module",
         "persistent": true
     },
+    "icons": {
+        "128": "assets/favicon.png"
+    },
     "action": {
         "default_popup": "index.html",
         "default_title": "chocoっと検索"
