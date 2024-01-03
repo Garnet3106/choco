@@ -81,7 +81,7 @@ export namespace SearchItem {
           title: eachTab.title!,
           url: eachTab.url!,
           favIconUrl: eachTab.favIconUrl,
-          domain: 'www.example.com',
+          domain: Website.getDomain(eachTab.url!),
         },
       }));
 
@@ -149,6 +149,19 @@ export type Website = {
   domain: string,
 };
 
+export namespace Website {
+  export function getDomain(url: string): string {
+    return new URL(url).hostname;
+  }
+
+  export function getFavIconUrl(url: string): string {
+    const favIconUrl = new URL('https://www.google.com/s2/favicons');
+    favIconUrl.searchParams.set('domain', url);
+    favIconUrl.searchParams.set('size', '128');
+    return favIconUrl.toString();
+  }
+}
+
 export type Tab = {
   id: number,
   website: Website,
@@ -184,7 +197,8 @@ export namespace SearchHistory {
         website: {
           title: eachItem.title!,
           url: eachItem.url!,
-          domain: 'www.example.com',
+          favIconUrl: Website.getFavIconUrl(eachItem.url!),
+          domain: Website.getDomain(eachItem.url!),
         },
       }))
       .sort((a, b) => {

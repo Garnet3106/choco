@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
-import { SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType } from '../../common/search';
+import { SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType, Website } from '../../common/search';
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
@@ -117,7 +117,7 @@ export default function Search() {
           website: {
             title: `“${currentSearchText}” で検索`,
             url: SearchEngine.replaceKeyword(searchResult.searchEngine.url, currentSearchText),
-            domain: 'www.example.com',
+            domain: Website.getDomain(searchResult.searchEngine.url),
           },
         };
 
