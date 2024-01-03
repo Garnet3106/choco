@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
-import { SearchItem, SearchItemType } from '../../common/search';
+import { SearchItem, SearchItemType, SearchResult, SearchResultType } from '../../common/search';
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
@@ -11,7 +11,12 @@ import { Preferences } from '../../common/preference';
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
   const [searchText, setSearchText] = useState('');
-  const [searchItems, setSearchItems] = useState<SearchItem[]>([]);
+
+  const [searchResult, setSearchResult] = useState<SearchResult>({
+    type: SearchResultType.Normal,
+    items: [],
+  });
+
   const [searchResultHeight, setSearchResultHeight] = useState(200);
   const searchTextQueue = useRef<string[]>([]);
   const searchResultsRef = useRef<HTMLDivElement>(null);
@@ -32,9 +37,9 @@ export default function Search() {
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [selectedItemIndex, searchItems]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedItemIndex, searchResult]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const items = searchItems.map((eachItem, index) => (
+  const items = searchResult.items.map((eachItem, index) => (
     <SearchResultItem
       index={index}
       item={eachItem}
@@ -93,12 +98,26 @@ export default function Search() {
 
     const currentSearchText = searchTextQueue.current.pop() ?? '';
 
-    const newItems = await SearchItem.search({
-      text: currentSearchText,
-      historyStartTime: 0, // fix
-    });
+    switch (searchResult.type) {
+      case SearchResultType.Normal: {
+        const newItems = await SearchItem.search({
+          text: currentSearchText,
+          historyStartTime: 0, // fix
+        });
 
-    setSearchItems(newItems);
+        setSearchResult({
+          type: SearchResultType.Normal,
+          items: newItems,
+        });
+      } break;
+
+      case SearchResultType.SearchEngine: {
+        setSearchResult({
+          type: SearchResultType.SearchEngine,
+          items: [],
+        });
+      } break;
+    }
   }
 
   function onChangeStorage(_data: { [key: string]: chrome.storage.StorageChange }) {
@@ -119,7 +138,7 @@ export default function Search() {
         break;
 
       case 'ArrowDown':
-        setSelectedItemIndex((state) => state + 1 >= searchItems.length ? searchItems.length - 1 : state + 1);
+        setSelectedItemIndex((state) => state + 1 >= searchResult.items.length ? searchResult.items.length - 1 : state + 1);
         event.preventDefault();
         break;
 
@@ -128,7 +147,7 @@ export default function Search() {
           break;
         }
 
-        const target = searchItems[selectedItemIndex];
+        const target = searchResult.items[selectedItemIndex];
 
         if (target) {
           openSearchItem(target, !event.ctrlKey);
@@ -182,6 +201,11 @@ export default function Search() {
 
     switch (searchItem.type) {
       case SearchItemType.SearchEngine:
+        setSearchText('');
+        setSearchResult({
+          type: SearchResultType.SearchEngine,
+          items: [],
+        });
         break;
 
       case SearchItemType.ChromePage:
@@ -197,7 +221,7 @@ export default function Search() {
         break;
     }
 
-    if (closePopup) {
+    if (closePopup && searchItem.type !== SearchItemType.SearchEngine) {
       window.close();
     }
   }

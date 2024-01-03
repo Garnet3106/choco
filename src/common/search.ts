@@ -2,6 +2,16 @@ import moji from 'moji';
 import { chromePages } from '../../default.json';
 import { Preferences } from './preference';
 
+export enum SearchResultType {
+  Normal,
+  SearchEngine,
+}
+
+export type SearchResult = {
+  type: SearchResultType,
+  items: SearchItem[],
+};
+
 export enum SearchItemType {
   SearchEngine,
   ChromePage,
