@@ -78,6 +78,8 @@ export default function Settings() {
             text='検索に戻る'
             style={{
               backgroundColor: 'var(--light-gray-color)',
+              color: 'var(--dark-gray-color)',
+              fontWeight: 'bold',
               marginRight: 'var(--margin)',
             }}
           />
