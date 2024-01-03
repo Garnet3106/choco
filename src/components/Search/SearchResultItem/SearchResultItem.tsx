@@ -2,9 +2,9 @@ import './SearchResultItem.css';
 import { MouseEvent, ReactNode, useEffect, useRef } from 'react';
 import { SearchItem, SearchItemType } from '../../../common/search';
 import { BiSearch, BiSolidWrench } from 'react-icons/bi';
-import { FaCircle } from 'react-icons/fa';
 import { MdHistory } from 'react-icons/md';
 import { HiOutlineDuplicate } from 'react-icons/hi';
+import { TfiWorld } from 'react-icons/tfi';
 
 export type SearchResultItemProps = {
   index: number,
@@ -30,6 +30,16 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       props.onSelect(ref.current);
     }
   }, [props.selected]);  // eslint-disable-line react-hooks/exhaustive-deps
+
+  const topFavIconProps = {
+    height: 18,
+    width: 18,
+    style: {
+      marginTop: 2,
+      marginRight: 8,
+      minWidth: 18,
+    },
+  };
 
   const topIconProps = {
     color: 'var(--white-color)',
@@ -70,14 +80,14 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       break;
 
     case SearchItemType.OpenTab:
-      elements.topIcon = <FaCircle {...topIconProps} />;
+      elements.topIcon = getFavIconImage(props.item.tab.website.favIconUrl);
       elements.typeIcon = <HiOutlineDuplicate {...typeIconProps} />;
       elements.text = props.item.tab.website.title;
       elements.caption = props.item.tab.website.domain;
       break;
 
     case SearchItemType.SearchHistory:
-      elements.topIcon = <FaCircle {...topIconProps} />;
+      elements.topIcon = getFavIconImage(props.item.history.website.favIconUrl);
       elements.typeIcon = <MdHistory {...typeIconProps} />;
       elements.text = props.item.history.website.title;
       elements.caption = props.item.history.website.domain;
@@ -119,6 +129,14 @@ export default function SearchResultItem(props: SearchResultItemProps) {
     if (props.onOpen) {
       props.onOpen(props.index, !event.ctrlKey);
     }
+  }
+
+  function getFavIconImage(url?: string): ReactNode {
+    if (!url) {
+      return <TfiWorld {...topIconProps} />;
+    }
+
+    return <img src={url} {...topFavIconProps} />;
   }
 
   function getSearchHistoryDateString(lastVisited: number): string {
