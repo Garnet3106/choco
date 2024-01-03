@@ -128,6 +128,8 @@ export default function Search() {
         });
       } break;
     }
+
+    setSelectedItemIndex(0);
   }
 
   function onChangeStorage(_data: { [key: string]: chrome.storage.StorageChange }) {
