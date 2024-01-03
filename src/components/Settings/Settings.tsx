@@ -29,16 +29,16 @@ export default function Settings() {
           onClick={() => updatePreferences((state) => { state.searchExclusion.enable = !state.searchExclusion.enable; })}
         />
       ),
-      '検索履歴の反映期間': (
+      '検索履歴の反映期間': preferences.searchExclusion.enable && (
         <Dropdown
           selected={String(preferences.searchExclusion.targetPeriodOfSearchHistory)}
           items={[7, 30, 60, 120].map((v) => ({ id: v.toString(), text: `${v}日前` }))}
           onChange={(id) => updatePreferences((state) => { state.searchExclusion.targetPeriodOfSearchHistory = Number(id); })}
         />
       ),
-      'ドメインで除外する': '...',
-      'キーワードで除外する': '...',
-      'ブクマフォルダで除外する': '...',
+      'ドメインで除外する': preferences.searchExclusion.enable && '...',
+      'キーワードで除外する': preferences.searchExclusion.enable && '...',
+      'ブクマフォルダで除外する': preferences.searchExclusion.enable && '...',
     },
     '表示と動作': {
       '検索結果をグループ化する': (
@@ -58,7 +58,7 @@ export default function Settings() {
 
   const settingGroupNodes = Object.entries(settingGroups).map(([groupName, items]) => {
     const itemNodes = Object.entries(items).map(([itemName, itemValue]) => (
-      <SettingItem name={itemName} value={itemValue} key={Math.random()} />
+      <SettingItem name={itemName} value={itemValue} disabled={!itemValue} key={Math.random()} />
     ));
 
     return <SettingGroup name={groupName} items={itemNodes} key={Math.random()} />;

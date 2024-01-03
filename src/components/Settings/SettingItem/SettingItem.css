@@ -9,3 +9,7 @@
 .setting-item-name {
   font-size: 105%;
 }
+
+.setting-item-name-disabled {
+  color: var(--light-gray-color);
+}
