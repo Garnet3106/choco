@@ -81,7 +81,7 @@ export default function Search() {
         className='search-bar'
         value={searchText}
         onChange={onChangeSearchText}
-        placeholder={searchResult.type === SearchResultType.SearchEngine ? `「${searchResult.searchEngine.name}」で検索中` : '検索キーワードを入力'}
+        placeholder={searchResult.type === SearchResultType.SearchEngine ? `“${searchResult.searchEngine.name}” で検索中` : '検索キーワードを入力'}
         autoFocus
       />
       <div className='search-results scrollbar-none' style={{ height: searchResultHeight }} ref={searchResultsRef}>
@@ -115,7 +115,7 @@ export default function Search() {
         const searchItem: SearchItem = {
           type: SearchItemType.SearchEngineKeyword,
           website: {
-            title: `「${currentSearchText}」で検索`,
+            title: `“${currentSearchText}” で検索`,
             url: SearchEngine.replaceKeyword(searchResult.searchEngine.url, currentSearchText),
             domain: 'www.example.com',
           },

@@ -15,7 +15,7 @@
 }
 
 .search-bar::placeholder {
-  color: #5f6264;
+  color: var(--light-gray-color);
 }
 
 .search-results {
