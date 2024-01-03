@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
-import { SearchItem, SearchItemType, SearchResult, SearchResultType } from '../../common/search';
+import { SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType } from '../../common/search';
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
@@ -96,7 +96,7 @@ export default function Search() {
       return;
     }
 
-    const currentSearchText = searchTextQueue.current.pop() ?? '';
+    const currentSearchText = searchTextQueue.current.pop()?.trim() ?? '';
 
     switch (searchResult.type) {
       case SearchResultType.Normal: {
@@ -112,9 +112,19 @@ export default function Search() {
       } break;
 
       case SearchResultType.SearchEngine: {
+        const searchItem: SearchItem = {
+          type: SearchItemType.SearchEngineKeyword,
+          website: {
+            title: `「${currentSearchText}」で検索`,
+            url: SearchEngine.replaceKeyword(searchResult.searchEngine.url, currentSearchText),
+            domain: 'www.example.com',
+          },
+        };
+
         setSearchResult({
           type: SearchResultType.SearchEngine,
-          items: [],
+          searchEngine: searchResult.searchEngine,
+          items: currentSearchText ? [searchItem] : [],
         });
       } break;
     }
@@ -204,8 +214,13 @@ export default function Search() {
         setSearchText('');
         setSearchResult({
           type: SearchResultType.SearchEngine,
+          searchEngine: searchItem.engine,
           items: [],
         });
+        break;
+
+      case SearchItemType.SearchEngineKeyword:
+        createTab(searchItem.website.url);
         break;
 
       case SearchItemType.ChromePage:

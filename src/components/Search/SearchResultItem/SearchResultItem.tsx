@@ -58,6 +58,11 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.text = `“${props.item.engine.name}” で検索する`;
       break;
 
+    case SearchItemType.SearchEngineKeyword:
+      elements.topIcon = <BiSearch {...topIconProps} />;
+      elements.text = props.item.website.title;
+      break;
+
     case SearchItemType.ChromePage:
       elements.topIcon = <BiSolidWrench {...topIconProps} />;
       elements.text = props.item.page.title;

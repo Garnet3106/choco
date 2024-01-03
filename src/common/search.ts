@@ -8,12 +8,17 @@ export enum SearchResultType {
 }
 
 export type SearchResult = {
-  type: SearchResultType,
+  type: SearchResultType.Normal,
+  items: SearchItem[],
+} | {
+  type: SearchResultType.SearchEngine,
+  searchEngine: SearchEngine,
   items: SearchItem[],
 };
 
 export enum SearchItemType {
   SearchEngine,
+  SearchEngineKeyword,
   ChromePage,
   OpenTab,
   SearchHistory,
@@ -22,6 +27,9 @@ export enum SearchItemType {
 export type SearchItem = {
   type: SearchItemType.SearchEngine,
   engine: SearchEngine,
+} | {
+  type: SearchItemType.SearchEngineKeyword,
+  website: Website,
 } | {
   type: SearchItemType.ChromePage,
   page: ChromePage,
@@ -112,6 +120,11 @@ export type SearchEngine = {
 export namespace SearchEngine {
   export function search(searchEngines: SearchEngine[], searchText: string): SearchEngine[] {
     return searchEngines.filter((eachEngine) => levelString(eachEngine.command) === searchText);
+  }
+
+  export function replaceKeyword(url: string, keyword: string): string {
+    // fix escaping
+    return url.replaceAll('{keyword}', keyword);
   }
 }
 
