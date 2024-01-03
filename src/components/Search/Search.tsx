@@ -61,7 +61,7 @@ export default function Search() {
         style={{
           left: 'calc(var(--margin) / 2)',
           position: 'absolute',
-          top: 12,
+          top: 11,
         }}
       />
       <Link to='/settings'>
@@ -81,7 +81,7 @@ export default function Search() {
         className='search-bar'
         value={searchText}
         onChange={onChangeSearchText}
-        placeholder='検索キーワード'
+        placeholder={searchResult.type === SearchResultType.SearchEngine ? `「${searchResult.searchEngine.name}」で検索中` : '検索キーワードを入力'}
         autoFocus
       />
       <div className='search-results scrollbar-none' style={{ height: searchResultHeight }} ref={searchResultsRef}>
