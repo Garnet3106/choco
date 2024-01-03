@@ -15,6 +15,17 @@
   --setting-item-height: 28px;
 }
 
+@media (prefers-color-scheme: light) {
+  :root {
+    --base-color: #fff;
+    --main-color: #e3d0ca;
+    --light-main-color: #96766c;
+    --dark-gray-color: #eee0dc;
+    --light-gray-color: #96766c;
+    --white-color: #5a210f;
+  }
+}
+
 body {
   background-color: var(--base-color);
   color: var(--white-color);

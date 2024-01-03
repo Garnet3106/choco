@@ -58,3 +58,14 @@
   padding: 1px 3px;
   white-space: nowrap;
 }
+
+@media (prefers-color-scheme: light) {
+  .search-result-item-tag {
+    background-color: var(--main-color);
+  }
+
+  .search-result-item-selected
+  .search-result-item-tag {
+    background-color: var(--dark-gray-color);
+  }
+}
