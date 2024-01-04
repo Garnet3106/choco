@@ -18,5 +18,8 @@ export namespace Favorites {
     return chrome.storage.local.set({ favorites: [...favorites, website] });
   }
 
-  // todo: add remove
+  export async function remove(url: string): Promise<void> {
+    const favorites = (await Favorites.get()).filter((v) => v.url !== url);
+    return chrome.storage.local.set({ favorites });
+  }
 }

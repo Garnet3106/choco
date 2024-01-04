@@ -154,13 +154,17 @@ export default function Search() {
             break;
           }
 
-          const website = SearchItem.getWebsite(target);
+          if (target.type === SearchItemType.Favorite) {
+            Favorites.remove(target.website.url);
+          } else {
+            const website = SearchItem.getWebsite(target);
 
-          if (!website) {
-            break;
+            if (!website) {
+              break;
+            }
+
+            Favorites.add(website);
           }
-
-          Favorites.add(website);
         }
         break;
 
