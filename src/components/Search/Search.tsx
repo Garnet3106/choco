@@ -38,7 +38,7 @@ export default function Search() {
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [selectedItemIndex, searchResult]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedItemIndex, searchText, searchResult]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateSearchResult(searchText);
@@ -95,7 +95,13 @@ export default function Search() {
     </div>
   );
 
-  async function dequeSearchText() {
+  function enqueueSearchText(newSearchText: string) {
+    setSearchText(newSearchText);
+    searchTextQueue.current.push(newSearchText);
+    setTimeout(dequeueSearchText, searchTimeout);
+  }
+
+  async function dequeueSearchText() {
     if (searchTextQueue.current.length >= 2) {
       searchTextQueue.current.shift();
       return;
@@ -144,10 +150,7 @@ export default function Search() {
   }
 
   async function onChangeSearchText(event: ChangeEvent<HTMLInputElement>) {
-    const text = event.currentTarget.value;
-    setSearchText(text);
-    searchTextQueue.current.push(text);
-    setTimeout(dequeSearchText, searchTimeout);
+    enqueueSearchText(event.currentTarget.value);
   }
 
   function onKeyDown(event: KeyboardEvent) {
@@ -162,7 +165,7 @@ export default function Search() {
           }
 
           if (target.type === SearchItemType.Favorite) {
-            Favorites.remove(target.website.url);
+            Favorites.remove(target.website.url).then(() => enqueueSearchText(searchText));
           } else {
             const website = SearchItem.getWebsite(target);
 
@@ -170,7 +173,7 @@ export default function Search() {
               break;
             }
 
-            Favorites.add(website);
+            Favorites.add(website).then(() => enqueueSearchText(searchText));
           }
         }
         break;
