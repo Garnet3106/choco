@@ -38,4 +38,8 @@ export namespace Preferences {
     const preferences = (await chrome.storage.local.get('preferences')).preferences;
     return Object.assign(Preferences.getDefault(), preferences);
   }
+
+  export async function update(preferences: Preferences): Promise<void> {
+    return chrome.storage.local.set({ preferences });
+  }
 }

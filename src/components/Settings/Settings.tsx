@@ -91,6 +91,6 @@ export default function Settings() {
     const newState = structuredClone(preferences);
     callback(newState);
     setPreferences(newState);
-    chrome.storage.local.set({ preferences: newState });
+    Preferences.update(newState);
   }
 }
