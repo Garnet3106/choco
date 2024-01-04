@@ -14,7 +14,7 @@ export namespace Favorites {
   }
 
   export async function add(website: Website): Promise<void> {
-    const favorites = await Favorites.get();
+    const favorites = (await Favorites.get()).filter((v) => v.url !== website.url);
     return chrome.storage.local.set({ favorites: [...favorites, website] });
   }
 
