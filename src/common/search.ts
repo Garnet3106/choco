@@ -1,6 +1,7 @@
 import moji from 'moji';
 import { chromePages } from '../../default.json';
 import { Preferences } from './preference';
+import { Favorites } from './favorite';
 
 export enum SearchResultType {
   Normal,
@@ -18,6 +19,7 @@ export type SearchResult = {
 
 export enum SearchItemType {
   SearchEngine,
+  Favorite,
   SearchEngineKeyword,
   ChromePage,
   OpenTab,
@@ -27,6 +29,9 @@ export enum SearchItemType {
 export type SearchItem = {
   type: SearchItemType.SearchEngine,
   engine: SearchEngine,
+} | {
+  type: SearchItemType.Favorite,
+  website: Website,
 } | {
   type: SearchItemType.SearchEngineKeyword,
   website: Website,
@@ -47,13 +52,43 @@ export type SearchItemQuery = {
 };
 
 export namespace SearchItem {
+  export function getWebsite(searchItem: SearchItem): Website | undefined {
+    switch (searchItem.type) {
+      case SearchItemType.SearchEngine:
+        return undefined;
+
+      case SearchItemType.Favorite:
+        return searchItem.website;
+
+      case SearchItemType.SearchEngineKeyword:
+        return searchItem.website;
+
+      case SearchItemType.ChromePage:
+        return undefined;
+
+      case SearchItemType.OpenTab:
+        return searchItem.tab.website;
+
+      case SearchItemType.SearchHistory:
+        return searchItem.history.website;
+    }
+  }
+
   export async function search(query: SearchItemQuery): Promise<SearchItem[]> {
     const searchText = levelString(query.text);
     const keywords = searchText.split(' ').filter((eachKeyword) => eachKeyword !== '');
 
+    // todo: 関数化 / 変数名→all
+    const favorites = await Favorites.get();
+
+    const convertedFavorites: SearchItem[] = (await Favorites.search(favorites))
+      .map((eachFavorite) => ({
+        type: SearchItemType.Favorite,
+        website: eachFavorite,
+      }));
+
     if (!keywords.length) {
-      // fix: favorite
-      return [];
+      return convertedFavorites;
     }
 
     const preferences = await Preferences.get();
@@ -65,7 +100,7 @@ export namespace SearchItem {
       }));
 
     const convertedChromePages: SearchItem[] = ChromePage.search(chromePages, keywords)
-      .splice(0, 3)
+      .splice(0, 1)
       .map((eachPage) => ({
         type: SearchItemType.ChromePage,
         page: eachPage,
@@ -92,7 +127,7 @@ export namespace SearchItem {
         tab: eachTab,
       }));
 
-    // 履歴だけこれと同期せず検索する
+    // todo: 履歴だけこれと同期せず検索する
     const rawHistories = await SearchHistory.search(searchText, query.historyStartTime);
 
     const histories: SearchItem[] = rawHistories
@@ -104,6 +139,7 @@ export namespace SearchItem {
 
     return [
       ...convertedSearchEngines,
+      ...convertedFavorites.splice(0, 3),
       ...convertedChromePages,
       ...openTabs,
       ...histories,

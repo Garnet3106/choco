@@ -7,6 +7,7 @@ import { SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultTyp
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
+import { Favorites } from '../../common/favorite';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
@@ -144,6 +145,25 @@ export default function Search() {
 
   function onKeyDown(event: KeyboardEvent) {
     switch (event.code) {
+      case 'KeyF':
+        if (event.ctrlKey) {
+          event.preventDefault();
+          const target = searchResult.items[selectedItemIndex];
+
+          if (!target) {
+            break;
+          }
+
+          const website = SearchItem.getWebsite(target);
+
+          if (!website) {
+            break;
+          }
+
+          Favorites.add(website);
+        }
+        break;
+
       case 'ArrowUp':
         setSelectedItemIndex((state) => state <= 0 ? 0 : state - 1);
         event.preventDefault();
@@ -219,6 +239,10 @@ export default function Search() {
           searchEngine: searchItem.engine,
           items: [],
         });
+        break;
+
+      case SearchItemType.Favorite:
+        createTab(searchItem.website.url);
         break;
 
       case SearchItemType.SearchEngineKeyword:

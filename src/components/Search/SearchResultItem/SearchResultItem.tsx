@@ -2,7 +2,7 @@ import './SearchResultItem.css';
 import { MouseEvent, ReactNode, useEffect, useRef } from 'react';
 import { SearchItem, SearchItemType } from '../../../common/search';
 import { BiSearch, BiSolidWrench } from 'react-icons/bi';
-import { MdHistory } from 'react-icons/md';
+import { MdFavorite, MdHistory } from 'react-icons/md';
 import { HiOutlineDuplicate } from 'react-icons/hi';
 import { TfiWorld } from 'react-icons/tfi';
 
@@ -66,6 +66,13 @@ export default function SearchResultItem(props: SearchResultItemProps) {
     case SearchItemType.SearchEngine:
       elements.topIcon = <BiSearch {...topIconProps} />;
       elements.text = `“${props.item.engine.name}” で検索する`;
+      break;
+
+    case SearchItemType.Favorite:
+      elements.topIcon = getFavIconImage(props.item.website.favIconUrl);
+      elements.typeIcon = <MdFavorite {...typeIconProps} />;
+      elements.text = props.item.website.title;
+      elements.caption = props.item.website.domain;
       break;
 
     case SearchItemType.SearchEngineKeyword:
