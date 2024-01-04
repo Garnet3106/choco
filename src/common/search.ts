@@ -1,5 +1,5 @@
 import moji from 'moji';
-import { chromePages } from '../../default.json';
+import { chromePages as defaultChromePages } from '../../default.json';
 import { Preferences } from './preference';
 
 export enum SearchResultType {
@@ -77,11 +77,8 @@ export namespace SearchItem {
     const searchText = levelString(query.text);
     const keywords = searchText.split(' ').filter((eachKeyword) => eachKeyword !== '');
 
-    // todo: 関数化 / 変数名→all
-    const favorites = await Favorites.get();
-
     if (!keywords.length) {
-      return favorites
+      return (await Favorites.get())
         .map((eachFavorite) => ({
           type: SearchItemType.Favorite,
           website: eachFavorite,
@@ -89,64 +86,19 @@ export namespace SearchItem {
     }
 
     const preferences = await Preferences.get();
-
-    const convertedSearchEngines: SearchItem[] = SearchEngine.search(preferences.searchEngines, searchText)
-      .map((eachEngine) => ({
-        type: SearchItemType.SearchEngine,
-        engine: eachEngine,
-      }));
-
-    const convertedFavorites: SearchItem[] = (await Favorites.search(favorites, keywords))
-      .splice(0, 3)
-      .map((eachFavorite) => ({
-        type: SearchItemType.Favorite,
-        website: eachFavorite,
-      }));
-
-    const convertedChromePages: SearchItem[] = ChromePage.search(chromePages, keywords)
-      .splice(0, 1)
-      .map((eachPage) => ({
-        type: SearchItemType.ChromePage,
-        page: eachPage,
-      }));
-
-    const rawOpenTabs = await chrome.tabs.query({ windowType: 'normal' });
-
-    const convertedOpenTabs = rawOpenTabs
-      .filter((eachTab) => eachTab.id !== undefined && eachTab.title !== undefined && eachTab.url !== undefined)
-      .map((eachTab) => ({
-        id: eachTab.id!,
-        website: {
-          title: eachTab.title!,
-          url: eachTab.url!,
-          favIconUrl: eachTab.favIconUrl,
-          domain: Website.getDomain(eachTab.url!),
-        },
-      }));
-
-    const openTabs: SearchItem[] = Tab.search(convertedOpenTabs ?? [], keywords)
-      .splice(0, 5)
-      .map((eachTab) => ({
-        type: SearchItemType.OpenTab,
-        tab: eachTab,
-      }));
-
+    const searchEngines = SearchEngine.search(preferences.searchEngines, searchText);
+    const favorites = await Favorites.search(keywords, 3);
+    const chromePages = ChromePage.search(keywords, 1);
+    const openTabs = await Tab.searchOpenTabs(keywords, 5);
     // todo: 履歴だけこれと同期せず検索する
-    const rawHistories = await SearchHistory.search(searchText, query.historyStartTime);
-
-    const histories: SearchItem[] = rawHistories
-      .splice(0, 5)
-      .map((eachHistory) => ({
-        type: SearchItemType.SearchHistory,
-        history: eachHistory,
-      }));
+    const searchHistories = await SearchHistory.search(searchText, query.historyStartTime, 5);
 
     return [
-      ...convertedSearchEngines,
-      ...convertedFavorites,
-      ...convertedChromePages,
+      ...searchEngines,
+      ...favorites,
+      ...chromePages,
       ...openTabs,
-      ...histories,
+      ...searchHistories,
     ];
   }
 }
@@ -158,8 +110,13 @@ export type SearchEngine = {
 };
 
 export namespace SearchEngine {
-  export function search(searchEngines: SearchEngine[], searchText: string): SearchEngine[] {
-    return searchEngines.filter((eachEngine) => levelString(eachEngine.command) === searchText);
+  export function search(searchEngines: SearchEngine[], searchText: string): SearchItem[] {
+    return searchEngines
+      .filter((eachEngine) => levelString(eachEngine.command) === searchText)
+      .map((eachEngine) => ({
+        type: SearchItemType.SearchEngine,
+        engine: eachEngine,
+      }));
   }
 
   export function replaceKeyword(url: string, keyword: string): string {
@@ -171,8 +128,14 @@ export namespace SearchEngine {
 export type Favorites = Website[];
 
 export namespace Favorites {
-  export async function search(favorites: Favorites, keywords: string[]): Promise<Favorites> {
-    return favorites.filter((eachWebsite) => Website.match(eachWebsite, keywords));
+  export async function search(keywords: string[], max: number): Promise<SearchItem[]> {
+    return (await Favorites.get())
+      .filter((eachWebsite) => Website.match(eachWebsite, keywords))
+      .splice(0, max)
+      .map((eachFavorite) => ({
+        type: SearchItemType.Favorite,
+        website: eachFavorite,
+      }));
   }
 
   export async function get(): Promise<Favorites> {
@@ -197,11 +160,17 @@ export type ChromePage = {
 };
 
 export namespace ChromePage {
-  export function search(chromePages: ChromePage[], keywords: string[]): ChromePage[] {
-    return chromePages.filter((eachPage) => (
-      keywords.some((eachKeyword) => levelString(eachPage.title).includes(eachKeyword)) ||
-      keywords.some((eachKeyword) => levelString(eachPage.url).includes(eachKeyword))
-    ));
+  export function search(keywords: string[], max: number): SearchItem[] {
+    return defaultChromePages
+      .filter((eachPage) => (
+        keywords.some((eachKeyword) => levelString(eachPage.title).includes(eachKeyword)) ||
+        keywords.some((eachKeyword) => levelString(eachPage.url).includes(eachKeyword))
+      ))
+      .splice(0, max)
+      .map((eachPage) => ({
+        type: SearchItemType.ChromePage,
+        page: eachPage,
+      }));
   }
 }
 
@@ -244,6 +213,29 @@ export namespace Tab {
   export function search(tabs: Tab[], keywords: string[]): Tab[] {
     return tabs.filter((eachTab) => Website.match(eachTab.website, keywords));
   }
+
+  export async function searchOpenTabs(keywords: string[], max: number): Promise<SearchItem[]> {
+    const source = await chrome.tabs.query({ windowType: 'normal' });
+
+    const converted = source
+      .filter((eachTab) => eachTab.id !== undefined && eachTab.title !== undefined && eachTab.url !== undefined)
+      .map((eachTab) => ({
+        id: eachTab.id!,
+        website: {
+          title: eachTab.title!,
+          url: eachTab.url!,
+          favIconUrl: eachTab.favIconUrl,
+          domain: Website.getDomain(eachTab.url!),
+        },
+      }));
+
+    return Tab.search(converted ?? [], keywords)
+      .splice(0, max)
+      .map((eachTab) => ({
+        type: SearchItemType.OpenTab,
+        tab: eachTab,
+      }));
+  }
 }
 
 export type SearchHistory = {
@@ -253,7 +245,7 @@ export type SearchHistory = {
 };
 
 export namespace SearchHistory {
-  export async function search(text: string, startTime: number): Promise<SearchHistory[]> {
+  export async function search(text: string, startTime: number, max: number): Promise<SearchItem[]> {
     const items = await chrome.history.search({ text, startTime });
 
     return items
@@ -278,7 +270,12 @@ export namespace SearchHistory {
         }
 
         return 0;
-      });
+      })
+      .splice(0, max)
+      .map((eachHistory) => ({
+        type: SearchItemType.SearchHistory,
+        history: eachHistory,
+      }));
   }
 }
 
