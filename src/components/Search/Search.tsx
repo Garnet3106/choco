@@ -7,7 +7,7 @@ import { SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultTyp
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
-import { Favorites } from '../../common/favorite';
+import { Favorites } from '../../common/search';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);

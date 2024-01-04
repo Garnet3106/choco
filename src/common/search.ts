@@ -1,7 +1,6 @@
 import moji from 'moji';
 import { chromePages } from '../../default.json';
 import { Preferences } from './preference';
-import { Favorites } from './favorite';
 
 export enum SearchResultType {
   Normal,
@@ -81,14 +80,12 @@ export namespace SearchItem {
     // todo: 関数化 / 変数名→all
     const favorites = await Favorites.get();
 
-    const convertedFavorites: SearchItem[] = (await Favorites.search(favorites))
-      .map((eachFavorite) => ({
-        type: SearchItemType.Favorite,
-        website: eachFavorite,
-      }));
-
     if (!keywords.length) {
-      return convertedFavorites;
+      return favorites
+        .map((eachFavorite) => ({
+          type: SearchItemType.Favorite,
+          website: eachFavorite,
+        }));
     }
 
     const preferences = await Preferences.get();
@@ -97,6 +94,13 @@ export namespace SearchItem {
       .map((eachEngine) => ({
         type: SearchItemType.SearchEngine,
         engine: eachEngine,
+      }));
+
+    const convertedFavorites: SearchItem[] = (await Favorites.search(favorites, keywords))
+      .splice(0, 3)
+      .map((eachFavorite) => ({
+        type: SearchItemType.Favorite,
+        website: eachFavorite,
       }));
 
     const convertedChromePages: SearchItem[] = ChromePage.search(chromePages, keywords)
@@ -139,7 +143,7 @@ export namespace SearchItem {
 
     return [
       ...convertedSearchEngines,
-      ...convertedFavorites.splice(0, 3),
+      ...convertedFavorites,
       ...convertedChromePages,
       ...openTabs,
       ...histories,
@@ -161,6 +165,29 @@ export namespace SearchEngine {
   export function replaceKeyword(url: string, keyword: string): string {
     // fix escaping
     return url.replaceAll('{keyword}', keyword);
+  }
+}
+
+export type Favorites = Website[];
+
+export namespace Favorites {
+  export async function search(favorites: Favorites, keywords: string[]): Promise<Favorites> {
+    return favorites.filter((eachWebsite) => Website.match(eachWebsite, keywords));
+  }
+
+  export async function get(): Promise<Favorites> {
+    const { favorites } = await chrome.storage.local.get('favorites');
+    return favorites ?? [];
+  }
+
+  export async function add(website: Website): Promise<void> {
+    const favorites = (await Favorites.get()).filter((v) => v.url !== website.url);
+    return chrome.storage.local.set({ favorites: [...favorites, website] });
+  }
+
+  export async function remove(url: string): Promise<void> {
+    const favorites = (await Favorites.get()).filter((v) => v.url !== url);
+    return chrome.storage.local.set({ favorites });
   }
 }
 
@@ -196,6 +223,16 @@ export namespace Website {
     favIconUrl.searchParams.set('size', '128');
     return favIconUrl.toString();
   }
+
+  export function match(website: Website, keywords: string[]): boolean {
+    return (
+      !website.url.startsWith('chrome://') && (
+        keywords.some((eachKeyword) => levelString(website.title).includes(eachKeyword)) ||
+        keywords.some((eachKeyword) => levelString(website.url).includes(eachKeyword)) ||
+        keywords.some((eachKeyword) => levelString(website.domain).includes(eachKeyword))
+      )
+    );
+  }
 }
 
 export type Tab = {
@@ -205,13 +242,7 @@ export type Tab = {
 
 export namespace Tab {
   export function search(tabs: Tab[], keywords: string[]): Tab[] {
-    return tabs.filter((eachTab) => (
-      !eachTab.website.url.startsWith('chrome://') && (
-        keywords.some((eachKeyword) => levelString(eachTab.website.title).includes(eachKeyword)) ||
-        keywords.some((eachKeyword) => levelString(eachTab.website.url).includes(eachKeyword)) ||
-        keywords.some((eachKeyword) => levelString(eachTab.website.domain).includes(eachKeyword))
-      )
-    ));
+    return tabs.filter((eachTab) => Website.match(eachTab.website, keywords));
   }
 }
 
