@@ -2,11 +2,6 @@
     "manifest_version": 3,
     "name": "choco",
     "version": "1.0.0",
-    "background": {
-        "service_worker": "src/background.ts",
-        "type": "module",
-        "persistent": true
-    },
     "icons": {
         "128": "assets/favicon.png"
     },
@@ -23,7 +18,6 @@
         }
     },
     "permissions": [
-        "background",
         "history",
         "storage",
         "tabs"
