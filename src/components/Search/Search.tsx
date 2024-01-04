@@ -40,6 +40,10 @@ export default function Search() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [selectedItemIndex, searchResult]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    updateSearchResult(searchText);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const items = searchResult.items.map((eachItem, index) => (
     <SearchResultItem
       index={index}
@@ -98,7 +102,10 @@ export default function Search() {
     }
 
     const currentSearchText = searchTextQueue.current.pop()?.trim() ?? '';
+    updateSearchResult(currentSearchText);
+  }
 
+  async function updateSearchResult(currentSearchText: string) {
     switch (searchResult.type) {
       case SearchResultType.Normal: {
         const newItems = await SearchItem.search({
