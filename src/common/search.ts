@@ -177,7 +177,6 @@ export namespace ChromePage {
 export type Website = {
   title: string,
   url: string,
-  favIconUrl?: string,
   domain: string,
 };
 
@@ -224,7 +223,6 @@ export namespace Tab {
         website: {
           title: eachTab.title!,
           url: eachTab.url!,
-          favIconUrl: eachTab.favIconUrl,
           domain: Website.getDomain(eachTab.url!),
         },
       }));
@@ -256,7 +254,6 @@ export namespace SearchHistory {
         website: {
           title: eachItem.title!,
           url: eachItem.url!,
-          favIconUrl: Website.getFavIconUrl(eachItem.url!),
           domain: Website.getDomain(eachItem.url!),
         },
       }))

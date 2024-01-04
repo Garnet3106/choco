@@ -1,10 +1,9 @@
 import './SearchResultItem.css';
 import { MouseEvent, ReactNode, useEffect, useRef } from 'react';
-import { SearchItem, SearchItemType } from '../../../common/search';
+import { SearchItem, SearchItemType, Website } from '../../../common/search';
 import { BiSearch, BiSolidWrench } from 'react-icons/bi';
 import { MdFavorite, MdHistory } from 'react-icons/md';
 import { HiOutlineDuplicate } from 'react-icons/hi';
-import { TfiWorld } from 'react-icons/tfi';
 
 export type SearchResultItemProps = {
   index: number,
@@ -69,7 +68,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       break;
 
     case SearchItemType.Favorite:
-      elements.topIcon = getFavIconImage(props.item.website.favIconUrl);
+      elements.topIcon = getFavIconImage(props.item.website.url);
       elements.typeIcon = <MdFavorite {...typeIconProps} />;
       elements.text = props.item.website.title;
       elements.caption = props.item.website.domain;
@@ -87,14 +86,14 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       break;
 
     case SearchItemType.OpenTab:
-      elements.topIcon = getFavIconImage(props.item.tab.website.favIconUrl);
+      elements.topIcon = getFavIconImage(props.item.tab.website.url);
       elements.typeIcon = <HiOutlineDuplicate {...typeIconProps} />;
       elements.text = props.item.tab.website.title;
       elements.caption = props.item.tab.website.domain;
       break;
 
     case SearchItemType.SearchHistory:
-      elements.topIcon = getFavIconImage(props.item.history.website.favIconUrl);
+      elements.topIcon = getFavIconImage(props.item.history.website.url);
       elements.typeIcon = <MdHistory {...typeIconProps} />;
       elements.text = props.item.history.website.title;
       elements.caption = props.item.history.website.domain;
@@ -138,12 +137,9 @@ export default function SearchResultItem(props: SearchResultItemProps) {
     }
   }
 
-  function getFavIconImage(url?: string): ReactNode {
-    if (!url) {
-      return <TfiWorld {...topIconProps} />;
-    }
-
-    return <img src={url} {...topFavIconProps} />;
+  function getFavIconImage(url: string): ReactNode {
+    const favIconUrl = Website.getFavIconUrl(url);
+    return <img src={favIconUrl} {...topFavIconProps} />;
   }
 
   function getSearchHistoryDateString(lastVisited: number): string {
