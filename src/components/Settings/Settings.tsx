@@ -36,9 +36,9 @@ export default function Settings() {
           onChange={(id) => updatePreferences((state) => { state.searchExclusion.targetPeriodOfSearchHistory = Number(id); })}
         />
       ),
-      'ドメインで除外する': preferences.searchExclusion.enable && '...',
-      'キーワードで除外する': preferences.searchExclusion.enable && '...',
-      'ブクマフォルダで除外する': preferences.searchExclusion.enable && '...',
+      'ドメインで除外する': preferences.searchExclusion.enable && '準備中',
+      'キーワードで除外する': preferences.searchExclusion.enable && '準備中',
+      'ブクマフォルダで除外する': preferences.searchExclusion.enable && '準備中',
     },
     '表示と動作': {
       '検索結果をグループ化する': (
