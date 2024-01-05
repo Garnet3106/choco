@@ -3,7 +3,7 @@ import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
-import { CategorizedSearchItems, SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType } from '../../common/search';
+import { CategorizedSearchItems, SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType, Website } from '../../common/search';
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
@@ -82,15 +82,7 @@ export default function Search() {
 
   return (
     <div className='search' style={{ position: 'relative' }}>
-      <BiSearch
-        color='var(--light-gray-color)'
-        size={18}
-        style={{
-          left: 'calc(var(--margin) / 2)',
-          position: 'absolute',
-          top: 11,
-        }}
-      />
+      {getSearchBarIcon()}
       <Link to='/settings'>
         <MdSettings
           color='var(--light-gray-color)'
@@ -255,6 +247,35 @@ export default function Search() {
         searchResultsRef.current.scrollBy(0, -selectedHeight);
         return;
       }
+    }
+  }
+
+  function getSearchBarIcon(): ReactNode {
+    if (searchResult.type === SearchResultType.SearchEngine) {
+      return (
+        <img
+          src={Website.getFavIconUrl(searchResult.searchEngine.url)}
+          height={18}
+          width={18}
+          style={{
+            left: 'calc(var(--margin) / 2 + 1px)',
+            position: 'absolute',
+            top: 11,
+          }}
+        />
+      );
+    } else {
+      return (
+        <BiSearch
+          color='var(--light-gray-color)'
+          size={18}
+          style={{
+            left: 'calc(var(--margin) / 2 + 1px)',
+            position: 'absolute',
+            top: 11,
+          }}
+        />
+      );
     }
   }
 
