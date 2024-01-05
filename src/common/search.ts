@@ -11,11 +11,33 @@ export enum SearchResultType {
 export type SearchResult = {
   type: SearchResultType.Normal,
   items: SearchItem[],
+  categorizeItems: boolean,
 } | {
   type: SearchResultType.SearchEngine,
   searchEngine: SearchEngine,
   items: SearchItem[],
 };
+
+export type CategorizedSearchItems = { [type in SearchItemType]: SearchItem[] };
+
+export namespace CategorizedSearchItems {
+  export function getDefault(): CategorizedSearchItems {
+    return {
+      [SearchItemType.SearchEngine]: [],
+      [SearchItemType.Favorite]: [],
+      [SearchItemType.SearchEngineKeyword]: [],
+      [SearchItemType.ChromePage]: [],
+      [SearchItemType.OpenTab]: [],
+      [SearchItemType.SearchHistory]: [],
+    };
+  }
+
+  export function categorize(items: SearchItem[]): CategorizedSearchItems {
+    const categorized = CategorizedSearchItems.getDefault();
+    items.forEach((eachItem) => categorized[eachItem.type].push(eachItem));
+    return categorized;
+  }
+}
 
 export enum SearchItemType {
   SearchEngine,
@@ -24,6 +46,17 @@ export enum SearchItemType {
   ChromePage,
   OpenTab,
   SearchHistory,
+}
+
+export namespace SearchItemType {
+  export const translation: { [type in SearchItemType]: string } = {
+    [SearchItemType.SearchEngine]: '検索エンジン',
+    [SearchItemType.Favorite]: 'お気に入り',
+    [SearchItemType.SearchEngineKeyword]: '検索キーワード',
+    [SearchItemType.ChromePage]: 'ブラウザ機能',
+    [SearchItemType.OpenTab]: '開いているタブ',
+    [SearchItemType.SearchHistory]: '検索履歴',
+  };
 }
 
 export type SearchItem =

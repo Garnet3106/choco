@@ -1,9 +1,9 @@
 import './Search.css';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
-import { SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType } from '../../common/search';
+import { CategorizedSearchItems, SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType } from '../../common/search';
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
@@ -17,6 +17,7 @@ export default function Search() {
   const [searchResult, setSearchResult] = useState<SearchResult>({
     type: SearchResultType.Normal,
     items: [],
+    categorizeItems: false,
   });
 
   const [searchResultHeight, setSearchResultHeight] = useState(200);
@@ -49,19 +50,31 @@ export default function Search() {
     updateSearchResult(searchText);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const items = searchResult.items.map((eachItem, index) => (
-    <SearchResultItem
-      index={index}
-      item={eachItem}
-      selected={index === selectedItemIndex}
-      onSelect={onSelectSearchResultItem}
-      onOpen={(index, closePopup) => {
-        setSelectedItemIndex(index);
-        openSearchItem(eachItem, closePopup);
-      }}
-      key={Math.random()}
-    />
-  ));
+  let items: ReactNode[] = [];
+
+  if (searchResult.type === SearchResultType.Normal && searchResult.categorizeItems) {
+    const categorized = CategorizedSearchItems.categorize(searchResult.items);
+    let indexSum = 0;
+
+    items = Object.entries(categorized).map(([eachType, eachItems]) => {
+      const eachItemNodes = getSearchResultItems(eachItems, (index) => index + indexSum);
+      indexSum += eachItems.length;
+
+      if (!eachItemNodes.length) {
+        return [];
+      }
+
+      const categoryName = (
+        <div className='search-result-category-name'>
+          {SearchItemType.translation[Number(eachType) as SearchItemType]}
+        </div>
+      );
+
+      return [categoryName, ...eachItemNodes];
+    });
+  } else {
+    items = getSearchResultItems(searchResult.items);
+  }
 
   return (
     <div className='search' style={{ position: 'relative' }}>
@@ -136,6 +149,7 @@ export default function Search() {
         setSearchResult({
           type: SearchResultType.Normal,
           items: newItems,
+          categorizeItems: preferences.displayAndBehavior.groupSearchResult,
         });
       } break;
 
@@ -238,6 +252,29 @@ export default function Search() {
         return;
       }
     }
+  }
+
+  function getSearchResultItems(
+    items: SearchItem[],
+    indexer: (index: number) => number = (index) => index,
+  ): ReactNode[] {
+    return items.map((eachItem, index) => {
+      const calculatedIndex = indexer(index);
+
+      return (
+        <SearchResultItem
+          index={calculatedIndex}
+          item={eachItem}
+          selected={calculatedIndex === selectedItemIndex}
+          onSelect={onSelectSearchResultItem}
+          onOpen={(index, closePopup) => {
+            setSelectedItemIndex(index);
+            openSearchItem(eachItem, closePopup);
+          }}
+          key={Math.random()}
+        />
+      );
+    });
   }
 
   async function openSearchItem(searchItem: SearchItem, closePopup: boolean): Promise<void> {

@@ -27,3 +27,9 @@
   color: var(--light-gray-color);
   text-align: center;
 }
+
+.search-result-category-name {
+  color: var(--light-gray-color);
+  margin-top: 5px;
+  font-size: 95%;
+}
