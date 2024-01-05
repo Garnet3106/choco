@@ -10,15 +10,17 @@ import { Preferences } from '../../common/preference';
 import { Favorites } from '../../common/search';
 import { UnexhaustiveError } from '../../common/error';
 
+const defaultSearchResult: SearchResult = {
+  type: SearchResultType.Normal,
+  items: [],
+  categorizeItems: false,
+};
+
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
   const [searchText, setSearchText] = useState('');
 
-  const [searchResult, setSearchResult] = useState<SearchResult>({
-    type: SearchResultType.Normal,
-    items: [],
-    categorizeItems: false,
-  });
+  const [searchResult, setSearchResult] = useState<SearchResult>(defaultSearchResult);
 
   const [searchResultHeight, setSearchResultHeight] = useState(200);
   const searchTextQueue = useRef<string[]>([]);
@@ -226,6 +228,13 @@ export default function Search() {
 
         event.preventDefault();
       } break;
+
+      case 'Escape':
+        if (searchResult.type === SearchResultType.SearchEngine) {
+          setSearchResult(defaultSearchResult);
+          event.preventDefault();
+        }
+        break;
 
       default:
         break;
