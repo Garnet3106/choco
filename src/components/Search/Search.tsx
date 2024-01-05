@@ -65,7 +65,7 @@ export default function Search() {
       }
 
       const categoryName = (
-        <div className='search-result-category-name'>
+        <div className='search-result-category-name' key={Math.random()}>
           {SearchItemType.translation[Number(eachType) as SearchItemType]}
         </div>
       );
