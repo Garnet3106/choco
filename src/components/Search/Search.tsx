@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
 import { Favorites } from '../../common/search';
 import { UnexhaustiveError } from '../../common/error';
+import toast from 'react-hot-toast';
 
 const defaultSearchResult: SearchResult = {
   type: SearchResultType.Normal,
@@ -193,14 +194,17 @@ export default function Search() {
 
           if (target.type === SearchItemType.Favorite) {
             Favorites.remove(target.website.url).then(() => enqueueSearchText(searchText));
+            toast('お気に入りから削除しました。');
           } else {
             const website = SearchItem.getWebsite(target);
 
             if (!website) {
+              toast('この項目はお気に入りに追加できません。');
               break;
             }
 
             Favorites.add(website).then(() => enqueueSearchText(searchText));
+            toast('お気に入りに追加しました。');
           }
         }
         break;
