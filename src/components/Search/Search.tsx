@@ -22,6 +22,15 @@ export default function Search() {
   const [searchResultHeight, setSearchResultHeight] = useState(200);
   const searchTextQueue = useRef<string[]>([]);
   const searchResultsRef = useRef<HTMLDivElement>(null);
+  let searchResultMessage: string | null = null;
+
+  if (!searchResult.items.length && !searchTextQueue.current.length) {
+    if (searchText.trim() === '') {
+      searchResultMessage = 'Webサイトをお気に入りに登録するとここに表示されます。';
+    } else {
+      searchResultMessage = '該当するWebサイトが見つかりませんでした。';
+    }
+  }
 
   useEffect(() => {
     chrome.windows.getCurrent().then((window) => {
@@ -87,6 +96,13 @@ export default function Search() {
       />
       <div className='search-results scrollbar-none' style={{ height: searchResultHeight }} ref={searchResultsRef}>
         {items}
+        {
+          searchResultMessage && (
+            <div className='search-result-message'>
+              {searchResultMessage}
+            </div>
+          )
+        }
       </div>
     </div>
   );

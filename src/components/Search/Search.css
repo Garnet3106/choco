@@ -22,3 +22,8 @@
   margin-top: var(--margin);
   overflow-y: scroll;
 }
+
+.search-result-message {
+  color: var(--light-gray-color);
+  text-align: center;
+}
