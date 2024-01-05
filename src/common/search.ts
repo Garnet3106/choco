@@ -85,8 +85,7 @@ export type SearchItem =
     history: SearchHistory,
   };
 
-// fix: rename
-export type SearchItemQuery = {
+export type SearchQuery = {
   text: string,
   historyStartTime: number,
   hideNotificationCountInTitle: boolean,
@@ -118,7 +117,7 @@ export namespace SearchItem {
     }
   }
 
-  export async function search(query: SearchItemQuery): Promise<SearchItem[]> {
+  export async function search(query: SearchQuery): Promise<SearchItem[]> {
     const searchText = levelString(query.text);
     const keywords = searchText.split(' ').filter((eachKeyword) => eachKeyword !== '');
 
