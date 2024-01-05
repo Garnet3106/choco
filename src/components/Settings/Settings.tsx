@@ -41,10 +41,10 @@ export default function Settings() {
       'ブクマフォルダで除外する': preferences.searchExclusion.enable && '準備中',
     },
     '表示と動作': {
-      '検索結果をグループ化する': (
+      'カテゴリー名を表示する': (
         <ToggleButton
-          enabled={preferences.displayAndBehavior.groupSearchResult}
-          onClick={() => updatePreferences((state) => { state.displayAndBehavior.groupSearchResult = !state.displayAndBehavior.groupSearchResult; })}
+          enabled={preferences.displayAndBehavior.showCategoryName}
+          onClick={() => updatePreferences((state) => { state.displayAndBehavior.showCategoryName = !state.displayAndBehavior.showCategoryName; })}
         />
       ),
       '新しいタブで開く': (

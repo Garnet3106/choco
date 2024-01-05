@@ -149,7 +149,7 @@ export default function Search() {
         setSearchResult({
           type: SearchResultType.Normal,
           items: newItems,
-          categorizeItems: preferences.displayAndBehavior.groupSearchResult,
+          categorizeItems: preferences.displayAndBehavior.showCategoryName,
         });
       } break;
 

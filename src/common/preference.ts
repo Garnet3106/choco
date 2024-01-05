@@ -10,7 +10,7 @@ export type Preferences = {
     byBookmarkFolders: string[],
   },
   displayAndBehavior: {
-    groupSearchResult: boolean,
+    showCategoryName: boolean,
     openInNewTab: boolean,
   },
   searchEngines: SearchEngine[],
@@ -27,7 +27,7 @@ export namespace Preferences {
         byBookmarkFolders: [],
       },
       displayAndBehavior: {
-        groupSearchResult: false,
+        showCategoryName: true,
         openInNewTab: true,
       },
       searchEngines: defaultSearchEngines,
