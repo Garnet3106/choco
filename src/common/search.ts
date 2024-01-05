@@ -251,7 +251,11 @@ export type SearchHistory = {
 
 export namespace SearchHistory {
   export async function search(text: string, startTime: number, max: number): Promise<SearchItem[]> {
-    const items = await chrome.history.search({ text, startTime });
+    const items = await chrome.history.search({
+      text,
+      maxResults: 100,
+      startTime,
+    });
 
     return items
       .filter((eachItem) => eachItem.lastVisitTime !== undefined && eachItem.title !== undefined && eachItem.url !== undefined)

@@ -126,9 +126,11 @@ export default function Search() {
   async function updateSearchResult(currentSearchText: string) {
     switch (searchResult.type) {
       case SearchResultType.Normal: {
+        const preferences = await Preferences.get();
+
         const newItems = await SearchItem.search({
           text: currentSearchText,
-          historyStartTime: 0, // fix
+          historyStartTime: Date.now() - (preferences.searchExclusion.targetPeriodOfSearchHistory * 1000 * 3600 * 24),
         });
 
         setSearchResult({
