@@ -1,5 +1,5 @@
 {
-    "searchTimeout": 300,
+    "searchTimeout": 100,
     "searchEngines": [
         {
             "name": "Amazon.co.jp",
