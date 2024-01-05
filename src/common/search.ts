@@ -91,32 +91,7 @@ export type SearchQuery = {
   hideNotificationCountInTitle: boolean,
 };
 
-export namespace SearchItem {
-  export function getWebsite(searchItem: SearchItem): Website | undefined {
-    switch (searchItem.type) {
-      case SearchItemType.SearchEngine:
-        return undefined;
-
-      case SearchItemType.SearchEngineKeyword:
-        return searchItem.website;
-
-      case SearchItemType.Favorite:
-        return searchItem.website;
-
-      case SearchItemType.ChromePage:
-        return undefined;
-
-      case SearchItemType.OpenTab:
-        return searchItem.tab.website;
-
-      case SearchItemType.SearchHistory:
-        return searchItem.history.website;
-
-      default:
-        throw new UnexhaustiveError();
-    }
-  }
-
+export namespace Search {
   export async function search(query: SearchQuery): Promise<SearchItem[]> {
     const searchText = levelString(query.text);
     const keywords = searchText.split(' ').filter((eachKeyword) => eachKeyword !== '');
@@ -144,6 +119,33 @@ export namespace SearchItem {
       ...openTabs,
       ...searchHistories,
     ];
+  }
+}
+
+export namespace SearchItem {
+  export function getWebsite(searchItem: SearchItem): Website | undefined {
+    switch (searchItem.type) {
+      case SearchItemType.SearchEngine:
+        return undefined;
+
+      case SearchItemType.SearchEngineKeyword:
+        return searchItem.website;
+
+      case SearchItemType.Favorite:
+        return searchItem.website;
+
+      case SearchItemType.ChromePage:
+        return undefined;
+
+      case SearchItemType.OpenTab:
+        return searchItem.tab.website;
+
+      case SearchItemType.SearchHistory:
+        return searchItem.history.website;
+
+      default:
+        throw new UnexhaustiveError();
+    }
   }
 }
 

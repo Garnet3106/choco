@@ -3,11 +3,10 @@ import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
-import { CategorizedSearchItems, SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType, Website } from '../../common/search';
+import { CategorizedSearchItems, Favorites, Search as ItemSearch, SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType, Website } from '../../common/search';
 import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
-import { Favorites } from '../../common/search';
 import { UnexhaustiveError } from '../../common/error';
 import toast from 'react-hot-toast';
 
@@ -146,7 +145,7 @@ export default function Search() {
         const preferences = await Preferences.get();
         const historyStartTime = Date.now() - (preferences.searchExclusion.targetPeriodOfSearchHistory * 1000 * 3600 * 24);
 
-        const newItems = await SearchItem.search({
+        const newItems = await ItemSearch.search({
           text: currentSearchText,
           historyStartTime: preferences.searchExclusion.enable ? historyStartTime : 0,
           hideNotificationCountInTitle: preferences.displayAndBehavior.hideNotificationCountInTitle,
