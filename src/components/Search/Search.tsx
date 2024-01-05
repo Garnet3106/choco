@@ -65,6 +65,7 @@ export default function Search() {
 
     items = Object.entries(categorized).map(([eachType, eachItems]) => {
       const eachItemNodes = getSearchResultItems(eachItems, (index) => index + indexSum);
+      const firstCategory = indexSum === 0;
       indexSum += eachItems.length;
 
       if (!eachItemNodes.length) {
@@ -72,7 +73,11 @@ export default function Search() {
       }
 
       const categoryName = (
-        <div className='search-result-category-name' key={Math.random()}>
+        <div
+          className='search-result-category-name'
+          style={{ marginTop: firstCategory ? 0 : 5 }}
+          key={Math.random()}
+        >
           {SearchItemType.translation[Number(eachType) as SearchItemType]}
         </div>
       );
