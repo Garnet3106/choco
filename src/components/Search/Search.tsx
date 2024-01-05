@@ -140,6 +140,7 @@ export default function Search() {
         const newItems = await SearchItem.search({
           text: currentSearchText,
           historyStartTime: Date.now() - (preferences.searchExclusion.targetPeriodOfSearchHistory * 1000 * 3600 * 24),
+          hideNotificationCountInTitle: preferences.displayAndBehavior.hideNotificationCountInTitle,
         });
 
         setSearchResult({

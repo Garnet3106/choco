@@ -85,9 +85,11 @@ export type SearchItem =
     history: SearchHistory,
   };
 
+// fix: rename
 export type SearchItemQuery = {
   text: string,
   historyStartTime: number,
+  hideNotificationCountInTitle: boolean,
 };
 
 export namespace SearchItem {
@@ -132,9 +134,9 @@ export namespace SearchItem {
     const searchEngines = SearchEngine.search(preferences.searchEngines, searchText);
     const favorites = await Favorites.search(keywords, 3);
     const chromePages = ChromePage.search(keywords, 1);
-    const openTabs = await Tab.searchOpenTabs(keywords, 5);
+    const openTabs = await Tab.searchOpenTabs(keywords, 5, query.hideNotificationCountInTitle);
     // todo: 履歴だけこれと同期せず検索する
-    const searchHistories = await SearchHistory.search(searchText, query.historyStartTime, 5);
+    const searchHistories = await SearchHistory.search(searchText, query.historyStartTime, 5, query.hideNotificationCountInTitle);
 
     return [
       ...searchEngines,
@@ -258,7 +260,7 @@ export namespace Tab {
     return tabs.filter((eachTab) => Website.match(eachTab.website, keywords));
   }
 
-  export async function searchOpenTabs(keywords: string[], max: number): Promise<SearchItem[]> {
+  export async function searchOpenTabs(keywords: string[], max: number, hideNotificationCountInTitle: boolean): Promise<SearchItem[]> {
     const source = await chrome.tabs.query({ windowType: 'normal' });
 
     const converted = source
@@ -266,7 +268,7 @@ export namespace Tab {
       .map((eachTab) => ({
         id: eachTab.id!,
         website: {
-          title: Website.removeNotificationCountFromTitle(eachTab.title!),
+          title: hideNotificationCountInTitle ? Website.removeNotificationCountFromTitle(eachTab.title!) : eachTab.title!,
           url: eachTab.url!,
         },
       }));
@@ -287,7 +289,7 @@ export type SearchHistory = {
 };
 
 export namespace SearchHistory {
-  export async function search(text: string, startTime: number, max: number): Promise<SearchItem[]> {
+  export async function search(text: string, startTime: number, max: number, hideNotificationCountInTitle: boolean): Promise<SearchItem[]> {
     const items = await chrome.history.search({
       text,
       maxResults: 100,
@@ -300,7 +302,7 @@ export namespace SearchHistory {
         lastVisited: eachItem.lastVisitTime!,
         visitCount: eachItem.visitCount ?? 1,
         website: {
-          title: Website.removeNotificationCountFromTitle(eachItem.title!),
+          title: hideNotificationCountInTitle ? Website.removeNotificationCountFromTitle(eachItem.title!) : eachItem.title!,
           url: eachItem.url!,
         },
       }))

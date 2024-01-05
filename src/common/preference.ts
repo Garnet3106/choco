@@ -11,6 +11,7 @@ export type Preferences = {
   },
   displayAndBehavior: {
     showCategoryName: boolean,
+    hideNotificationCountInTitle: boolean,
     openInNewTab: boolean,
   },
   searchEngines: SearchEngine[],
@@ -28,6 +29,7 @@ export namespace Preferences {
       },
       displayAndBehavior: {
         showCategoryName: true,
+        hideNotificationCountInTitle: true,
         openInNewTab: true,
       },
       searchEngines: defaultSearchEngines,

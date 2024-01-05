@@ -47,6 +47,12 @@ export default function Settings() {
           onClick={() => updatePreferences((state) => { state.displayAndBehavior.showCategoryName = !state.displayAndBehavior.showCategoryName; })}
         />
       ),
+      'タイトルの通知件数を隠す': (
+        <ToggleButton
+          enabled={preferences.displayAndBehavior.hideNotificationCountInTitle}
+          onClick={() => updatePreferences((state) => { state.displayAndBehavior.hideNotificationCountInTitle = !state.displayAndBehavior.hideNotificationCountInTitle; })}
+        />
+      ),
       '新しいタブで開く': (
         <ToggleButton
           enabled={preferences.displayAndBehavior.openInNewTab}
