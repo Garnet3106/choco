@@ -32,11 +32,6 @@ export default function Search() {
   }, []);
 
   useEffect(() => {
-    chrome.storage.local.onChanged.addListener(onChangeStorage);
-    return () => chrome.storage.local.onChanged.removeListener(onChangeStorage);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [selectedItemIndex, searchText, searchResult]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -148,9 +143,6 @@ export default function Search() {
     }
 
     setSelectedItemIndex(0);
-  }
-
-  function onChangeStorage(_data: { [key: string]: chrome.storage.StorageChange }) {
   }
 
   async function onChangeSearchText(event: ChangeEvent<HTMLInputElement>) {
