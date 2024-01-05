@@ -102,7 +102,7 @@ export default function Search() {
         className='search-bar'
         value={searchText}
         onChange={onChangeSearchText}
-        placeholder={searchResult.type === SearchResultType.SearchEngine ? `“${searchResult.searchEngine.name}” で検索中` : '検索キーワードを入力'}
+        placeholder={searchResult.type === SearchResultType.SearchEngine ? `“${searchResult.searchEngine.name}” で検索する（Escで戻る）` : '検索キーワードを入力'}
         autoFocus
       />
       <div className='search-results scrollbar-none' style={{ height: searchResultHeight }} ref={searchResultsRef}>
