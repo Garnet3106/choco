@@ -151,7 +151,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       const paths = url.substring('file:///'.length).split(/[/\\]/);
       return paths.splice(0, paths.length - 1).join('/');
     } else {
-      return Website.getDomain(url);
+      return Website.getHostname(url);
     }
   }
 

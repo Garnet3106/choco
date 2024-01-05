@@ -229,13 +229,16 @@ export namespace Website {
     return title.replace(/^\(\d+\) */, '');
   }
 
-  export function getDomain(url: string): string {
+  export function getHostname(url: string): string {
     return new URL(url).hostname;
   }
 
   export function getFavIconUrl(url: string): string {
+    const protocol = new URL(url).protocol;
+    const hostname = getHostname(url);
+
     const favIconUrl = new URL('https://www.google.com/s2/favicons');
-    favIconUrl.searchParams.set('domain', url);
+    favIconUrl.searchParams.set('domain', `${protocol}//${hostname}`);
     favIconUrl.searchParams.set('size', '128');
     return favIconUrl.toString();
   }
