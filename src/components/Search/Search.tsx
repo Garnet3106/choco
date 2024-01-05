@@ -136,10 +136,11 @@ export default function Search() {
     switch (searchResult.type) {
       case SearchResultType.Normal: {
         const preferences = await Preferences.get();
+        const historyStartTime = Date.now() - (preferences.searchExclusion.targetPeriodOfSearchHistory * 1000 * 3600 * 24);
 
         const newItems = await SearchItem.search({
           text: currentSearchText,
-          historyStartTime: Date.now() - (preferences.searchExclusion.targetPeriodOfSearchHistory * 1000 * 3600 * 24),
+          historyStartTime: preferences.searchExclusion.enable ? historyStartTime : 0,
           hideNotificationCountInTitle: preferences.displayAndBehavior.hideNotificationCountInTitle,
         });
 
