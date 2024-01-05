@@ -27,7 +27,11 @@ export default function Search() {
 
   if (!searchResult.items.length && !searchTextQueue.current.length) {
     if (searchText.trim() === '') {
-      searchResultMessage = 'Webサイトをお気に入りに登録するとここに表示されます。';
+      if (searchResult.type === SearchResultType.SearchEngine) {
+        searchResultMessage = '検索キーワードを入力すると検索できます。';
+      } else {
+        searchResultMessage = 'Webサイトをお気に入りに登録するとここに表示されます。';
+      }
     } else {
       searchResultMessage = '該当するWebサイトが見つかりませんでした。';
     }
