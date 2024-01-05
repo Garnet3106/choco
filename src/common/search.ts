@@ -1,6 +1,7 @@
 import moji from 'moji';
 import { chromePages as defaultChromePages } from '../../default.json';
 import { Preferences } from './preference';
+import { UnexhaustiveError } from './error';
 
 export enum SearchResultType {
   Normal,
@@ -25,25 +26,31 @@ export enum SearchItemType {
   SearchHistory,
 }
 
-export type SearchItem = {
-  type: SearchItemType.SearchEngine,
-  engine: SearchEngine,
-} | {
-  type: SearchItemType.Favorite,
-  website: Website,
-} | {
-  type: SearchItemType.SearchEngineKeyword,
-  website: Website,
-} | {
-  type: SearchItemType.ChromePage,
-  page: ChromePage,
-} | {
-  type: SearchItemType.OpenTab,
-  tab: Tab,
-} | {
-  type: SearchItemType.SearchHistory,
-  history: SearchHistory,
-};
+export type SearchItem =
+  | {
+    type: SearchItemType.SearchEngine,
+    engine: SearchEngine,
+  }
+  | {
+    type: SearchItemType.Favorite,
+    website: Website,
+  }
+  | {
+    type: SearchItemType.SearchEngineKeyword,
+    website: Website,
+  }
+  | {
+    type: SearchItemType.ChromePage,
+    page: ChromePage,
+  }
+  | {
+    type: SearchItemType.OpenTab,
+    tab: Tab,
+  }
+  | {
+    type: SearchItemType.SearchHistory,
+    history: SearchHistory,
+  };
 
 export type SearchItemQuery = {
   text: string,
@@ -70,6 +77,9 @@ export namespace SearchItem {
 
       case SearchItemType.SearchHistory:
         return searchItem.history.website;
+
+      default:
+        throw new UnexhaustiveError();
     }
   }
 

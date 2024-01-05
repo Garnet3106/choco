@@ -4,6 +4,7 @@ import { SearchItem, SearchItemType, Website } from '../../../common/search';
 import { BiSearch, BiSolidWrench } from 'react-icons/bi';
 import { MdFavorite, MdHistory } from 'react-icons/md';
 import { HiOutlineDuplicate } from 'react-icons/hi';
+import { UnexhaustiveError } from '../../../common/error';
 
 export type SearchResultItemProps = {
   index: number,
@@ -99,6 +100,9 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.caption = props.item.history.website.domain;
       elements.tag = getSearchHistoryDateString(props.item.history.lastVisited);
       break;
+
+    default:
+      throw new UnexhaustiveError();
   }
 
   return (

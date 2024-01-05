@@ -8,6 +8,7 @@ import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
 import { Favorites } from '../../common/search';
+import { UnexhaustiveError } from '../../common/error';
 
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
@@ -141,6 +142,9 @@ export default function Search() {
           items: currentSearchText ? [searchItem] : [],
         });
       } break;
+
+      default:
+        throw new UnexhaustiveError();
     }
 
     setSelectedItemIndex(0);
@@ -201,6 +205,9 @@ export default function Search() {
 
         event.preventDefault();
       } break;
+
+      default:
+        break;
     }
   }
 
@@ -274,6 +281,9 @@ export default function Search() {
       case SearchItemType.SearchHistory:
         createTab(searchItem.history.website.url);
         break;
+
+      default:
+        throw new UnexhaustiveError();
     }
 
     if (closePopup && searchItem.type !== SearchItemType.SearchEngine) {
