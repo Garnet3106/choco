@@ -118,9 +118,13 @@ export default function SearchResultItem(props: SearchResultItemProps) {
           <span className='search-result-item-text'>
             {elements.text}
           </span>
-          <span className='search-result-item-caption'>
-            {elements.caption}
-          </span>
+          {
+            elements.caption && (
+              <span className='search-result-item-caption'>
+                {elements.caption.substring(0, 50) + (elements.caption.length > 50 ? '...' : '')}
+              </span>
+            )
+          }
         </div>
         <div className='search-result-item-content-right'>
           {
