@@ -5,6 +5,7 @@ import { BiSearch, BiSolidWrench } from 'react-icons/bi';
 import { MdFavorite, MdHistory } from 'react-icons/md';
 import { HiOutlineDuplicate } from 'react-icons/hi';
 import { UnexhaustiveError } from '../../../common/error';
+import { FaFile } from 'react-icons/fa';
 
 export type SearchResultItemProps = {
   index: number,
@@ -72,7 +73,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.topIcon = getFavIconImage(props.item.website.url);
       elements.typeIcon = <MdFavorite {...typeIconProps} />;
       elements.text = props.item.website.title;
-      elements.caption = props.item.website.domain;
+      elements.caption = getWebsiteCaption(props.item.website.url);
       break;
 
     case SearchItemType.SearchEngineKeyword:
@@ -90,14 +91,14 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.topIcon = getFavIconImage(props.item.tab.website.url);
       elements.typeIcon = <HiOutlineDuplicate {...typeIconProps} />;
       elements.text = props.item.tab.website.title;
-      elements.caption = props.item.tab.website.domain;
+      elements.caption = getWebsiteCaption(props.item.tab.website.url);
       break;
 
     case SearchItemType.SearchHistory:
       elements.topIcon = getFavIconImage(props.item.history.website.url);
       elements.typeIcon = <MdHistory {...typeIconProps} />;
       elements.text = props.item.history.website.title;
-      elements.caption = props.item.history.website.domain;
+      elements.caption = getWebsiteCaption(props.item.history.website.url);
       elements.tag = getSearchHistoryDateString(props.item.history.lastVisited);
       break;
 
@@ -141,7 +142,20 @@ export default function SearchResultItem(props: SearchResultItemProps) {
     }
   }
 
+  function getWebsiteCaption(url: string): string {
+    if (url.startsWith('file:///')) {
+      const paths = url.substring('file:///'.length).split(/[/\\]/);
+      return paths.splice(0, paths.length - 1).join('/');
+    } else {
+      return Website.getDomain(url);
+    }
+  }
+
   function getFavIconImage(url: string): ReactNode {
+    if (url.startsWith('file:///')) {
+      return <FaFile {...topIconProps} />;
+    }
+
     const favIconUrl = Website.getFavIconUrl(url);
     return <img src={favIconUrl} {...topFavIconProps} />;
   }
