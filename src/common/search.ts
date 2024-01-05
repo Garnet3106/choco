@@ -24,8 +24,8 @@ export namespace CategorizedSearchItems {
   export function getDefault(): CategorizedSearchItems {
     return {
       [SearchItemType.SearchEngine]: [],
-      [SearchItemType.Favorite]: [],
       [SearchItemType.SearchEngineKeyword]: [],
+      [SearchItemType.Favorite]: [],
       [SearchItemType.ChromePage]: [],
       [SearchItemType.OpenTab]: [],
       [SearchItemType.SearchHistory]: [],
@@ -41,8 +41,8 @@ export namespace CategorizedSearchItems {
 
 export enum SearchItemType {
   SearchEngine,
-  Favorite,
   SearchEngineKeyword,
+  Favorite,
   ChromePage,
   OpenTab,
   SearchHistory,
@@ -51,8 +51,8 @@ export enum SearchItemType {
 export namespace SearchItemType {
   export const translation: { [type in SearchItemType]: string } = {
     [SearchItemType.SearchEngine]: '検索エンジン',
-    [SearchItemType.Favorite]: 'お気に入り',
     [SearchItemType.SearchEngineKeyword]: '検索キーワード',
+    [SearchItemType.Favorite]: 'お気に入り',
     [SearchItemType.ChromePage]: 'ブラウザ機能',
     [SearchItemType.OpenTab]: '開いているタブ',
     [SearchItemType.SearchHistory]: '検索履歴',
@@ -65,11 +65,11 @@ export type SearchItem =
     engine: SearchEngine,
   }
   | {
-    type: SearchItemType.Favorite,
+    type: SearchItemType.SearchEngineKeyword,
     website: Website,
   }
   | {
-    type: SearchItemType.SearchEngineKeyword,
+    type: SearchItemType.Favorite,
     website: Website,
   }
   | {
@@ -96,10 +96,10 @@ export namespace SearchItem {
       case SearchItemType.SearchEngine:
         return undefined;
 
-      case SearchItemType.Favorite:
+      case SearchItemType.SearchEngineKeyword:
         return searchItem.website;
 
-      case SearchItemType.SearchEngineKeyword:
+      case SearchItemType.Favorite:
         return searchItem.website;
 
       case SearchItemType.ChromePage:

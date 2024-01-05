@@ -69,16 +69,16 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.text = `“${props.item.engine.name}” で検索する`;
       break;
 
+    case SearchItemType.SearchEngineKeyword:
+      elements.topIcon = <BiSearch {...topIconProps} />;
+      elements.text = props.item.website.title;
+      break;
+
     case SearchItemType.Favorite:
       elements.topIcon = getFavIconImage(props.item.website.url);
       elements.typeIcon = <MdFavorite {...typeIconProps} />;
       elements.text = props.item.website.title;
       elements.caption = getWebsiteCaption(props.item.website.url);
-      break;
-
-    case SearchItemType.SearchEngineKeyword:
-      elements.topIcon = <BiSearch {...topIconProps} />;
-      elements.text = props.item.website.title;
       break;
 
     case SearchItemType.ChromePage:

@@ -308,11 +308,11 @@ export default function Search() {
         });
         break;
 
-      case SearchItemType.Favorite:
+      case SearchItemType.SearchEngineKeyword:
         createTab(searchItem.website.url);
         break;
 
-      case SearchItemType.SearchEngineKeyword:
+      case SearchItemType.Favorite:
         createTab(searchItem.website.url);
         break;
 
