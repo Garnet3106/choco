@@ -187,7 +187,6 @@ export namespace ChromePage {
 export type Website = {
   title: string,
   url: string,
-  domain: string,
 };
 
 export namespace Website {
@@ -206,8 +205,7 @@ export namespace Website {
     return (
       !website.url.startsWith('chrome://') && (
         keywords.some((eachKeyword) => levelString(website.title).includes(eachKeyword)) ||
-        keywords.some((eachKeyword) => levelString(website.url).includes(eachKeyword)) ||
-        keywords.some((eachKeyword) => levelString(website.domain).includes(eachKeyword))
+        keywords.some((eachKeyword) => levelString(website.url).includes(eachKeyword))
       )
     );
   }
@@ -233,7 +231,6 @@ export namespace Tab {
         website: {
           title: eachTab.title!,
           url: eachTab.url!,
-          domain: Website.getDomain(eachTab.url!),
         },
       }));
 
@@ -264,7 +261,6 @@ export namespace SearchHistory {
         website: {
           title: eachItem.title!,
           url: eachItem.url!,
-          domain: Website.getDomain(eachItem.url!),
         },
       }))
       .sort((a, b) => {
