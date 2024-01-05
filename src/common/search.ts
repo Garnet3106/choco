@@ -223,6 +223,10 @@ export type Website = {
 };
 
 export namespace Website {
+  export function removeNotificationCountFromTitle(title: string): string {
+    return title.replace(/^\(\d+\) */, '');
+  }
+
   export function getDomain(url: string): string {
     return new URL(url).hostname;
   }
@@ -262,7 +266,7 @@ export namespace Tab {
       .map((eachTab) => ({
         id: eachTab.id!,
         website: {
-          title: eachTab.title!,
+          title: Website.removeNotificationCountFromTitle(eachTab.title!),
           url: eachTab.url!,
         },
       }));
@@ -296,7 +300,7 @@ export namespace SearchHistory {
         lastVisited: eachItem.lastVisitTime!,
         visitCount: eachItem.visitCount ?? 1,
         website: {
-          title: eachItem.title!,
+          title: Website.removeNotificationCountFromTitle(eachItem.title!),
           url: eachItem.url!,
         },
       }))
