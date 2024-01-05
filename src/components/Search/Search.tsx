@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
 import { UnexhaustiveError } from '../../common/error';
 import toast from 'react-hot-toast';
+import { Tab } from '../../common/tab';
 
 const defaultSearchResult: SearchResult = {
   type: SearchResultType.Normal,
@@ -323,24 +324,7 @@ export default function Search() {
 
   async function openSearchItem(searchItem: SearchItem, closePopup: boolean): Promise<void> {
     const openInNewTab = (await Preferences.get()).displayAndBehavior.openInNewTab;
-
-    const createTab = async (url: string) => {
-      if (openInNewTab) {
-        chrome.tabs.create({
-          url,
-          active: closePopup,
-        });
-      } else {
-        const activeTabs = await chrome.tabs.query({
-          active: true,
-          currentWindow: true,
-        });
-
-        if (activeTabs[0] && activeTabs[0].id) {
-          chrome.tabs.update(activeTabs[0].id, { url });
-        }
-      }
-    };
+    const createTab = async (url: string) => Tab.openUrl(url, openInNewTab, closePopup);
 
     switch (searchItem.type) {
       case SearchItemType.SearchEngine:
