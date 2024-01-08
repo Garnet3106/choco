@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="uuid-88999216-56f5-40a5-8016-00409d537ddf" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg id="uuid-0011cd8b-8909-4f43-8814-7683ebdca28e" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1136.79 543.14">
   <defs>
     <style>
-      .uuid-eea014c7-b3c3-4ec6-8b4c-e6caa6391908 {
-        fill: #ae3b17;
+      .uuid-971e2949-d43d-4571-81b9-f5862f4e7d6f {
+        fill: none;
+      }
+
+      .uuid-971e2949-d43d-4571-81b9-f5862f4e7d6f, .uuid-a0de8a1f-dab5-4618-8db3-d9308bfbb114 {
         stroke-width: 0px;
+      }
+
+      .uuid-a0de8a1f-dab5-4618-8db3-d9308bfbb114 {
+        fill: #ae3b17;
       }
     </style>
   </defs>
-  <circle class="uuid-eea014c7-b3c3-4ec6-8b4c-e6caa6391908" cx="256" cy="256" r="256"/>
+  <rect class="uuid-971e2949-d43d-4571-81b9-f5862f4e7d6f" x="624.79" y="31.14" width="512" height="512"/>
+  <path class="uuid-a0de8a1f-dab5-4618-8db3-d9308bfbb114" d="M1120.96,450.88l-77.74-77.74c20.58-34.01,32.44-73.9,32.44-116.56,0-124.5-100.93-225.43-225.43-225.43s-225.43,100.93-225.43,225.43,100.93,225.43,225.43,225.43c42.66,0,82.54-11.85,116.56-32.44l77.74,77.74c21.1,21.1,55.31,21.1,76.41,0l.03-.03c21.1-21.1,21.1-55.31,0-76.41ZM850.22,374.48c-65.12,0-117.91-52.79-117.91-117.91s52.79-117.91,117.91-117.91,117.91,52.79,117.91,117.91-52.79,117.91-117.91,117.91Z"/>
 </svg>

@@ -3,7 +3,7 @@
     "name": "choco",
     "version": "1.0.0",
     "icons": {
-        "128": "assets/favicon.png"
+        "128": "assets/favicon_128x.png"
     },
     "action": {
         "default_popup": "index.html",
