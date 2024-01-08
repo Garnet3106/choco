@@ -111,7 +111,7 @@ export namespace Search {
     const chromePages = ChromePage.search(keywords, 1);
     const openTabs = await Tab.searchOpenTabs(keywords, 5, query.hideNotificationCountInTitle);
     // todo: 履歴だけこれと同期せず検索する
-    const searchHistories = await SearchHistory.search(searchText, query.historyStartTime, 5, query.hideNotificationCountInTitle);
+    const searchHistories = await SearchHistory.search(keywords, 5, query.hideNotificationCountInTitle);
 
     const result = [
       ...searchEngines,
@@ -287,6 +287,7 @@ export namespace Website {
   }
 
   export function match(website: Website, keywords: string[]): boolean {
+    // fix: 複数キーワードをorでなくand検索する(some()も修正)
     return (
       !website.url.startsWith('chrome://') && (
         keywords.some((eachKeyword) => levelString(website.title).includes(eachKeyword)) ||
@@ -303,11 +304,11 @@ export type SearchHistory = {
 };
 
 export namespace SearchHistory {
-  export async function search(text: string, startTime: number, max: number, hideNotificationCountInTitle: boolean): Promise<SearchItem[]> {
+  export async function search(keywords: string[], max: number, hideNotificationCountInTitle: boolean): Promise<SearchItem[]> {
     const items = await chrome.history.search({
-      text,
-      maxResults: 100,
-      startTime,
+      text: '',
+      maxResults: 10000,
+      startTime: 0,
     });
 
     return items
@@ -320,6 +321,7 @@ export namespace SearchHistory {
           url: eachItem.url!,
         },
       }))
+      .filter((eachItem) => Website.match(eachItem.website, keywords))
       .sort((a, b) => {
         if (a.lastVisited < b.lastVisited) {
           return 1;
