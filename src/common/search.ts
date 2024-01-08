@@ -113,13 +113,29 @@ export namespace Search {
     // todo: 履歴だけこれと同期せず検索する
     const searchHistories = await SearchHistory.search(searchText, query.historyStartTime, 5, query.hideNotificationCountInTitle);
 
-    return [
+    const result = [
       ...searchEngines,
       ...favorites,
       ...chromePages,
       ...openTabs,
       ...searchHistories,
     ];
+
+    return Search.removeDuplicates(result);
+  }
+
+  export function removeDuplicates(searchItems: SearchItem[]): SearchItem[] {
+    const map = new Map<string, SearchItem>();
+
+    searchItems.forEach((eachItem) => {
+      const url = SearchItem.getUrl(eachItem);
+
+      if (!map.has(url)) {
+        map.set(url, eachItem);
+      }
+    });
+
+    return [...map.values()];
   }
 }
 
@@ -143,6 +159,31 @@ export namespace SearchItem {
 
       case SearchItemType.SearchHistory:
         return searchItem.history.website;
+
+      default:
+        throw new UnexhaustiveError();
+    }
+  }
+
+  export function getUrl(searchItem: SearchItem): string {
+    switch (searchItem.type) {
+      case SearchItemType.SearchEngine:
+        return searchItem.engine.url;
+
+      case SearchItemType.SearchEngineKeyword:
+        return searchItem.website.url;
+
+      case SearchItemType.Favorite:
+        return searchItem.website.url;
+
+      case SearchItemType.ChromePage:
+        return searchItem.page.url;
+
+      case SearchItemType.OpenTab:
+        return searchItem.tab.website.url;
+
+      case SearchItemType.SearchHistory:
+        return searchItem.history.website.url;
 
       default:
         throw new UnexhaustiveError();
