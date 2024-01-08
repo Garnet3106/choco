@@ -12,12 +12,13 @@
     "commands": {
         "_execute_action": {
             "suggested_key": {
-                "default": "Ctrl+K",
-                "mac": "Command+K"
+                "default": "Ctrl+Shift+F",
+                "mac": "Command+Shift+F"
             }
         }
     },
     "permissions": [
+        "bookmarks",
         "history",
         "storage",
         "tabs"
