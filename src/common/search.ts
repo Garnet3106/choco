@@ -120,21 +120,13 @@ export namespace Search {
       ...searchHistories,
     ];
 
-    return Search.removeDuplicates(result);
+    return SearchItem.removeDuplicates(result);
   }
 
-  export function removeDuplicates(searchItems: SearchItem[]): SearchItem[] {
-    const map = new Map<string, SearchItem>();
-
-    searchItems.forEach((eachItem) => {
-      const url = SearchItem.getUrl(eachItem);
-
-      if (!map.has(url)) {
-        map.set(url, eachItem);
-      }
-    });
-
-    return [...map.values()];
+  export function matchesKeywords(keywords: string[], values: string[]): boolean {
+    return values.some((eachValue) => (
+      !keywords.some((eachKeyword) => !levelString(eachValue).includes(eachKeyword))
+    ));
   }
 }
 
@@ -187,6 +179,20 @@ export namespace SearchItem {
       default:
         throw new UnexhaustiveError();
     }
+  }
+
+  export function removeDuplicates(searchItems: SearchItem[]): SearchItem[] {
+    const map = new Map<string, SearchItem>();
+
+    searchItems.forEach((eachItem) => {
+      const url = SearchItem.getUrl(eachItem);
+
+      if (!map.has(url)) {
+        map.set(url, eachItem);
+      }
+    });
+
+    return [...map.values()];
   }
 }
 
@@ -249,10 +255,7 @@ export type ChromePage = {
 export namespace ChromePage {
   export function search(keywords: string[], max: number): SearchItem[] {
     return defaultChromePages
-      .filter((eachPage) => (
-        keywords.some((eachKeyword) => levelString(eachPage.title).includes(eachKeyword)) ||
-        keywords.some((eachKeyword) => levelString(eachPage.url).includes(eachKeyword))
-      ))
+      .filter((eachPage) => Search.matchesKeywords(keywords, [eachPage.title, eachPage.url]))
       .splice(0, max)
       .map((eachPage) => ({
         type: SearchItemType.ChromePage,
@@ -286,13 +289,7 @@ export namespace Website {
   }
 
   export function match(website: Website, keywords: string[]): boolean {
-    // fix: 複数キーワードをorでなくand検索する(some()も修正)
-    return (
-      !website.url.startsWith('chrome://') && (
-        keywords.some((eachKeyword) => levelString(website.title).includes(eachKeyword)) ||
-        keywords.some((eachKeyword) => levelString(website.url).includes(eachKeyword))
-      )
-    );
+    return !website.url.startsWith('chrome://') && Search.matchesKeywords(keywords, [website.title, website.url]);
   }
 }
 
