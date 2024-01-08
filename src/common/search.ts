@@ -289,7 +289,22 @@ export namespace Website {
   }
 
   export function match(website: Website, keywords: string[]): boolean {
-    return !website.url.startsWith('chrome://') && Search.matchesKeywords(keywords, [website.title, website.url]);
+    // chrome:// 等の特殊な URL はマッチ対象外とする。
+    return WebsiteUrl.isCompatible(website.url) && Search.matchesKeywords(keywords, [website.title, website.url]);
+  }
+}
+
+export namespace WebsiteUrl {
+  export function isCompatible(url: string): boolean {
+    return isHttp(url) || isFile(url);
+  }
+
+  export function isHttp(url: string): boolean {
+    return url.startsWith('https://') || url.startsWith('http://');
+  }
+
+  export function isFile(url: string): boolean {
+    return url.startsWith('file:///');
   }
 }
 

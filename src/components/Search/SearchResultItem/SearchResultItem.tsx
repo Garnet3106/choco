@@ -1,6 +1,6 @@
 import './SearchResultItem.css';
 import { MouseEvent, ReactNode, useEffect, useRef } from 'react';
-import { SearchItem, SearchItemType, Website } from '../../../common/search';
+import { SearchItem, SearchItemType, Website, WebsiteUrl } from '../../../common/search';
 import { BiSearch, BiSolidWrench } from 'react-icons/bi';
 import { MdFavorite, MdHistory } from 'react-icons/md';
 import { HiOutlineDuplicate } from 'react-icons/hi';
@@ -147,7 +147,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
   }
 
   function getWebsiteCaption(url: string): string {
-    if (url.startsWith('file:///')) {
+    if (WebsiteUrl.isFile(url)) {
       const paths = url.substring('file:///'.length).split(/[/\\]/);
       return paths.splice(0, paths.length - 1).join('/');
     } else {
@@ -156,7 +156,7 @@ export default function SearchResultItem(props: SearchResultItemProps) {
   }
 
   function getFavIconImage(url: string): ReactNode {
-    if (url.startsWith('file:///')) {
+    if (WebsiteUrl.isFile(url)) {
       return <FaFile {...topIconProps} />;
     }
 
