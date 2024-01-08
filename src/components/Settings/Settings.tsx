@@ -4,7 +4,6 @@ import SettingItem from './SettingItem/SettingItem';
 import './Settings.css';
 import ToggleButton from '../input/ToggleButton/ToggleButton';
 import { Preferences } from '../../common/preference';
-import Dropdown from '../input/Dropdown/Dropdown';
 import Button from '../input/Button/Button';
 import { Link } from 'react-router-dom';
 
@@ -27,13 +26,6 @@ export default function Settings() {
         <ToggleButton
           enabled={preferences.searchExclusion.enable}
           onClick={() => updatePreferences((state) => { state.searchExclusion.enable = !state.searchExclusion.enable; })}
-        />
-      ),
-      '検索履歴の反映期間': preferences.searchExclusion.enable && (
-        <Dropdown
-          selected={String(preferences.searchExclusion.targetPeriodOfSearchHistory)}
-          items={[7, 30, 60, 120].map((v) => ({ id: v.toString(), text: `${v}日前` }))}
-          onChange={(id) => updatePreferences((state) => { state.searchExclusion.targetPeriodOfSearchHistory = Number(id); })}
         />
       ),
       'ドメインで除外する': preferences.searchExclusion.enable && '準備中',

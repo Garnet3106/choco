@@ -1,10 +1,9 @@
 import { SearchEngine } from './search';
-import { preferences as defaultPreferences, searchEngines as defaultSearchEngines } from '../../default.json';
+import { searchEngines as defaultSearchEngines } from '../../default.json';
 
 export type Preferences = {
   searchExclusion: {
     enable: boolean,
-    targetPeriodOfSearchHistory: number,
     byDomains: string[],
     byKeywords: string[],
     byBookmarkFolders: string[],
@@ -22,7 +21,6 @@ export namespace Preferences {
     return {
       searchExclusion: {
         enable: true,
-        targetPeriodOfSearchHistory: defaultPreferences.searchExclusion.targetPeriodOfSearchHistory,
         byDomains: [],
         byKeywords: [],
         byBookmarkFolders: [],

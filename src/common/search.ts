@@ -88,7 +88,6 @@ export type SearchItem =
 
 export type SearchQuery = {
   text: string,
-  historyStartTime: number,
   hideNotificationCountInTitle: boolean,
 };
 

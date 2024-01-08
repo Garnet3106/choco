@@ -1,10 +1,5 @@
 {
     "searchTimeout": 100,
-    "preferences": {
-        "searchExclusion": {
-            "targetPeriodOfSearchHistory": 30
-        }
-    },
     "searchEngines": [
         {
             "name": "Amazon.co.jp",
