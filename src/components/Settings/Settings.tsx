@@ -6,6 +6,7 @@ import ToggleButton from '../input/ToggleButton/ToggleButton';
 import { Preferences } from '../../common/preference';
 import Button from '../input/Button/Button';
 import { Link } from 'react-router-dom';
+import { contactUrl } from '../../../default.json';
 
 type SettingGroupSource = {
   [name: string]: {
@@ -82,8 +83,24 @@ export default function Settings() {
           />
         </Link>
       </div>
+      <div className='settings-caption'>
+        Garnet3106 © All rights reserved.
+        <br />
+        <span className='settings-caption-hyperlink' onClick={() => openFeedbackLink()}>
+          ご意見・ご要望はこちら
+        </span>
+      </div>
     </div>
   );
+
+  function openFeedbackLink() {
+    chrome.tabs.create({
+      url: contactUrl,
+      active: true,
+    });
+
+    window.close();
+  }
 
   async function updatePreferences(callback: (state: Preferences) => void): Promise<void> {
     const newState = structuredClone(preferences);

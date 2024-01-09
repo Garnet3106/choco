@@ -24,3 +24,19 @@
   margin-top: var(--margin);
   width: 100%;
 }
+
+.settings-caption {
+  align-items: center;
+  color: var(--light-gray-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 85%;
+  margin-top: 8px;
+}
+
+.settings-caption-hyperlink {
+  cursor: pointer;
+  color: var(--light-gray-color);
+  text-decoration: underline;
+}
