@@ -114,12 +114,14 @@ export namespace Search {
 
     const preferences = await Preferences.get();
     const searchEngines = SearchEngine.search(preferences.searchEngines, searchText);
-    const favorites = await Favorites.search(keywords, 3);
     const chromePages = ChromePage.search(keywords, 1);
-    const openTabs = await Tab.searchOpenTabs(keywords, 5, query.hideNotificationCountInTitle);
-    const bookmarks = await Bookmark.search(keywords, 5, query.hideNotificationCountInTitle);
-    // todo: 履歴だけこれと同期せず検索する
-    const searchHistories = await SearchHistory.search(keywords, 5, query.hideNotificationCountInTitle);
+
+    const [favorites, openTabs, bookmarks, searchHistories] = await Promise.all([
+      Favorites.search(keywords, 3),
+      Tab.searchOpenTabs(keywords, 5, query.hideNotificationCountInTitle),
+      Bookmark.search(keywords, 5, query.hideNotificationCountInTitle),
+      SearchHistory.search(keywords, 5, query.hideNotificationCountInTitle),
+    ]);
 
     const result = [
       ...searchEngines,
