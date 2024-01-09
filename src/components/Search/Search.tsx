@@ -350,6 +350,10 @@ export default function Search() {
         chrome.tabs.update(searchItem.tab.id, { active: true });
         break;
 
+      case SearchItemType.Bookmark:
+        createTab(searchItem.website.url);
+        break;
+
       case SearchItemType.SearchHistory:
         createTab(searchItem.history.website.url);
         break;

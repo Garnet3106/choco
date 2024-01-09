@@ -94,6 +94,13 @@ export default function SearchResultItem(props: SearchResultItemProps) {
       elements.caption = getWebsiteCaption(props.item.tab.website.url);
       break;
 
+    case SearchItemType.Bookmark:
+      elements.topIcon = getFavIconImage(props.item.website.url);
+      elements.typeIcon = <HiOutlineDuplicate {...typeIconProps} />;
+      elements.text = props.item.website.title;
+      elements.caption = getWebsiteCaption(props.item.website.url);
+      break;
+
     case SearchItemType.SearchHistory:
       elements.topIcon = getFavIconImage(props.item.history.website.url);
       elements.typeIcon = <MdHistory {...typeIconProps} />;

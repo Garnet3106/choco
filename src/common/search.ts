@@ -3,6 +3,7 @@ import { chromePages as defaultChromePages } from '../../default.json';
 import { Preferences } from './preference';
 import { UnexhaustiveError } from './error';
 import { Tab } from './tab';
+import { Bookmark } from './bookmark';
 
 export enum SearchResultType {
   Normal,
@@ -29,6 +30,7 @@ export namespace CategorizedSearchItems {
       [SearchItemType.Favorite]: [],
       [SearchItemType.ChromePage]: [],
       [SearchItemType.OpenTab]: [],
+      [SearchItemType.Bookmark]: [],
       [SearchItemType.SearchHistory]: [],
     };
   }
@@ -46,6 +48,7 @@ export enum SearchItemType {
   Favorite,
   ChromePage,
   OpenTab,
+  Bookmark,
   SearchHistory,
 }
 
@@ -56,6 +59,7 @@ export namespace SearchItemType {
     [SearchItemType.Favorite]: 'お気に入り',
     [SearchItemType.ChromePage]: 'ブラウザ機能',
     [SearchItemType.OpenTab]: '開いているタブ',
+    [SearchItemType.Bookmark]: 'ブックマーク',
     [SearchItemType.SearchHistory]: '検索履歴',
   };
 }
@@ -80,6 +84,10 @@ export type SearchItem =
   | {
     type: SearchItemType.OpenTab,
     tab: Tab,
+  }
+  | {
+    type: SearchItemType.Bookmark,
+    website: Website,
   }
   | {
     type: SearchItemType.SearchHistory,
@@ -109,6 +117,7 @@ export namespace Search {
     const favorites = await Favorites.search(keywords, 3);
     const chromePages = ChromePage.search(keywords, 1);
     const openTabs = await Tab.searchOpenTabs(keywords, 5, query.hideNotificationCountInTitle);
+    const bookmarks = await Bookmark.search(keywords, 5, query.hideNotificationCountInTitle);
     // todo: 履歴だけこれと同期せず検索する
     const searchHistories = await SearchHistory.search(keywords, 5, query.hideNotificationCountInTitle);
 
@@ -117,6 +126,7 @@ export namespace Search {
       ...favorites,
       ...chromePages,
       ...openTabs,
+      ...bookmarks,
       ...searchHistories,
     ];
 
@@ -148,6 +158,9 @@ export namespace SearchItem {
       case SearchItemType.OpenTab:
         return searchItem.tab.website;
 
+      case SearchItemType.Bookmark:
+        return searchItem.website;
+
       case SearchItemType.SearchHistory:
         return searchItem.history.website;
 
@@ -172,6 +185,9 @@ export namespace SearchItem {
 
       case SearchItemType.OpenTab:
         return searchItem.tab.website.url;
+
+      case SearchItemType.Bookmark:
+        return searchItem.website.url;
 
       case SearchItemType.SearchHistory:
         return searchItem.history.website.url;
