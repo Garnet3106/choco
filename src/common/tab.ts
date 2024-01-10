@@ -1,4 +1,5 @@
 import { SearchItem, SearchItemType, Website } from './search';
+import { browserStartPages } from '../../default.json';
 
 export type Tab = {
   id: number,
@@ -32,20 +33,27 @@ export namespace Tab {
   }
 
   export async function openUrl(url: string, openInNewTab: boolean, setNewTabActive: boolean): Promise<void> {
-    if (openInNewTab) {
+    const allActiveTabs = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+
+    const activeTab = allActiveTabs[0];
+    const isStartPageActive = activeTab?.url && !isStartPage(activeTab.url);
+
+    if (openInNewTab && isStartPageActive) {
       await chrome.tabs.create({
         url,
         active: setNewTabActive,
       });
     } else {
-      const activeTabs = await chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-      });
-
-      if (activeTabs[0] && activeTabs[0].id) {
-        await chrome.tabs.update(activeTabs[0].id, { url });
+      if (activeTab && activeTab.id) {
+        await chrome.tabs.update(activeTab.id, { url });
       }
     }
+  }
+
+  export function isStartPage(url: string) {
+    return browserStartPages.some((v) => url.startsWith(v));
   }
 }

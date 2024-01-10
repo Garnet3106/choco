@@ -107,6 +107,12 @@
             "url": "chrome://version"
         }
     ],
+    "browserStartPages": [
+        "chrome://newtab",
+        "vivaldi://newtab",
+        "chrome://vivaldi-webui/startpage",
+        "edge://newtab"
+    ],
     "links": {
         "developer": "https://github.com/Garnet3106",
         "contactUs": "https://forms.gle/ZY6h83A7JFd8Giga6",
