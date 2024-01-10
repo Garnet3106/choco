@@ -7,6 +7,7 @@ import { Preferences } from '../../common/preference';
 import Button from '../input/Button/Button';
 import { Link } from 'react-router-dom';
 import { contactUrl } from '../../../default.json';
+import { Tab } from '../../common/tab';
 
 type SettingGroupSource = {
   [name: string]: {
@@ -94,11 +95,7 @@ export default function Settings() {
   );
 
   function openFeedbackLink() {
-    chrome.tabs.create({
-      url: contactUrl,
-      active: true,
-    });
-
+    Tab.openUrl(contactUrl, true, true);
     window.close();
   }
 
