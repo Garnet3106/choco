@@ -17,6 +17,11 @@ const defaultSearchResult: SearchResult = {
   categorizeItems: false,
 };
 
+export type Debouncer = {
+  timeoutId: number,
+  searchText: string,
+};
+
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
   const [searchText, setSearchText] = useState('');
@@ -24,11 +29,11 @@ export default function Search() {
   const [searchResult, setSearchResult] = useState<SearchResult>(defaultSearchResult);
 
   const [searchResultHeight, setSearchResultHeight] = useState(200);
-  const searchTextQueue = useRef<string[]>([]);
+  const debouncer = useRef<Debouncer | null>(null);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   let searchResultMessage: string | null = null;
 
-  if (!searchResult.items.length && !searchTextQueue.current.length) {
+  if (!searchResult.items.length && debouncer.current === null) {
     if (searchText.trim() === '') {
       if (searchResult.type === SearchResultType.SearchEngine) {
         searchResultMessage = '検索キーワードを入力すると検索できます。';
@@ -126,18 +131,24 @@ export default function Search() {
 
   function enqueueSearchText(newSearchText: string) {
     setSearchText(newSearchText);
-    searchTextQueue.current.push(newSearchText);
-    setTimeout(dequeueSearchText, searchTimeout);
+
+    if (debouncer.current !== null) {
+      clearTimeout(debouncer.current.timeoutId);
+    }
+
+    debouncer.current = {
+      timeoutId: setTimeout(dequeueSearchText, searchTimeout),
+      searchText: newSearchText,
+    };
   }
 
   async function dequeueSearchText() {
-    if (searchTextQueue.current.length >= 2) {
-      searchTextQueue.current.shift();
+    if (debouncer.current === null) {
       return;
     }
 
-    const currentSearchText = searchTextQueue.current.pop()?.trim() ?? '';
-    updateSearchResult(currentSearchText);
+    updateSearchResult(debouncer.current.searchText);
+    debouncer.current = null;
   }
 
   async function updateSearchResult(currentSearchText: string) {

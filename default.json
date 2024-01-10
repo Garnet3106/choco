@@ -1,6 +1,6 @@
 {
     "versionCode": "1.0.0",
-    "searchTimeout": 100,
+    "searchTimeout": 150,
     "searchEngines": [
         {
             "name": "Amazon.co.jp",
