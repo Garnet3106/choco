@@ -106,7 +106,7 @@ export default function Search() {
       </Link>
       <SearchBar
         placeholder={searchResult.type === SearchResultType.SearchEngine ? `“${searchResult.searchEngine.name}” で検索する（Escで戻る）` : '検索キーワードを入力'}
-        debounceTimeout={searchTimeout}
+        debounceTimeout={searchResult.type === SearchResultType.SearchEngine ? 0 : searchTimeout}
         onChange={updateSearchResult}
         ref={searchBarRef}
       />
@@ -224,6 +224,7 @@ export default function Search() {
 
       case 'Escape':
         if (searchResult.type === SearchResultType.SearchEngine) {
+          updateSearchText('');
           setSearchResult(defaultSearchResult);
           event.preventDefault();
         }
