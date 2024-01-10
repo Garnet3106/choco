@@ -2,22 +2,6 @@
   width: var(--search-width);
 }
 
-.search-bar {
-  background-color: var(--dark-gray-color);
-  border: none;
-  border-radius: var(--border-radius);
-  box-sizing: border-box;
-  color: var(--white-color);
-  font-size: 110%;
-  outline: none;
-  padding: 12px calc(var(--margin) / 2) 10px calc((var(--margin) / 2) + 26px);
-  width: 100%;
-}
-
-.search-bar::placeholder {
-  color: var(--light-gray-color);
-}
-
 .search-results {
   margin-top: var(--margin);
   overflow-y: scroll;

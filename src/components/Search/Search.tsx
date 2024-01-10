@@ -1,15 +1,16 @@
 import './Search.css';
-import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
 import { CategorizedSearchItems, Favorites, Search as ItemSearch, SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType, Website } from '../../common/search';
-import { searchTimeout } from '../../../default.json';
 import { Link } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
 import { UnexhaustiveError } from '../../common/error';
 import toast from 'react-hot-toast';
 import { Tab } from '../../common/tab';
+import SearchBar, { SearchBarRef } from './SearchBar/SearchBar';
+import { searchTimeout } from '../../../default.json';
 
 const defaultSearchResult: SearchResult = {
   type: SearchResultType.Normal,
@@ -17,23 +18,18 @@ const defaultSearchResult: SearchResult = {
   categorizeItems: false,
 };
 
-export type Debouncer = {
-  timeoutId: number,
-  searchText: string,
-};
-
 export default function Search() {
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+
+  const searchBarRef = useRef<SearchBarRef | null>(null);
   const [searchText, setSearchText] = useState('');
 
   const [searchResult, setSearchResult] = useState<SearchResult>(defaultSearchResult);
-
   const [searchResultHeight, setSearchResultHeight] = useState(200);
-  const debouncer = useRef<Debouncer | null>(null);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   let searchResultMessage: string | null = null;
 
-  if (!searchResult.items.length && debouncer.current === null) {
+  if (!searchResult.items.length) {
     if (searchText.trim() === '') {
       if (searchResult.type === SearchResultType.SearchEngine) {
         searchResultMessage = '検索キーワードを入力すると検索できます。';
@@ -108,13 +104,11 @@ export default function Search() {
           }}
         />
       </Link>
-      <input
-        type='text'
-        className='search-bar'
-        value={searchText}
-        onChange={onChangeSearchText}
+      <SearchBar
         placeholder={searchResult.type === SearchResultType.SearchEngine ? `“${searchResult.searchEngine.name}” で検索する（Escで戻る）` : '検索キーワードを入力'}
-        autoFocus
+        debounceTimeout={searchTimeout}
+        onChange={updateSearchResult}
+        ref={searchBarRef}
       />
       <div className='search-results scrollbar-none' style={{ height: searchResultHeight }} ref={searchResultsRef}>
         {items}
@@ -129,35 +123,20 @@ export default function Search() {
     </div>
   );
 
-  function enqueueSearchText(newSearchText: string) {
+  function updateSearchText(newSearchText: string) {
+    searchBarRef.current?.updateSearchText(newSearchText);
     setSearchText(newSearchText);
-
-    if (debouncer.current !== null) {
-      clearTimeout(debouncer.current.timeoutId);
-    }
-
-    debouncer.current = {
-      timeoutId: setTimeout(dequeueSearchText, searchTimeout),
-      searchText: newSearchText,
-    };
   }
 
-  async function dequeueSearchText() {
-    if (debouncer.current === null) {
-      return;
-    }
+  async function updateSearchResult(newSearchText: string) {
+    updateSearchText(newSearchText);
 
-    updateSearchResult(debouncer.current.searchText);
-    debouncer.current = null;
-  }
-
-  async function updateSearchResult(currentSearchText: string) {
     switch (searchResult.type) {
       case SearchResultType.Normal: {
         const preferences = await Preferences.get();
 
         const newItems = await ItemSearch.search({
-          text: currentSearchText,
+          text: newSearchText,
           hideNotificationCountInTitle: preferences.displayAndBehavior.hideNotificationCountInTitle,
         });
 
@@ -172,15 +151,15 @@ export default function Search() {
         const searchItem: SearchItem = {
           type: SearchItemType.SearchEngineKeyword,
           website: {
-            title: `“${currentSearchText}” で検索`,
-            url: SearchEngine.replaceKeyword(searchResult.searchEngine.url, currentSearchText),
+            title: `“${newSearchText}” で検索`,
+            url: SearchEngine.replaceKeyword(searchResult.searchEngine.url, newSearchText),
           },
         };
 
         setSearchResult({
           type: SearchResultType.SearchEngine,
           searchEngine: searchResult.searchEngine,
-          items: currentSearchText ? [searchItem] : [],
+          items: newSearchText ? [searchItem] : [],
         });
       } break;
 
@@ -189,10 +168,6 @@ export default function Search() {
     }
 
     setSelectedItemIndex(0);
-  }
-
-  async function onChangeSearchText(event: ChangeEvent<HTMLInputElement>) {
-    enqueueSearchText(event.currentTarget.value);
   }
 
   function onKeyDown(event: KeyboardEvent) {
@@ -207,7 +182,7 @@ export default function Search() {
           }
 
           if (target.type === SearchItemType.Favorite) {
-            Favorites.remove(target.website.url).then(() => enqueueSearchText(searchText));
+            Favorites.remove(target.website.url).then(() => updateSearchResult(searchText));
             toast('お気に入りから削除しました。');
           } else {
             const website = SearchItem.getWebsite(target);
@@ -217,7 +192,7 @@ export default function Search() {
               break;
             }
 
-            Favorites.add(website).then(() => enqueueSearchText(searchText));
+            Favorites.add(website).then(() => updateSearchResult(searchText));
             toast('お気に入りに追加しました。');
           }
         }
@@ -337,7 +312,7 @@ export default function Search() {
 
     switch (searchItem.type) {
       case SearchItemType.SearchEngine:
-        setSearchText('');
+        updateSearchText('');
         setSearchResult({
           type: SearchResultType.SearchEngine,
           searchEngine: searchItem.engine,
