@@ -35,6 +35,11 @@
   margin-top: 8px;
 }
 
+.settings-caption-row {
+  display: flex;
+  gap: var(--margin);
+}
+
 .settings-caption-hyperlink {
   cursor: pointer;
   color: var(--light-gray-color);

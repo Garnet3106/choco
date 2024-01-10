@@ -1,4 +1,5 @@
 {
+    "versionCode": "1.0.0",
     "searchTimeout": 100,
     "searchEngines": [
         {
@@ -106,5 +107,9 @@
             "url": "chrome://version"
         }
     ],
-    "contactUrl": "https://forms.gle/ZY6h83A7JFd8Giga6"
+    "links": {
+        "developer": "https://github.com/Garnet3106",
+        "contactUs": "https://forms.gle/ZY6h83A7JFd8Giga6",
+        "githubIssues": "https://github.com/Garnet3106/choco/issues"
+    }
 }

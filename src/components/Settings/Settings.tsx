@@ -6,7 +6,7 @@ import ToggleButton from '../input/ToggleButton/ToggleButton';
 import { Preferences } from '../../common/preference';
 import Button from '../input/Button/Button';
 import { Link } from 'react-router-dom';
-import { contactUrl } from '../../../default.json';
+import { links, versionCode } from '../../../default.json';
 import { Tab } from '../../common/tab';
 
 type SettingGroupSource = {
@@ -85,17 +85,28 @@ export default function Settings() {
         </Link>
       </div>
       <div className='settings-caption'>
-        Garnet3106 © All rights reserved.
-        <br />
-        <span className='settings-caption-hyperlink' onClick={() => openFeedbackLink()}>
-          ご意見・ご要望はこちら
+        <span className='settings-caption-row'>
+          <span>
+            {`choco v${versionCode} by `}
+            <span className='settings-caption-hyperlink' onClick={() => openHyperlink(links.developer)}>
+              Garnet3106
+            </span>
+          </span>
+        </span>
+        <span className='settings-caption-row'>
+          <span className='settings-caption-hyperlink' onClick={() => openHyperlink(links.contactUs)}>
+            ご意見/ご要望はこちら
+          </span>
+          <span className='settings-caption-hyperlink' onClick={() => openHyperlink(links.githubIssues)}>
+            GitHub Issues
+          </span>
         </span>
       </div>
     </div>
   );
 
-  function openFeedbackLink() {
-    Tab.openUrl(contactUrl, true, true);
+  function openHyperlink(url: string) {
+    Tab.openUrl(url, true, true);
     window.close();
   }
 
