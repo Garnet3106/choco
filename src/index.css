@@ -8,6 +8,7 @@
   --white-color: #cbd2d9;
 
   --margin: 12px;
+  --margin-half: calc(var(--margin) / 2);
   --border-radius: 3px;
 
   --search-width: 500px;

@@ -3,7 +3,7 @@
   border-radius: var(--border-radius);
   cursor: pointer;
   display: flex;
-  padding: calc(var(--margin) / 2);
+  padding: var(--margin-half);
   transition: background-color 100ms;
 }
 
@@ -22,7 +22,7 @@
 .search-engine-settings-item-content {
   align-items: center;
   display: flex;
-  gap: calc(var(--margin) / 2);
+  gap: var(--margin-half);
   overflow-x: hidden;
   width: calc(100% - 16px - (var(--margin) / 2));
 }
@@ -41,7 +41,7 @@
 
 .search-engine-settings-item-edit {
   color: var(--light-gray-color);
-  margin-left: calc(var(--margin) / 2);
+  margin-left: var(--margin-half);
   opacity: 0;
   transition: opacity 100ms;
 }
@@ -59,7 +59,7 @@
 .search-engine-settings-edit {
   background-color: var(--black-color);
   border-radius: var(--border-radius);
-  margin: calc(var(--margin) / 2) 0;
+  margin: var(--margin-half) 0;
   width: 100%;
 }
 

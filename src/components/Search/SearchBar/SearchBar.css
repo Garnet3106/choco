@@ -6,7 +6,7 @@
   color: var(--white-color);
   font-size: 110%;
   outline: none;
-  padding: 12px calc(var(--margin) / 2) 10px calc((var(--margin) / 2) + 26px);
+  padding: 12px var(--margin-half) 10px calc((var(--margin) / 2) + 26px);
   width: 100%;
 }
 

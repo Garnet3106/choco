@@ -98,7 +98,7 @@ export default function Search() {
           size={18}
           style={{
             cursor: 'pointer',
-            right: 'calc(var(--margin) / 2)',
+            right: 'var(--margin-half)',
             position: 'absolute',
             top: 12,
           }}
@@ -263,7 +263,7 @@ export default function Search() {
           height={18}
           width={18}
           style={{
-            left: 'calc(var(--margin) / 2 + 1px)',
+            left: 'calc(var(--margin-half) + 1px)',
             position: 'absolute',
             top: 11,
           }}
@@ -275,7 +275,7 @@ export default function Search() {
           color='var(--light-gray-color)'
           size={18}
           style={{
-            left: 'calc(var(--margin) / 2 + 1px)',
+            left: 'calc(var(--margin-half) + 1px)',
             position: 'absolute',
             top: 11,
           }}

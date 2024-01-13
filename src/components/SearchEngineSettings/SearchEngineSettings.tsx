@@ -63,7 +63,7 @@ export default function SearchEngineSettings() {
         }}>
           <div style={{
             display: 'flex',
-            gap: 'calc(var(--margin) / 2)',
+            gap: 'var(--margin-half)',
           }}>
             <div className='search-engine-settings-edit-item'>
               <div className='search-engine-settings-edit-item-name'>
