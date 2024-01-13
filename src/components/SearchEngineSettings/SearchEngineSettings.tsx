@@ -7,19 +7,25 @@ import { Preferences } from '../../common/preference';
 import TextInput from '../input/TextInput/TextInput';
 import Button from '../input/Button/Button';
 import { Link } from 'react-router-dom';
+import * as uuid from 'uuid';
+
+type DraftSearchEngine = SearchEngine & {
+  createdNew: boolean,
+};
 
 export default function SearchEngineSettings() {
   const [searchEngines, setSearchEngines] = useState<SearchEngine[]>([]);
-  const [selectedSearchEngineId, setSelectedSearchEngineId] = useState<string | null>(null);
+  const [draftSearchEngine, setDraftSearchEngine] = useState(getDefaultDraftSearchEngine());
 
   useEffect(() => {
     Preferences.get().then((preferences) => setSearchEngines(preferences.searchEngines));
   }, []);
 
+  // todo: sort
   const items = searchEngines.map((eachEngine) => (
     <div
-      className={`search-engine-settings-item ${selectedSearchEngineId === eachEngine.id ? 'search-engine-settings-item-selected' : ''}`}
-      onClick={() => setSelectedSearchEngineId(eachEngine.id)}
+      className={`search-engine-settings-item ${draftSearchEngine.id === eachEngine.id ? 'search-engine-settings-item-selected' : ''}`}
+      onClick={() => setExistingSearchEngineToDraft(eachEngine.id)}
       key={eachEngine.id}
     >
       <div className='search-engine-settings-item-content'>
@@ -63,6 +69,11 @@ export default function SearchEngineSettings() {
               </div>
               <TextInput
                 inputProps={{
+                  value: draftSearchEngine.name,
+                  onChange: (e) => {
+                    const value = e.currentTarget.value;
+                    updateDraftSearchEngine((state) => state.name = value);
+                  },
                   placeholder: 'Google検索',
                   autoFocus: true,
                 }}
@@ -74,6 +85,11 @@ export default function SearchEngineSettings() {
               </div>
               <TextInput
                 inputProps={{
+                  value: draftSearchEngine.command,
+                  onChange: (e) => {
+                    const value = e.currentTarget.value;
+                    updateDraftSearchEngine((state) => state.command = value);
+                  },
                   placeholder: 'google',
                 }}
               />
@@ -85,17 +101,32 @@ export default function SearchEngineSettings() {
             </div>
             <TextInput
               inputProps={{
+                value: draftSearchEngine.url,
+                onChange: (e) => {
+                  const value = e.currentTarget.value;
+                  updateDraftSearchEngine((state) => state.url = value);
+                },
                 placeholder: 'https://google.com/search?q={keyword}',
               }}
             />
           </div>
           <Button
-            text='新規作成する'
+            text='削除する'
             style={{
               backgroundColor: 'var(--light-gray-color)',
               marginTop: 2,
               textAlign: 'center',
             }}
+            onClick={saveChange}
+          />
+          <Button
+            text={draftSearchEngine.createdNew ? '新規作成する' : '更新する'}
+            style={{
+              backgroundColor: 'var(--light-gray-color)',
+              marginTop: 'calc(var(--margin) / 2 * -1)',
+              textAlign: 'center',
+            }}
+            onClick={saveChange}
           />
         </div>
       </div>
@@ -110,4 +141,73 @@ export default function SearchEngineSettings() {
       </Link>
     </div>
   );
+
+  function getDefaultDraftSearchEngine(): DraftSearchEngine {
+    return {
+      createdNew: true,
+      id: uuid.v4(),
+      name: '',
+      command: '',
+      url: '',
+    };
+  }
+
+  function updateDraftSearchEngine(callback: (state: DraftSearchEngine) => void) {
+    setDraftSearchEngine((state) => {
+      const newState = {...state};
+      callback(newState);
+      return newState;
+    });
+  }
+
+  function setExistingSearchEngineToDraft(id: string) {
+    const target = searchEngines.find((v) => v.id === id);
+
+    if (!target) {
+      return;
+    }
+
+    setDraftSearchEngine({
+      createdNew: false,
+      ...target,
+    });
+  }
+
+  async function saveChange() {
+    // add: input validation
+    const updatedSearchEngines = getUpdatedSearchEngine();
+    setSearchEngines(updatedSearchEngines);
+    const preferences = await Preferences.get();
+    Preferences.update({...preferences, searchEngines: updatedSearchEngines });
+    setDraftSearchEngine(getDefaultDraftSearchEngine());
+    // todo: move to the bottom
+  }
+
+  function getUpdatedSearchEngine(): SearchEngine[] {
+    if (draftSearchEngine.createdNew) {
+      const updated = [...searchEngines];
+
+      updated.push({
+        id: uuid.v4(),
+        name: draftSearchEngine.name,
+        command: draftSearchEngine.command,
+        url: draftSearchEngine.url,
+      });
+
+      return updated;
+    } else {
+      return searchEngines.map((eachEngine) => {
+        if (eachEngine.id === draftSearchEngine.id) {
+          return {
+            id: eachEngine.id,
+            name: draftSearchEngine.name,
+            command: draftSearchEngine.command,
+            url: draftSearchEngine.url,
+          };
+        } else {
+          return eachEngine;
+        }
+      });
+    }
+  }
 }
