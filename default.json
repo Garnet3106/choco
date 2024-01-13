@@ -3,71 +3,85 @@
     "searchTimeout": 150,
     "searchEngines": [
         {
+            "id": "272cc1c4-e93b-190f-97fe-d636dbb52e65",
             "name": "Amazon.co.jp",
             "command": "amazon",
             "url": "https://www.amazon.co.jp/s?k={keyword}"
         },
         {
+            "id": "1e7e7de4-4984-8841-cd3f-29429b02699a",
             "name": "Can I use...",
             "command": "caniuse",
             "url": "https://caniuse.com/?search=?q={keyword}"
         },
         {
+            "id": "e8a89498-4cc2-96d1-2e70-90808d996a20",
             "name": "Google 検索",
             "command": "google",
             "url": "https://google.com/search?q={keyword}"
         },
         {
+            "id": "4240708a-8cb8-a905-b9f5-06e830b6d7ac",
             "name": "ローカルホスト (ポート指定)",
             "command": "local",
             "url": "http://localhost:{keyword}"
         },
         {
+            "id": "76194760-9041-c11d-3666-7a6cb1a324e9",
             "name": "Google マップ",
             "command": "maps",
             "url": "https://www.google.com/maps/search/{keyword}"
         },
         {
+            "id": "2dbbbfac-87c3-51de-c318-5ea49482ee29",
             "name": "ニコニコ動画",
             "command": "nico",
             "url": "https://www.nicovideo.jp/search/{keyword}"
         },
         {
+            "id": "0ec84f4f-e3c9-5749-0a75-5467d70e675c",
             "name": "npm",
             "command": "npm",
             "url": "https://www.npmjs.com/package/{keyword}"
         },
         {
+            "id": "565910ce-459f-3876-7983-4594ed07b4af",
             "name": "pixiv",
             "command": "pixiv",
             "url": "https://www.pixiv.net/tags/{keyword}"
         },
         {
+            "id": "9b0db17f-9b6c-5716-288e-d9b5fd523f11",
             "name": "Twitter",
             "command": "twitter",
             "url": "https://twitter.com/search?q={keyword}"
         },
         {
+            "id": "1c2f87cf-f16f-c5b4-c73e-b7af5f80b629",
             "name": "Weblio 英和辞書",
             "command": "en",
             "url": "https://ejje.weblio.jp/content/{keyword}"
         },
         {
+            "id": "c0a64518-ce99-5f35-a56a-a8049ed24a82",
             "name": "Whois",
             "command": "whois",
             "url": "https://who.is/whois/{keyword}"
         },
         {
+            "id": "d3428b0a-bc0a-691f-8ff8-0f18508cddc2",
             "name": "Wikipedia",
             "command": "wiki",
             "url": "https://ja.wikipedia.org/w/index.php?search={keyword}"
         },
         {
+            "id": "1561cadf-4818-76ac-009b-b1a7229007f5",
             "name": "Yahoo!検索",
             "command": "yahoo",
             "url": "https://search.yahoo.co.jp/search?p={keyword}"
         },
         {
+            "id": "87438122-f7a8-3dd6-d172-6e03a722ab8b",
             "name": "YouTube",
             "command": "youtube",
             "url": "https://www.youtube.com/results?search_query={keyword}"

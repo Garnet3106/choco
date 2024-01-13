@@ -215,6 +215,7 @@ export namespace SearchItem {
 }
 
 export type SearchEngine = {
+  id: string,
   name: string,
   command: string,
   url: string,
