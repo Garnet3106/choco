@@ -10,13 +10,18 @@ import { Link } from 'react-router-dom';
 
 export default function SearchEngineSettings() {
   const [searchEngines, setSearchEngines] = useState<SearchEngine[]>([]);
+  const [selectedSearchEngineId, setSelectedSearchEngineId] = useState<string | null>(null);
 
   useEffect(() => {
     Preferences.get().then((preferences) => setSearchEngines(preferences.searchEngines));
   }, []);
 
   const items = searchEngines.map((eachEngine) => (
-    <div className='search-engine-settings-item' key={Math.random()}>
+    <div
+      className={`search-engine-settings-item ${selectedSearchEngineId === eachEngine.id ? 'search-engine-settings-item-selected' : ''}`}
+      onClick={() => setSelectedSearchEngineId(eachEngine.id)}
+      key={eachEngine.id}
+    >
       <div className='search-engine-settings-item-content'>
         <img src={Website.getFavIconUrl(eachEngine.url)} height={16} width={16} />
         <div>
@@ -26,7 +31,7 @@ export default function SearchEngineSettings() {
           {eachEngine.command}
         </div>
       </div>
-      <TbEdit size={18} color='var(--light-gray-color)' style={{ marginLeft: 'calc(var(--margin) / 2)' }} />
+      <TbEdit size={18} className='search-engine-settings-item-edit' />
     </div>
   ));
 

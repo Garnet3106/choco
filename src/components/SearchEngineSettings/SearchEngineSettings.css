@@ -1,6 +1,7 @@
 .search-engine-settings-item {
   align-items: center;
   border-radius: var(--border-radius);
+  cursor: pointer;
   display: flex;
   padding: calc(var(--margin) / 2);
   transition: background-color 100ms;
@@ -8,6 +9,14 @@
 
 .search-engine-settings-item:hover {
   background-color: var(--dark-gray-color);
+}
+
+.search-engine-settings-item-selected {
+  background-color: var(--main-color);
+}
+
+.search-engine-settings-item-selected:hover {
+  background-color: var(--main-color);
 }
 
 .search-engine-settings-item-content {
@@ -22,7 +31,29 @@
   background-color: var(--light-gray-color);
   border-radius: var(--border-radius);
   font-size: 80%;
-  padding: 1px 3px;
+  padding: 0 3px 1px;
+}
+
+.search-engine-settings-item-selected
+.search-engine-settings-item-command {
+  background-color: var(--light-main-color);
+}
+
+.search-engine-settings-item-edit {
+  color: var(--light-gray-color);
+  margin-left: calc(var(--margin) / 2);
+  opacity: 0;
+  transition: opacity 100ms;
+}
+
+.search-engine-settings-item:hover
+.search-engine-settings-item-edit {
+  opacity: 1;
+}
+
+.search-engine-settings-item-selected
+.search-engine-settings-item-edit {
+  color: var(--light-main-color);
 }
 
 .search-engine-settings-edit {
