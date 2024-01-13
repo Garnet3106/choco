@@ -297,8 +297,17 @@ export namespace Website {
   }
 
   export function getFavIconUrl(url: string): string {
-    const protocol = new URL(url).protocol;
-    const hostname = getHostname(url);
+    let protocol;
+    let hostname;
+
+    // fix
+    try {
+      protocol = new URL(url).protocol;
+      hostname = getHostname(url);
+    } catch {
+      protocol = 'https';
+      hostname = 'example.com';
+    }
 
     const favIconUrl = new URL('https://www.google.com/s2/favicons');
     favIconUrl.searchParams.set('domain', `${protocol}//${hostname}`);

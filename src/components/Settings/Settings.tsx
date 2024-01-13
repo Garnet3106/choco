@@ -23,6 +23,16 @@ export default function Settings() {
   }, []);
 
   const settingGroups: SettingGroupSource = {
+    '機能': {
+      '検索エンジン': (
+        <Link
+          to='/settings/search_engines'
+          className='settings-hyperlink'
+        >
+          編集する
+        </Link>
+      ),
+    },
     '検索結果の除外': {
       '除外設定を有効にする': (
         <ToggleButton
@@ -66,7 +76,7 @@ export default function Settings() {
 
   return (
     <div className='settings'>
-      <div className='settings-title'>
+      <div className='settings-title' style={{ marginBottom: 0 }}>
         ― choco 設定 ―
       </div>
       <div className='settings-content scrollbar-none'>

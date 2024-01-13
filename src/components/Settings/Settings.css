@@ -8,6 +8,7 @@
 .settings-title {
   color: var(--light-gray-color);
   font-weight: bold;
+  margin-bottom: var(--margin);
 }
 
 .settings-content {
@@ -16,6 +17,11 @@
   flex-direction: column;
   overflow-y: scroll;
   width: 100%;
+}
+
+.settings-hyperlink {
+  color: var(--light-gray-color);
+  font-size: 90%;
 }
 
 .settings-buttons {

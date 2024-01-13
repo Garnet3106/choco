@@ -1,0 +1,26 @@
+.search-engine-settings-item {
+  align-items: center;
+  border-radius: var(--border-radius);
+  display: flex;
+  padding: calc(var(--margin) / 2);
+  transition: background-color 100ms;
+}
+
+.search-engine-settings-item:hover {
+  background-color: var(--dark-gray-color);
+}
+
+.search-engine-settings-item-content {
+  align-items: center;
+  display: flex;
+  gap: calc(var(--margin) / 2);
+  overflow-x: hidden;
+  width: calc(100% - 16px - (var(--margin) / 2));
+}
+
+.search-engine-settings-item-command {
+  background-color: var(--light-gray-color);
+  border-radius: var(--border-radius);
+  font-size: 80%;
+  padding: 1px 3px;
+}
