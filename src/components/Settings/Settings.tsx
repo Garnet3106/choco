@@ -89,7 +89,6 @@ export default function Settings() {
             style={{
               backgroundColor: 'var(--light-gray-color)',
               color: 'var(--white-color)',
-              marginRight: 'var(--margin)',
             }}
           />
         </Link>
