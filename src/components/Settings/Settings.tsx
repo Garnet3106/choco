@@ -86,10 +86,7 @@ export default function Settings() {
         <Link to='/' style={{ textDecoration: 'none' }}>
           <Button
             text='検索に戻る'
-            style={{
-              backgroundColor: 'var(--light-gray-color)',
-              color: 'var(--white-color)',
-            }}
+            className='settings-buttons-item'
           />
         </Link>
       </div>

@@ -3,6 +3,7 @@ import './Button.css';
 
 export type ButtonProps = {
   text: string,
+  className?: string,
   style?: CSSProperties,
   onClick?: () => void,
 };
@@ -10,7 +11,7 @@ export type ButtonProps = {
 export default function Button(props: ButtonProps) {
   return (
     <div
-      className='button'
+      className={`button ${props.className ?? ''}`}
       style={props.style}
       onClick={props.onClick}
     >

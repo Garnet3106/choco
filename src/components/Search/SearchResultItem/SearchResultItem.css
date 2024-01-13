@@ -66,6 +66,6 @@
 
   .search-result-item-selected
   .search-result-item-tag {
-    background-color: var(--dark-gray-color);
+    background-color: var(--black-color);
   }
 }

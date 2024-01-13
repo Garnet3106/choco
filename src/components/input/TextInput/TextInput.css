@@ -9,6 +9,6 @@
   width: 100%;
 }
 
-.search-bar::placeholder {
+.text-input::placeholder {
   color: var(--light-gray-color);
 }

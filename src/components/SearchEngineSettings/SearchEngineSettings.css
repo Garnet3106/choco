@@ -39,6 +39,17 @@
   background-color: var(--light-main-color);
 }
 
+@media (prefers-color-scheme: light) {
+  .search-engine-settings-item-command {
+    background-color: var(--main-color);
+  }
+
+  .search-engine-settings-item-selected
+  .search-engine-settings-item-command {
+    background-color: var(--dark-gray-color);
+  }
+}
+
 .search-engine-settings-item-edit {
   color: var(--light-gray-color);
   margin-left: var(--margin-half);
@@ -73,4 +84,10 @@
   color: var(--light-gray-color);
   font-size: 85%;
   margin-bottom: 1px;
+}
+
+@media (prefers-color-scheme: light) {
+  .search-engine-settings-edit-item-value {
+    background-color: var(--base-color) !important;
+  }
 }

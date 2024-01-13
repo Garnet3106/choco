@@ -71,6 +71,7 @@ export default function SearchEngineSettings() {
               </div>
               <TextInput
                 inputProps={{
+                  className: 'search-engine-settings-edit-item-value',
                   value: draftSearchEngine.name,
                   onChange: (e) => {
                     const value = e.currentTarget.value;
@@ -87,6 +88,7 @@ export default function SearchEngineSettings() {
               </div>
               <TextInput
                 inputProps={{
+                  className: 'search-engine-settings-edit-item-value',
                   value: draftSearchEngine.command,
                   onChange: (e) => {
                     const value = e.currentTarget.value.toLowerCase();
@@ -103,6 +105,7 @@ export default function SearchEngineSettings() {
             </div>
             <TextInput
               inputProps={{
+                className: 'search-engine-settings-edit-item-value',
                 value: draftSearchEngine.url,
                 onChange: (e) => {
                   const value = e.currentTarget.value;
@@ -133,10 +136,7 @@ export default function SearchEngineSettings() {
             }
             <Button
               text={draftSearchEngine.createdNew ? '新規作成する' : '更新する'}
-              style={{
-                backgroundColor: 'var(--light-gray-color)',
-                textAlign: 'center',
-              }}
+              className='settings-buttons-item'
               onClick={createOrUpdateSearchEngine}
             />
           </div>
@@ -145,10 +145,7 @@ export default function SearchEngineSettings() {
       <Link to='/settings' style={{ textDecoration: 'none' }}>
         <Button
           text='設定に戻る'
-          style={{
-            backgroundColor: 'var(--light-gray-color)',
-            color: 'var(--white-color)',
-          }}
+          className='settings-buttons-item'
         />
       </Link>
     </div>

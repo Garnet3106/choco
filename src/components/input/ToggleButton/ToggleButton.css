@@ -31,3 +31,14 @@
   align-self: flex-start;
   background-color: var(--light-gray-color);
 }
+
+@media (prefers-color-scheme: light) {
+  .toggle-button-disabled {
+    background-color: var(--light-gray-color);
+  }
+
+  .toggle-button-disabled
+  .toggle-button-circle {
+    background-color: var(--dark-gray-color);
+  }
+}

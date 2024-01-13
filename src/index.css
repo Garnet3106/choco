@@ -21,12 +21,12 @@
 @media (prefers-color-scheme: light) {
   :root {
     --base-color: #ffffff;
-    --main-color: #e3d0ca;
+    --main-color: #f5d3ca;
     --light-main-color: #96766c;
-    --dark-gray-color: #eee0dc;
+    --dark-gray-color: #faebe9;
     --light-gray-color: #96766c;
     --black-color: #f4efee;
-    --white-color: #5a210f;
+    --white-color: #341911;
   }
 }
 
