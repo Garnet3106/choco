@@ -8,6 +8,7 @@ import TextInput from '../input/TextInput/TextInput';
 import Button from '../input/Button/Button';
 import { Link } from 'react-router-dom';
 import * as uuid from 'uuid';
+import toast from 'react-hot-toast';
 
 type DraftSearchEngine = SearchEngine & {
   createdNew: boolean,
@@ -21,25 +22,26 @@ export default function SearchEngineSettings() {
     Preferences.get().then((preferences) => setSearchEngines(preferences.searchEngines));
   }, []);
 
-  // todo: sort
-  const items = searchEngines.map((eachEngine) => (
-    <div
-      className={`search-engine-settings-item ${draftSearchEngine.id === eachEngine.id ? 'search-engine-settings-item-selected' : ''}`}
-      onClick={() => setExistingSearchEngineToDraft(eachEngine.id)}
-      key={eachEngine.id}
-    >
-      <div className='search-engine-settings-item-content'>
-        <img src={Website.getFavIconUrl(eachEngine.url)} height={16} width={16} />
-        <div>
-          {eachEngine.name}
+  const items = searchEngines
+    .sort(sortSearchEngines)
+    .map((eachEngine) => (
+      <div
+        className={`search-engine-settings-item ${draftSearchEngine.id === eachEngine.id ? 'search-engine-settings-item-selected' : ''}`}
+        onClick={() => setExistingSearchEngineToDraft(eachEngine.id)}
+        key={eachEngine.id}
+      >
+        <div className='search-engine-settings-item-content'>
+          <img src={Website.getFavIconUrl(eachEngine.url)} height={16} width={16} />
+          <div>
+            {eachEngine.name}
+          </div>
+          <div className='search-engine-settings-item-command'>
+            {eachEngine.command}
+          </div>
         </div>
-        <div className='search-engine-settings-item-command'>
-          {eachEngine.command}
-        </div>
+        <TbEdit size={18} className='search-engine-settings-item-edit' />
       </div>
-      <TbEdit size={18} className='search-engine-settings-item-edit' />
-    </div>
-  ));
+    ));
 
   return (
     <div className='settings'>
@@ -125,7 +127,7 @@ export default function SearchEngineSettings() {
                     textAlign: 'center',
                     marginRight: 'var(--margin)',
                   }}
-                  onClick={saveChange}
+                  onClick={deleteSearchEngine}
                 />
               )
             }
@@ -135,7 +137,7 @@ export default function SearchEngineSettings() {
                 backgroundColor: 'var(--light-gray-color)',
                 textAlign: 'center',
               }}
-              onClick={saveChange}
+              onClick={createOrUpdateSearchEngine}
             />
           </div>
         </div>
@@ -162,6 +164,18 @@ export default function SearchEngineSettings() {
     };
   }
 
+  function sortSearchEngines(a: SearchEngine, b: SearchEngine): number {
+    if (a.name > b.name) {
+      return 1;
+    }
+
+    if (a.name < b.name) {
+      return -1;
+    }
+
+    return 0;
+  }
+
   function updateDraftSearchEngine(callback: (state: DraftSearchEngine) => void) {
     setDraftSearchEngine((state) => {
       const newState = {...state};
@@ -183,14 +197,17 @@ export default function SearchEngineSettings() {
     });
   }
 
-  async function saveChange() {
-    // add: input validation
-    const updatedSearchEngines = getUpdatedSearchEngine();
+  async function saveChanges(updatedSearchEngines: SearchEngine[]): Promise<void> {
     setSearchEngines(updatedSearchEngines);
     const preferences = await Preferences.get();
     Preferences.update({...preferences, searchEngines: updatedSearchEngines });
     setDraftSearchEngine(getDefaultDraftSearchEngine());
-    // todo: move to the bottom
+  }
+
+  async function createOrUpdateSearchEngine() {
+    // add: input validation
+    await saveChanges(getUpdatedSearchEngine());
+    toast('検索エンジンを保存しました。');
   }
 
   function getUpdatedSearchEngine(): SearchEngine[] {
@@ -219,5 +236,15 @@ export default function SearchEngineSettings() {
         }
       });
     }
+  }
+
+  function deleteSearchEngine() {
+    if (draftSearchEngine.createdNew) {
+      return;
+    }
+
+    const updatedSearchEngines = searchEngines.filter((v) => v.id !== draftSearchEngine.id);
+    saveChanges(updatedSearchEngines);
+    toast('検索エンジンを削除しました。');
   }
 }
