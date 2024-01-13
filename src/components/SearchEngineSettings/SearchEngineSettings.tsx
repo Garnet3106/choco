@@ -110,24 +110,34 @@ export default function SearchEngineSettings() {
               }}
             />
           </div>
-          <Button
-            text='削除する'
-            style={{
-              backgroundColor: 'var(--light-gray-color)',
-              marginTop: 2,
-              textAlign: 'center',
-            }}
-            onClick={saveChange}
-          />
-          <Button
-            text={draftSearchEngine.createdNew ? '新規作成する' : '更新する'}
-            style={{
-              backgroundColor: 'var(--light-gray-color)',
-              marginTop: 'calc(var(--margin) / 2 * -1)',
-              textAlign: 'center',
-            }}
-            onClick={saveChange}
-          />
+          <div className='settings-buttons' style={{ marginTop: 0 }}>
+            {
+              !draftSearchEngine.createdNew && (
+                <Button
+                  text='削除する'
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderColor: 'var(--light-gray-color)',
+                    borderStyle: 'solid',
+                    borderWidth: 1,
+                    marginBottom: -1,
+                    marginTop: -1,
+                    textAlign: 'center',
+                    marginRight: 'var(--margin)',
+                  }}
+                  onClick={saveChange}
+                />
+              )
+            }
+            <Button
+              text={draftSearchEngine.createdNew ? '新規作成する' : '更新する'}
+              style={{
+                backgroundColor: 'var(--light-gray-color)',
+                textAlign: 'center',
+              }}
+              onClick={saveChange}
+            />
+          </div>
         </div>
       </div>
       <Link to='/settings' style={{ textDecoration: 'none' }}>
