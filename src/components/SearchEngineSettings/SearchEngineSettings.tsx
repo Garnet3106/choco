@@ -89,7 +89,7 @@ export default function SearchEngineSettings() {
                 inputProps={{
                   value: draftSearchEngine.command,
                   onChange: (e) => {
-                    const value = e.currentTarget.value;
+                    const value = e.currentTarget.value.toLowerCase();
                     updateDraftSearchEngine((state) => state.command = value);
                   },
                   placeholder: 'google',
@@ -176,6 +176,45 @@ export default function SearchEngineSettings() {
     return 0;
   }
 
+  function validateUserInput(): boolean {
+    if (!draftSearchEngine.name.length) {
+      toast('表示名を入力してください。');
+      return false;
+    }
+
+    if (draftSearchEngine.name.length > 30) {
+      toast('表示名は30文字以内で入力してください。');
+      return false;
+    }
+
+    if (!draftSearchEngine.command.length) {
+      toast('コマンドフレーズを入力してください。');
+      return false;
+    }
+
+    if (draftSearchEngine.command.length > 30) {
+      toast('コマンドフレーズは30文字以内で入力してください。');
+      return false;
+    }
+
+    if (!draftSearchEngine.command.match(/^[a-z0-9]+$/)) {
+      toast('コマンドフレーズは半角英数字で入力してください。');
+      return false;
+    }
+
+    if (!draftSearchEngine.url) {
+      toast('検索 URL を入力してください。');
+      return false;
+    }
+
+    if (!draftSearchEngine.url.includes('{keyword}')) {
+      toast('検索 URL には少なくとも1つの {keyword} を追加してください。');
+      return false;
+    }
+
+    return true;
+  }
+
   function updateDraftSearchEngine(callback: (state: DraftSearchEngine) => void) {
     setDraftSearchEngine((state) => {
       const newState = {...state};
@@ -205,7 +244,10 @@ export default function SearchEngineSettings() {
   }
 
   async function createOrUpdateSearchEngine() {
-    // add: input validation
+    if (!validateUserInput()) {
+      return;
+    }
+
     await saveChanges(getUpdatedSearchEngine());
     toast('検索エンジンを保存しました。');
   }
