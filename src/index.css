@@ -4,6 +4,7 @@
   --light-main-color: #b87763;
   --dark-gray-color: #212e38;
   --light-gray-color: #4c525d;
+  --black-color: #0a1820;
   --white-color: #cbd2d9;
 
   --margin: 12px;
@@ -18,11 +19,12 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --base-color: #fff;
+    --base-color: #ffffff;
     --main-color: #e3d0ca;
     --light-main-color: #96766c;
     --dark-gray-color: #eee0dc;
     --light-gray-color: #96766c;
+    --black-color: #f4efee;
     --white-color: #5a210f;
   }
 }

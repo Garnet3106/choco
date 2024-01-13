@@ -1,0 +1,14 @@
+.text-input {
+  background-color: var(--dark-gray-color);
+  border: none;
+  border-radius: var(--border-radius);
+  box-sizing: border-box;
+  color: var(--white-color);
+  outline: none;
+  padding: 6px;
+  width: 100%;
+}
+
+.search-bar::placeholder {
+  color: var(--light-gray-color);
+}

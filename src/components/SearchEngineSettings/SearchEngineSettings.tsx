@@ -4,6 +4,9 @@ import '../Settings/Settings.css';
 import './SearchEngineSettings.css';
 import { TbEdit } from 'react-icons/tb';
 import { Preferences } from '../../common/preference';
+import TextInput from '../input/TextInput/TextInput';
+import Button from '../input/Button/Button';
+import { Link } from 'react-router-dom';
 
 export default function SearchEngineSettings() {
   const [searchEngines, setSearchEngines] = useState<SearchEngine[]>([]);
@@ -38,6 +41,68 @@ export default function SearchEngineSettings() {
       >
         {items}
       </div>
+      <div className='search-engine-settings-edit'>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'var(--margin)',
+          margin: 'var(--margin)',
+        }}>
+          <div style={{
+            display: 'flex',
+            gap: 'calc(var(--margin) / 2)',
+          }}>
+            <div className='search-engine-settings-edit-item'>
+              <div className='search-engine-settings-edit-item-name'>
+                表示名
+              </div>
+              <TextInput
+                inputProps={{
+                  placeholder: 'Google検索',
+                  autoFocus: true,
+                }}
+              />
+            </div>
+            <div className='search-engine-settings-edit-item'>
+              <div className='search-engine-settings-edit-item-name'>
+                コマンドフレーズ
+              </div>
+              <TextInput
+                inputProps={{
+                  placeholder: 'google',
+                }}
+              />
+            </div>
+          </div>
+          <div className='search-engine-settings-edit-item'>
+            <div className='search-engine-settings-edit-item-name'>
+              検索 URL
+            </div>
+            <TextInput
+              inputProps={{
+                placeholder: 'https://google.com/search?q={keyword}',
+              }}
+            />
+          </div>
+          <Button
+            text='新規作成する'
+            style={{
+              backgroundColor: 'var(--light-gray-color)',
+              marginTop: 2,
+              textAlign: 'center',
+            }}
+          />
+        </div>
+      </div>
+      <Link to='/settings' style={{ textDecoration: 'none' }}>
+        <Button
+          text='設定に戻る'
+          style={{
+            backgroundColor: 'var(--light-gray-color)',
+            color: 'var(--white-color)',
+          }}
+        />
+      </Link>
     </div>
   );
 }

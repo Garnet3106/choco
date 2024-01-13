@@ -24,3 +24,22 @@
   font-size: 80%;
   padding: 1px 3px;
 }
+
+.search-engine-settings-edit {
+  background-color: var(--black-color);
+  border-radius: var(--border-radius);
+  margin: calc(var(--margin) / 2) 0;
+  width: 100%;
+}
+
+.search-engine-settings-edit-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-engine-settings-edit-item-name {
+  color: var(--light-gray-color);
+  font-size: 85%;
+  margin-bottom: 1px;
+}
