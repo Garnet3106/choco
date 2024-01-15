@@ -4,6 +4,7 @@ import Search from '../Search/Search';
 import Settings from '../Settings/Settings';
 import { Toaster } from 'react-hot-toast';
 import SearchEngineSettings from '../SearchEngineSettings/SearchEngineSettings';
+import Manual from '../Manual/Manual';
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route path='/' Component={Search} />
           <Route path='/settings' Component={Settings} />
           <Route path='/settings/search_engines' Component={SearchEngineSettings} />
+          <Route path='/manual/:index' Component={Manual} />
           <Route path='/index.html' element={<Navigate to='/' />} />
         </Routes>
       </BrowserRouter>

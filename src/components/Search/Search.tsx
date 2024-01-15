@@ -4,7 +4,7 @@ import SearchResultItem from './SearchResultItem/SearchResultItem';
 import { BiSearch } from 'react-icons/bi';
 import { MdSettings } from 'react-icons/md';
 import { CategorizedSearchItems, Favorites, Search as ItemSearch, SearchEngine, SearchItem, SearchItemType, SearchResult, SearchResultType, Website } from '../../common/search';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Preferences } from '../../common/preference';
 import { UnexhaustiveError } from '../../common/error';
 import toast from 'react-hot-toast';
@@ -19,6 +19,12 @@ const defaultSearchResult: SearchResult = {
 };
 
 export default function Search() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    jumpToInitialManual();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
   const searchBarRef = useRef<SearchBarRef | null>(null);
@@ -122,6 +128,15 @@ export default function Search() {
       </div>
     </div>
   );
+
+  async function jumpToInitialManual() {
+    const { hasManualFinished } = await chrome.storage.local.get('hasManualFinished');
+
+    if (hasManualFinished !== true) {
+      navigate('/manual/start');
+      chrome.storage.local.set({ hasManualFinished: true });
+    }
+  }
 
   function updateSearchText(newSearchText: string) {
     searchBarRef.current?.updateSearchText(newSearchText);

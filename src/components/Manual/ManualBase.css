@@ -1,0 +1,16 @@
+.manual {
+  display: flex;
+  flex-direction: column;
+  gap: var(--margin);
+  width: 300px;
+}
+
+.manual-image {
+  height: 400px;
+  width: 300px;
+}
+
+.manual-button {
+  background-color: var(--light-gray-color);
+  text-align: center;
+}
