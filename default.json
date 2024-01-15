@@ -122,10 +122,12 @@
         }
     ],
     "browserStartPages": [
+        "brave://newtab",
         "chrome://newtab",
-        "vivaldi://newtab",
         "chrome://vivaldi-webui/startpage",
-        "edge://newtab"
+        "edge://newtab",
+        "opera://startpageshared",
+        "vivaldi://newtab"
     ],
     "links": {
         "developer": "https://github.com/Garnet3106",
