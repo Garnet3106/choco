@@ -7,6 +7,7 @@
 
 .manual-image {
   height: 400px;
+  user-select: none;
   width: 300px;
 }
 
