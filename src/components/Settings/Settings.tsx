@@ -24,6 +24,14 @@ export default function Settings() {
 
   const settingGroups: SettingGroupSource = {
     '機能': {
+      '利用ガイド': (
+        <Link
+          to='/manual/start'
+          className='settings-hyperlink'
+        >
+          ガイドを表示する
+        </Link>
+      ),
       '検索エンジン': (
         <Link
           to='/settings/search_engines'
