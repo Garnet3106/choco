@@ -40,7 +40,7 @@ export default function Search() {
       if (searchResult.type === SearchResultType.SearchEngine) {
         searchResultMessage = '検索キーワードを入力すると検索できます。';
       } else {
-        searchResultMessage = 'Webサイトをお気に入りに登録するとここに表示されます。';
+        searchResultMessage = 'Webサイトをお気に入りに登録するとここに表示されます。\n（Ctrl+Fでお気に入りに追加）';
       }
     } else {
       searchResultMessage = '該当するWebサイトが見つかりませんでした。';
@@ -121,7 +121,7 @@ export default function Search() {
         {
           searchResultMessage && (
             <div className='search-result-message'>
-              {searchResultMessage}
+              {searchResultMessage.split('\n').map((line) => <>{line}<br /></>)}
             </div>
           )
         }
